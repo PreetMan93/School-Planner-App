@@ -1,3 +1,6 @@
+# Git Format
+Master(Release) <-- Dev <-- Feature branches
+
 # Vision Statement
 The Ed-Easy Agenda System (E-EASy) will be used by educators, students and parents to promote communication of both class and individual progress. It will maintain information including but not limited to due dates, test dates and important events added by educators for each class they teach and in turn, be personalized and viewed by each student taking multiple classes.
  
