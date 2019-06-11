@@ -31,6 +31,15 @@ public class DBSetup {
         }
     }
 
+    public boolean vaild(String user, String password){
+        //public boolean exist = false;
+        for(User u:users){
+            if(u.username==user && u.password==password)
+                return true;
+        }
+        return false;
+
+    }
     public void writeDB(){
         try {
             PrintWriter pr = new PrintWriter(new FileWriter("db.json"));
