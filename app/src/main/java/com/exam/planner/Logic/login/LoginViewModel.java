@@ -3,7 +3,6 @@ package com.exam.planner.Logic.login;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.SharedPreferences;
 import android.util.Patterns;
 
 import com.exam.planner.Logic.login.data.LoginRepository;
@@ -16,11 +15,9 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
-    private boolean newUser;
 
     LoginViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
-        newUser = true;
     }
 
     LiveData<LoginFormState> getLoginFormState() {
@@ -33,18 +30,14 @@ public class LoginViewModel extends ViewModel {
 
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
-//        boolean newUser = false;
         Result<LoggedInUser> result = loginRepository.login(username, password);
 
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
             loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-            LoggedInUser newUserInfo = (LoggedInUser)((Result.Success)result).getData();
-            newUser = newUserInfo.isFirstLogin();
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }
-//        return newUser;
     }
 
     public void loginDataChanged(String username, String password) {
@@ -62,8 +55,8 @@ public class LoginViewModel extends ViewModel {
         if (username == null) {
             return false;
         }
-        if (username.length() < 3) {
-            return false;
+        if (username.contains("@")) {
+            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
         } else {
             return !username.trim().isEmpty();
         }
@@ -72,11 +65,5 @@ public class LoginViewModel extends ViewModel {
     // A placeholder password validation check
     private boolean isPasswordValid(String password) {
         return password != null && password.trim().length() > 5;
-    }
-
-    public boolean isNewUser(){ return newUser; }
-
-    public void notNewUser(){
-        loginRepository.notNew();
     }
 }
