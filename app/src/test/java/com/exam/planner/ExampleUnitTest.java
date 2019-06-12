@@ -1,5 +1,8 @@
 package com.exam.planner;
 
+import com.exam.planner.Logic.Dao.DBSetup;
+import com.exam.planner.Logic.Dao.User;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -13,5 +16,21 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
+    }
+
+    @Test
+    public void testDB_Write(){
+        DBSetup db = new DBSetup();
+        db.add(new User("username_0", "pwd_0", "test"));
+        db.add(new User("username_1", "pwd_1", "test1"));
+        db.add(new User("username_2", "pwd_2", "test2"));
+        db.add(new User("username_3", "pwd_3", "test3"));
+        db.writeDB();
+    }
+    @Test
+    public void testDB_Read(){
+        DBSetup db = new DBSetup();
+        db.readDB();
+        System.out.println(db.toString());
     }
 }
