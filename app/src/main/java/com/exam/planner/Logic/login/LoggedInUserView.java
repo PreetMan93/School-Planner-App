@@ -2,6 +2,7 @@ package com.exam.planner.Logic.login;
 
 /**
  * Class exposing authenticated user details to the UI.
+ * Will add some sort of ID here to easily fetch events probably
  */
 class LoggedInUserView {
     private String displayName;
