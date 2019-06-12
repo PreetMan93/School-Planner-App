@@ -1,0 +1,118 @@
+package com.exam.planner.Logic.Register;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Patterns;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.exam.planner.R;
+
+public class RegisterActivity extends AppCompatActivity {
+
+    private EditText usernameEditText, passwordEditText, confirmPasswordEditText, secretQuestionEditText,
+                     secretAnswerEditText, phoneEditText, addressEditText;
+
+    private String username, password, confirmPassword, secretQuestion, secretAnswer, phone, address;
+
+    Button registerButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+
+        usernameEditText = findViewById(R.id.registerEmail);
+        passwordEditText = findViewById(R.id.registerPassword);
+        confirmPasswordEditText = findViewById(R.id.registerConfirmPassword);
+        secretAnswerEditText = findViewById(R.id.registerSecretAnswer);
+        secretQuestionEditText = findViewById(R.id.registerSecretQuestion);
+        phoneEditText = findViewById(R.id.registerPhone);
+        addressEditText = findViewById(R.id.registerAddress);
+        registerButton = findViewById(R.id.registerButton);
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                register();
+            }
+        });
+    }
+
+    public void register() {
+        setStrings();
+
+        if(validateText()) {
+            success();
+        }
+        else {
+            Toast.makeText(this,"Signup failure",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void setStrings() {
+
+        username = usernameEditText.getText().toString().trim();
+        password = passwordEditText.getText().toString().trim();
+        confirmPassword = confirmPasswordEditText.getText().toString().trim();
+        secretQuestion = secretQuestionEditText.getText().toString().trim();
+        secretAnswer = secretAnswerEditText.getText().toString().trim();
+        phone = phoneEditText.getText().toString().trim();
+        address = addressEditText.getText().toString().trim();
+    }
+
+    public boolean validateText() {
+        boolean isValid = true;
+
+        if(password.isEmpty() || password.length() <=5) {
+            passwordEditText.setError("Please enter a valid password with more than 5 letters / numbers");
+            isValid = false;
+        }
+        if(confirmPassword.isEmpty() || confirmPassword != password) {
+            confirmPasswordEditText.setError("Please enter a valid password with more than 5 letters / numbers");
+            isValid = false;
+        }
+        if(username.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(username).matches()) {
+            usernameEditText.setError("Please enter a valid email");
+            isValid = false;
+        }
+        if(phone.isEmpty() || !Patterns.PHONE.matcher(phone).matches()) {
+            phoneEditText.setError("Please enter a valid phone");
+            isValid = false;
+        }
+        if(secretQuestion.isEmpty()) {
+            secretQuestionEditText.setError("Please enter a secret question");
+            isValid = false;
+        }
+        if(secretAnswer.isEmpty()) {
+            secretAnswerEditText.setError("Please enter a secret answer");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    public void success() {
+        //TODO save credentials to persistence layer
+        Toast.makeText(this,"Success!",Toast.LENGTH_LONG).show();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

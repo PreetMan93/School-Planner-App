@@ -31,10 +31,10 @@ public class LoginRepository {
     public boolean isLoggedIn() {
         return user != null;
     }
-    public void notNew(){
-        if(user != null){
-            user.notNewUser();
-        }
+
+    public void logout() {
+        user = null;
+        dataSource.logout();
     }
 
     private void setLoggedInUser(LoggedInUser user) {
@@ -51,5 +51,4 @@ public class LoginRepository {
         }
         return result;
     }
-
 }

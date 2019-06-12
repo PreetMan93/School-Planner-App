@@ -7,12 +7,10 @@ public class LoggedInUser {
 
     private String userId;
     private String displayName;
-    private boolean firstLogin;
 
-    public LoggedInUser(String userId, String displayName, boolean firstLogin) {
+    public LoggedInUser(String userId, String displayName) {
         this.userId = userId;
         this.displayName = displayName;
-        this.firstLogin = firstLogin;
     }
 
     public String getUserId() {
@@ -22,7 +20,4 @@ public class LoggedInUser {
     public String getDisplayName() {
         return displayName;
     }
-
-    public boolean isFirstLogin() { return firstLogin; }
-    public void notNewUser(){ firstLogin = false;}
 }
