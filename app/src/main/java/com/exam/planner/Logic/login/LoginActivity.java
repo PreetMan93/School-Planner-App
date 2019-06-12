@@ -1,10 +1,8 @@
 package com.exam.planner.Logic.login;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,11 +20,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.exam.planner.Logic.LandingPage.LandingPageActivity;
+import com.exam.planner.Logic.CalendarPage.CalendarActivity;
 import com.exam.planner.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -219,7 +216,7 @@ public class LoginActivity extends AppCompatActivity {
             welcome += "Welcome back";
         }
         // TODO : initiate successful logged in experience
-        Intent intent = new Intent(this, LandingPageActivity.class);
+        Intent intent = new Intent(this, CalendarActivity.class);
         startActivity(intent);
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
