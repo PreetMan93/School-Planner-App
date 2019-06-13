@@ -1,6 +1,8 @@
+package com.exam.planner.DSO.Events;
+
 import java.util.*;
 
-class Event 
+class Event
 {
     private String name;
     private DateTime startDate, endDate;
@@ -23,6 +25,17 @@ class Event
     public String getColour() {return this.colour;}
     public Boolean isPublic() {return this.isPublic;}
 
+    public void printEvent(){
+        System.out.println("The Event has these values:");
+        System.out.println("Name: "+this.name);
+        System.out.print("Start time: ");
+        this.startDate.printDate();
+        System.out.print("End time: ");
+        this.endDate.printDate();
+        System.out.println("Id: "+this.id);
+        System.out.println("Colour: "+this.colour);
+        System.out.println("isPublic? "+this.isPublic);
+    }
     public void editName(String newName) {this.name = newName;}
     public void editStartDate(int year, int month, int day){
         GregorianCalendar now = new GregorianCalendar();
@@ -30,7 +43,7 @@ class Event
         if (now.before(newStartDate)){
             this.startDate.editDate(year,month,day);
             if(this.endDate.getDate().before(this.startDate.getDate())){
-                this.endDate = this.startDate;
+                this.endDate.dateCopy(this.startDate);
                 this.endDate.addTime(1,0);
             }
         }
@@ -44,7 +57,7 @@ class Event
         if (now.before(newStartDate)){
             this.startDate.editDate(year,month,day, hour, minute);
             if(this.endDate.getDate().before(this.startDate.getDate())){
-                this.endDate = this.startDate;
+                this.endDate.dateCopy(this.startDate);
                 this.endDate.addTime(1,0);
             }
         }
@@ -53,8 +66,9 @@ class Event
         }
     }
     public void editEndDate(int year, int month, int day){
+        GregorianCalendar currStartDate = new GregorianCalendar (startDate.getYear(), startDate.getMonth(), startDate.getDay());
         GregorianCalendar newEndDate = new GregorianCalendar (year, month, day);
-        if (newEndDate.after(this.startDate)){
+        if (newEndDate.after(currStartDate)){
             this.endDate.editDate(year,month,day);
         }
         else{
@@ -62,8 +76,9 @@ class Event
         }
     }
     public void editEndDate(int year, int month, int day, int hour, int minute){
+        GregorianCalendar currStartDate = new GregorianCalendar (startDate.getYear(), startDate.getMonth(), startDate.getDay());
         GregorianCalendar newEndDate = new GregorianCalendar (year, month, day, hour, minute);
-        if (newEndDate.after(this.startDate)){
+        if (newEndDate.after(currStartDate)){
             this.endDate.editDate(year,month,day, hour, minute);
         }
         else{
