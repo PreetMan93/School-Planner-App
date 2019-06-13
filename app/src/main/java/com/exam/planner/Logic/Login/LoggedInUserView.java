@@ -1,4 +1,4 @@
-package com.exam.planner.Logic.login;
+package com.exam.planner.Logic.Login;
 
 /**
  * Class exposing authenticated user details to the UI.

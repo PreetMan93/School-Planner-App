@@ -1,6 +1,6 @@
-package com.exam.planner.Logic.login.data;
+package com.exam.planner.Logic.Login.data;
 
-import com.exam.planner.Logic.login.data.model.LoggedInUser;
+import com.exam.planner.Logic.Login.data.model.LoggedInUser;
 
 /**
  * Class that requests authentication and user information from the remote data source and

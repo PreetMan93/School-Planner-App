@@ -1,14 +1,12 @@
-package com.exam.planner.Logic.login;
+package com.exam.planner.Logic.Login;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.SharedPreferences;
-import android.util.Patterns;
 
-import com.exam.planner.Logic.login.data.LoginRepository;
-import com.exam.planner.Logic.login.data.Result;
-import com.exam.planner.Logic.login.data.model.LoggedInUser;
+import com.exam.planner.Logic.Login.data.LoginRepository;
+import com.exam.planner.Logic.Login.data.Result;
+import com.exam.planner.Logic.Login.data.model.LoggedInUser;
 import com.exam.planner.R;
 
 public class LoginViewModel extends ViewModel {
@@ -18,7 +16,7 @@ public class LoginViewModel extends ViewModel {
     private LoginRepository loginRepository;
     private boolean newUser;
 
-    LoginViewModel(LoginRepository loginRepository) {
+    public LoginViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
         newUser = true;
     }

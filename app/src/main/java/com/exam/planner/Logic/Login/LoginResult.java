@@ -1,4 +1,4 @@
-package com.exam.planner.Logic.login;
+package com.exam.planner.Logic.Login;
 
 import android.support.annotation.Nullable;
 

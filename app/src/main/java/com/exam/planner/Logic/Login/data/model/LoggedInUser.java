@@ -1,4 +1,4 @@
-package com.exam.planner.Logic.login.data.model;
+package com.exam.planner.Logic.Login.data.model;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
