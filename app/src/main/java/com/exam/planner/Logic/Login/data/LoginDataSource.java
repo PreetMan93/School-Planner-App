@@ -15,8 +15,6 @@ public class LoginDataSource {
     public Result<LoggedInUser> login(String username, String password) {
 
         try {
-            // TODO: handle loggedInUser authentication
-            // TODO: Make sure firstLogin can become false if we find there information in the DB
             LoggedInUser user;
             if(username.equals("username") && password.equals("password")){
                 user = new LoggedInUser(java.util.UUID.randomUUID().toString(), username, false);

@@ -98,7 +98,6 @@ public class RegisterActivity extends AppCompatActivity {
             isValid = false;
         }*/
 
-        // Todo: make these not optional again
         /*
         if(secretQuestion.isEmpty()) {
             secretQuestionEditText.setError("Please enter a secret question");
