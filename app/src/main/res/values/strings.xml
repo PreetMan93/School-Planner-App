@@ -11,4 +11,19 @@
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_calendar">CalendarActivity</string>
     <string name="title_activity_event_edit">EventEditActivity</string>
+
+    <string name="action_register">Register</string>
+    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="prompt_phone">Phone</string>
+    <string name="prompt_address">Address</string>
+    <string name="prompt_secret_question">Secret Question</string>
+    <string name="prompt_secret_answer">Secret Answer</string>
+    <string name="action_account_settings">Account Settings</string>
+    <string name="action_calendar_settings">Calendar Settings</string>
+    <string name="prompt_new_email">New Email</string>
+    <string name="prompt_new_password">New Password</string>
+    <string name="prompt_new_confirm_password">Confirm new password</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_save_settings">Save settings</string>
+
 </resources>
