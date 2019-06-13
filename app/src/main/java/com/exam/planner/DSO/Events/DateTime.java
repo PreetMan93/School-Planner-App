@@ -1,3 +1,5 @@
+package com.exam.planner.DSO.Events;
+
 import java.util.*;
 
 class DateTime
@@ -13,14 +15,8 @@ class DateTime
         this.hour = now.get(Calendar.HOUR_OF_DAY);
         this.minute = 0;
     }
-    public DateTime(int year, int month, int day){
-        this.date = new GregorianCalendar(year, month, day);
-        this.date.setTimeZone(localTZ);
-        this.hour = 0;
-        this.minute = 0;
-    }
     public DateTime(int year, int month, int day, int hour, int minute){
-        this.date = new GregorianCalendar(year,month,day,hour,minute);
+        this.date = new GregorianCalendar(year,month-1,day,hour,minute);
         this.hour = hour;
         this.minute = minute;
     }
@@ -32,16 +28,20 @@ class DateTime
     }
     public GregorianCalendar getDate(){return date;}
     public int getYear(){return date.get(Calendar.YEAR);}
-    public int getMonth(){return date.get(Calendar.MONTH);}
+    public int getMonth(){return date.get(Calendar.MONTH) + 1;}  //This looks dumb because Gregorian Calendar is dumb. For some reason ONLY MONTHS start counting from 0
     public int getDay(){return date.get(Calendar.DAY_OF_MONTH);}
-    public int getHour(){return hour;}
-    public int getMinute(){return minute;}
+    public int getHour(){return date.get(Calendar.HOUR_OF_DAY);}
+    public int getMinute(){return date.get(Calendar.MINUTE);}
+    public void printDate(){
+        System.out.print(this.getMonth()+"/"+this.getDay()+ "/"+this.getYear()+ "  ");
+        System.out.println(this.getHour()+":"+this.getMinute());
+    }
     public void editDate(int year, int month, int day){
-        this.date = new GregorianCalendar(year, month, day, this.hour, this.minute);
+        this.date = new GregorianCalendar(year, month-1, day, this.hour, this.minute);
         this.date.setTimeZone(localTZ);
     }
     public void editDate(int year, int month, int day, int hour, int minute){
-        this.date = new GregorianCalendar(year,month,day,hour,minute);
+        this.date = new GregorianCalendar(year,month-1,day,hour,minute);
         this.date.setTimeZone(localTZ);
         this.hour = hour;
         this.minute = minute;
@@ -49,6 +49,12 @@ class DateTime
     public void editTime(int hour, int minute){
         GregorianCalendar newDate = new GregorianCalendar(this.date.get(Calendar.YEAR), this.date.get(Calendar.MONTH), this.date.get(Calendar.DAY_OF_MONTH), hour, minute);
         this.date = newDate;
+        this.date.setTimeZone(localTZ);
+        this.hour = hour;
+        this.minute = minute;
+    }
+    public void dateCopy(DateTime eventToCopy){
+        this.date = new GregorianCalendar(eventToCopy.getYear(),eventToCopy.getMonth(),eventToCopy.getDay(),eventToCopy.getHour(),eventToCopy.getMinute());
         this.date.setTimeZone(localTZ);
         this.hour = hour;
         this.minute = minute;
