@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Logic.CalendarPage.CalendarActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"/>
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_calendar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/NavBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchorGravity="top|center">
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/HomeTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Not" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/SettingsTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Functioning" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/ComingSoonTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yet" />
+
+    </android.support.design.widget.TabLayout>
+
+    <Button
+        android:id="@+id/SettingsButton"
+        android:layout_width="94dp"
+        android:layout_height="wrap_content"
+        android:text="Settings(Temp)"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="end|bottom" />
+
+</android.support.design.widget.CoordinatorLayout>
