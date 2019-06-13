@@ -17,9 +17,9 @@ import com.exam.planner.R;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText usernameEditText, passwordEditText, confirmPasswordEditText, secretQuestionEditText,
-                     secretAnswerEditText, phoneEditText, addressEditText;
+                     secretAnswerEditText;
     private CheckBox checkBox;
-    private String username, password, confirmPassword, secretQuestion, secretAnswer, phone, address;
+    private String username, password, confirmPassword, secretQuestion, secretAnswer;
 
     private PrefManager prefManager;
 
@@ -37,8 +37,6 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPasswordEditText = findViewById(R.id.registerConfirmPassword);
         secretAnswerEditText = findViewById(R.id.registerSecretAnswer);
         secretQuestionEditText = findViewById(R.id.registerSecretQuestion);
-        //phoneEditText = findViewById(R.id.registerPhone);
-        //addressEditText = findViewById(R.id.registerAddress);
         registerButton = findViewById(R.id.registerButton);
         checkBox = findViewById(R.id.saveInfo);
 
@@ -74,8 +72,6 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPassword = confirmPasswordEditText.getText().toString().trim();
         secretQuestion = secretQuestionEditText.getText().toString().trim();
         secretAnswer = secretAnswerEditText.getText().toString().trim();
-        //phone = phoneEditText.getText().toString().trim();
-        //address = addressEditText.getText().toString().trim();
     }
 
     public boolean validateText() {
@@ -93,20 +89,6 @@ public class RegisterActivity extends AppCompatActivity {
             usernameEditText.setError("User name must be at least 3 characters");
             isValid = false;
         }
-        /*if(phone.isEmpty() || !Patterns.PHONE.matcher(phone).matches()) {
-            phoneEditText.setError("Please enter a valid phone");
-            isValid = false;
-        }*/
-
-        /*
-        if(secretQuestion.isEmpty()) {
-            secretQuestionEditText.setError("Please enter a secret question");
-            isValid = false;
-        }
-        if(secretAnswer.isEmpty()) {
-            secretAnswerEditText.setError("Please enter a secret answer");
-            isValid = false;
-        }*/
 
         return isValid;
     }
