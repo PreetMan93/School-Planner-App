@@ -1,3 +1,10 @@
+# Iteration 1
+Valid user login information:
+- username: "username"
+- password: "password"
+You can register but saving the information isn't implemented yet.
+A lot of ground work is done. And some stuff will me move around and re organized from its current position
+
 # Git Format
 Master(Release) <-- Dev <-- Feature branches
 
