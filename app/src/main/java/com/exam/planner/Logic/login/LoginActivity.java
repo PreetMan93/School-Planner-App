@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.exam.planner.Logic.CalendarPage.CalendarActivity;
+import com.exam.planner.Logic.Register.RegisterActivity;
 import com.exam.planner.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -84,10 +85,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
                 setPreferences();
-                finish();
+                //register();
                 updateUiWithUser();
+                finish();
             }
         });
+
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
@@ -220,6 +223,12 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
+
+    private void register(){
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
