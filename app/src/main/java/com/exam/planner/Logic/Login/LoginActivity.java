@@ -1,15 +1,12 @@
-package com.exam.planner.Logic.login;
+package com.exam.planner.Logic.Login;
 
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,25 +21,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.exam.planner.Logic.CalendarPage.CalendarActivity;
+import com.exam.planner.Logic.Utility.PrefManager;
 import com.exam.planner.Logic.Register.RegisterActivity;
 import com.exam.planner.R;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
-
-    public static final String MyPrefs = "preference";
-    public static final String Username = "username";
-    public static final String Password = "password";
-    public static final String Checkbox = "remember";
+    private PrefManager prefManager;
 
     private EditText usernameEditText, passwordEditText;
     private CheckBox rememberInfoCheckBox;
     private Button loginButton;
 
     AlertDialog.Builder builder;
-    SharedPreferences pref;
-    SharedPreferences.Editor prefEditor;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,10 +50,29 @@ public class LoginActivity extends AppCompatActivity {
         rememberInfoCheckBox = findViewById(R.id.saveInfo);
         loginButton = findViewById(R.id.login);
 
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
-
-        checkSharedPreferences();
+        prefManager = new PrefManager(this);
         builder = new AlertDialog.Builder(this);
+
+        prefManager.checkSharedPreferences(usernameEditText, passwordEditText, rememberInfoCheckBox);
+        tryEnableButton();
+
+        // Set up dialog box
+        builder.setTitle(R.string.app_name);
+        builder.setMessage("Are you sure you'd like to create a new account?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                prefManager.setPreferences(true, usernameEditText, passwordEditText);
+                register();
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -77,41 +89,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
-        // Set up dialog box
-        builder.setTitle(R.string.app_name);
-        builder.setMessage("Are you sure you'd like to create a new account?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-                setPreferences();
-                //register();
-                updateUiWithUser();
-                finish();
-            }
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
-
-        /*loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-
-                }
-                setResult(Activity.RESULT_OK);
-            }
-        });*/
 
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
@@ -157,7 +134,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else{
                     loginViewModel.notNewUser();
-                    setPreferences();
+                    prefManager.setPreferences(rememberInfoCheckBox.isChecked(), usernameEditText, passwordEditText);
+                    tryEnableButton();
                     updateUiWithUser();
                     finish();
                 }
@@ -166,47 +144,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void setPreferences(){
-        // Save preferences on successful login
-        prefEditor = pref.edit();
-        if(rememberInfoCheckBox.isChecked()) {
-            // Store user info
-            prefEditor.putString(Username, usernameEditText.getText().toString());
-            prefEditor.commit();
-
-            prefEditor.putString(Password, passwordEditText.getText().toString());
-            prefEditor.commit();
-
-            prefEditor.putString(Checkbox, "True");
-            prefEditor.commit();
-        }
-        else{
-            // Clear stored user data
-            prefEditor.putString(Username, "");
-            prefEditor.commit();
-
-            prefEditor.putString(Password, "");
-            prefEditor.commit();
-
-            prefEditor.putString(Checkbox, "False");
-            prefEditor.commit();
-        }
-    }
-
-    private void checkSharedPreferences(){
-
-        String chkbox = pref.getString(Checkbox, "False");
-        String user = pref.getString(Username, "");
-        String pass = pref.getString(Password, "");
-
-        usernameEditText.setText(user);
-        passwordEditText.setText(pass);
-        if (chkbox.equals("True")){
-            rememberInfoCheckBox.setChecked(true);
+    private void tryEnableButton(){
+        if(rememberInfoCheckBox.isEnabled()){
             loginButton.setEnabled(true);
-        }
-        else{
-            rememberInfoCheckBox.setChecked(false);
         }
     }
 
@@ -227,10 +167,5 @@ public class LoginActivity extends AppCompatActivity {
     private void register(){
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
-    }
-
-
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 }

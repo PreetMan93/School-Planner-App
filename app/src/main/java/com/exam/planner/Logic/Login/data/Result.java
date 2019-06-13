@@ -1,4 +1,4 @@
-package com.exam.planner.Logic.login.data;
+package com.exam.planner.Logic.Login.data;
 
 /**
  * A generic class that holds a result success w/ data or an error exception.

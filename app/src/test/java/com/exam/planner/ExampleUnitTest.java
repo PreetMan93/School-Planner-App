@@ -19,12 +19,21 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void testValidateInformation(){
+        DBSetup db = new DBSetup();
+        String user = "username";
+        String pass = "password";
+        assert(db.vaildInformation(user,pass));
+    }
+
+    @Test
     public void testDB_Write(){
         DBSetup db = new DBSetup();
         db.add(new User("username_0", "pwd_0", "test"));
         db.add(new User("username_1", "pwd_1", "test1"));
         db.add(new User("username_2", "pwd_2", "test2"));
         db.add(new User("username_3", "pwd_3", "test3"));
+        db.add(new User("username", "password", "testSchedule"));
         db.writeDB();
     }
     @Test

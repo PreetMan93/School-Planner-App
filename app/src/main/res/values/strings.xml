@@ -16,8 +16,8 @@
     <string name="prompt_confirm_password">Confirm Password</string>
     <string name="prompt_phone">Phone</string>
     <string name="prompt_address">Address</string>
-    <string name="prompt_secret_question">Secret Question</string>
-    <string name="prompt_secret_answer">Secret Answer</string>
+    <string name="prompt_secret_question">Optional Secret Question</string>
+    <string name="prompt_secret_answer">Optional Secret Answer</string>
     <string name="action_account_settings">Account Settings</string>
     <string name="action_calendar_settings">Calendar Settings</string>
     <string name="prompt_new_email">New Email</string>

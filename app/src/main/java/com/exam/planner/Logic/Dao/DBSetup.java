@@ -1,5 +1,7 @@
 package com.exam.planner.Logic.Dao;
 
+import android.util.Log;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,6 +19,7 @@ public class DBSetup {
     public DBSetup(){
         gs  = new Gson();
         users = new ArrayList<User>();
+        readDB();
     }
 
     public void readDB(){
@@ -27,14 +30,15 @@ public class DBSetup {
             users = gs.fromJson(jr, type);
             jr.close();
         }catch(Exception e){
+            Log.d("Bug", "readDB: failed to read database");
             e.printStackTrace();
         }
     }
 
-    public boolean vaild(String user, String password){
+    public boolean vaildInformation(String user, String password){
         //public boolean exist = false;
         for(User u:users){
-            if(u.username==user && u.password==password)
+            if(u.username.equals(user) && u.password.equals(password))
                 return true;
         }
         return false;

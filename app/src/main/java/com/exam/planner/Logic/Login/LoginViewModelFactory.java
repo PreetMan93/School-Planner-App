@@ -1,11 +1,12 @@
-package com.exam.planner.Logic.login;
+package com.exam.planner.Logic.Login;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.exam.planner.Logic.login.data.LoginDataSource;
-import com.exam.planner.Logic.login.data.LoginRepository;
+import com.exam.planner.Logic.Login.LoginViewModel;
+import com.exam.planner.Logic.Login.data.LoginDataSource;
+import com.exam.planner.Logic.Login.data.LoginRepository;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
@@ -24,3 +25,4 @@ public class LoginViewModelFactory implements ViewModelProvider.Factory {
         }
     }
 }
+

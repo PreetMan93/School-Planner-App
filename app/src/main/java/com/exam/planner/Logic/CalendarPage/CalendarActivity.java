@@ -7,8 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.exam.planner.Logic.Settings.SettingsActivity;
 import com.exam.planner.R;
 
 import java.util.ArrayList;
@@ -27,10 +30,21 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
         Log.d(TAG, "onCreate: started");
 
+        final Button button = findViewById(R.id.SettingsButton);
+        final Intent settingsIntent = new Intent(this, SettingsActivity.class);
+
         EventListAdapter adapter = new EventListAdapter(this, mEvents);
 
         populateEvents();
         initEventListView();
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(settingsIntent);
+            }
+        });
+
     }
 
     @Override
