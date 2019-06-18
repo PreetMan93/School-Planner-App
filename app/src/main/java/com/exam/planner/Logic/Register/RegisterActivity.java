@@ -12,9 +12,15 @@ import android.widget.Toast;
 
 import com.exam.planner.Logic.CalendarPage.CalendarActivity;
 import com.exam.planner.Logic.Utility.PrefManager;
+import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 import com.exam.planner.R;
 
 public class RegisterActivity extends AppCompatActivity {
+
+
+    /* Todo This is terrible. Combine register into login meaning utilize the features already
+       created in login
+     */
 
     private EditText usernameEditText, passwordEditText, confirmPasswordEditText, secretQuestionEditText,
                      secretAnswerEditText;
@@ -59,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         if(validateText()) {
             success();
+
         }
         else {
             Toast.makeText(this,"Signup failure",Toast.LENGTH_LONG).show();
