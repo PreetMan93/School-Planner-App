@@ -34,6 +34,7 @@ public class EventTest {
     @Test
     public void editStartDate() {
         testEvent.editStartDate(2019,7,17);
+        // Todo Fix this test Evan
         assertTrue(rightNow.getStartDate().getDay()!=testEvent.getStartDate().getDay());
         assertTrue(testEvent.getStartDate().getDay()==17 && testEvent.getStartDate().getMonth() == 7);
     }
