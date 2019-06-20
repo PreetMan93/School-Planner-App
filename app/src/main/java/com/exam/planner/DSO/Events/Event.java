@@ -2,7 +2,7 @@ package com.exam.planner.DSO.Events;
 
 import java.util.*;
 
-class Event
+public class Event
 {
     private String name;
     private DateTime startDate, endDate;
@@ -24,6 +24,10 @@ class Event
     public String getId() {return this.id;}
     public String getColour() {return this.colour;}
     public Boolean isPublic() {return this.isPublic;}
+
+    public boolean compare(Event e){
+        return (this.id.equals(e.id) && this.startDate == e.startDate);
+    }
 
     public void printEvent(){
         System.out.println("The Event has these values:");

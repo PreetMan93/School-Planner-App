@@ -10,21 +10,21 @@ public class UserPersistenceStubTest {
     @Test
     public void testDoIExist(){
         UserPersistenceStub db = new UserPersistenceStub();
-        assert(db.doIExist("username", "password"));
-        assert(!db.doIExist("garbage", "trash"));
+        assert(db.doIExist("12345"));
+        assert(!db.doIExist("nope"));
     }
 
     @Test
     public void testAddUser(){
         UserPersistenceStub db = new UserPersistenceStub();
         db.addUser(new User("test", "test", "test"));
-        assert(db.doIExist("test", "test"));
+        assert(db.doIExist("test"));
     }
 
     @Test
     public void testRemoveUser(){
         UserPersistenceStub db = new UserPersistenceStub();
-        assert(db.removeUser(new User("username", "password", "junk")));
-        assert(!db.removeUser(new User("username", "password", "junk")));
+        assert(db.removeUser("12345"));
+        assert(!db.removeUser("12345"));
     }
 }
