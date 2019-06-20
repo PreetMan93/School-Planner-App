@@ -17,6 +17,14 @@ public class Event
         this.id = null;
         this.colour = "grey";
     }
+    public Event(String id){
+        this.name = null;
+        this.startDate = new DateTime();
+        this.endDate = new DateTime(startDate, 1, 0);
+        this.id = id;
+        this.colour = "grey";
+    }
+
 
     public String getName() {return this.name;}
     public DateTime getStartDate() {return this.startDate;}
@@ -26,7 +34,7 @@ public class Event
     public Boolean isPublic() {return this.isPublic;}
 
     public boolean compare(Event e){
-        return (this.id.equals(e.id) && this.startDate == e.startDate);
+        return (this.id.equals(e.id));
     }
 
     public void printEvent(){

@@ -8,13 +8,6 @@ public class User {
     private String password;
     private Planner planner;
 
-    public User(String id){
-        this.id = id;
-        this.username = null;
-        this.password = null;
-        this.planner = new Planner(id);
-    }
-
     public User(String id, String un, String pwd){
         this.id = id;
         this.username = un;
@@ -31,6 +24,6 @@ public class User {
     public String getId() { return id; }
 
     public void addEvent(Event e){ planner.addEvent(e); }
-    public void removeEvent(Event e){ planner.removeEvent(e); }
-    public void dupEvent(Event e){ planner.eventListContains(e); }
+    public boolean removeEvent(String id){ return planner.removeEvent(id); }
+    public boolean isDuplicate(Event e){ return planner.eventListContains(e); }
 }

@@ -20,8 +20,14 @@ public class Planner {
     public void addEvent(Event e){
         eventsList.add(e);
     }
-    public void removeEvent(Event e){
-        eventsList.remove(e);
+    public boolean removeEvent(String id){
+        for(Event e: eventsList) {
+            if(e.getId().equals(id)) {
+                eventsList.remove(e);
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean eventListContains(Event e){
