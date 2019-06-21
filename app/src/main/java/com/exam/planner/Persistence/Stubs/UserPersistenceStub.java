@@ -11,34 +11,59 @@ public class UserPersistenceStub implements IUserPersistence {
 
     public UserPersistenceStub(){
         this.users = new ArrayList<User>();
-        users.add(new User("username", "password", "junk"));
-        users.add(new User("Username", "Password", "junk"));
+        users.add(new User("12345", "username", "password"));
+        users.add(new User("54321", "Username", "Password"));
     }
 
     @Override
     public void addUser(User newUsr){
-        if(!doIExist(newUsr.getUsername(), newUsr.getPassword()))
+        if(!doIExist(newUsr.getId()))
             users.add(newUsr);
     }
 
-    @Override
+    /*@Override
     public boolean removeUser(User user){
         int index;
-        if((index = indexOfUser(user.getUsername(), user.getPassword())) != -1) {
+        if((index = indexOfUser(user.getId())) != -1) {
+            users.remove(index);
+            return true;
+        }
+        return false;
+    }*/
+
+    @Override
+    public boolean removeUser(String id){
+        int index;
+        if((index = indexOfUser(id)) != -1) {
             users.remove(index);
             return true;
         }
         return false;
     }
 
-    private int indexOfUser(String username, String password){
+    private int indexOfUser(String id){
         int index = 0;
         for(User u: users) {
-            if(u.getUsername().equals(username) && u.getPassword().equals(password))
+            if(u.getId().equals(id))
                 return index;
             index++;
         }
         return -1;
+    }
+
+    private int indexOfUser(String usernane, String password){
+        int index = 0;
+        for(User u: users) {
+            if(u.getUsername().equals(usernane) && u.getPassword().equals(password))
+                return index;
+            index++;
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean doIExist(String id){
+        return indexOfUser(id) != -1;
     }
 
     @Override

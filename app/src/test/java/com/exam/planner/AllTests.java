@@ -1,6 +1,8 @@
 package com.exam.planner;
 
 import com.exam.planner.DSO.Events.EventTest;
+import com.exam.planner.DSO.PlannerTest;
+import com.exam.planner.DSO.UserTest;
 import com.exam.planner.PersistenceTesting.UserPersistenceStubTest;
 
 import org.junit.runner.RunWith;
@@ -10,7 +12,9 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         LoginDataSourceUnitTest.class,
         EventTest.class,
-        UserPersistenceStubTest.class
+        UserPersistenceStubTest.class,
+        PlannerTest.class,
+        UserTest.class
 })
 public class AllTests
 {

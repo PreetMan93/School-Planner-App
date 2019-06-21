@@ -20,11 +20,11 @@ public class LoginDataSource {
             LoggedInUser user;
             // Todo This is terrible fix me pls
             if(db.doIExist(username, password)){
-                user = new LoggedInUser(java.util.UUID.randomUUID().toString(), username, false);
+                user = new LoggedInUser(username, false);
             }
             else{
-                db.addUser(new User(username, password, "Blank"));
-                user = new LoggedInUser(java.util.UUID.randomUUID().toString(), username, true);
+                db.addUser(new User(java.util.UUID.randomUUID().toString(), username, password));
+                user = new LoggedInUser(username, true);
             }
             return new Result.Success<>(user);
         } catch (Exception e) {

@@ -109,4 +109,15 @@ public class EventTest {
         assertTrue(copiedEvent.getStartDate().getDay() == 20);
 
     }
+
+    @Test
+    public void testCompareEvent(){
+        Event a = new Event();
+        a.editId("123");
+        Event b = new Event();
+        b.editId("123");
+        assertTrue(a.compare(b));
+        b.editId("321");
+        assertTrue(!a.compare(b));
+    }
 }

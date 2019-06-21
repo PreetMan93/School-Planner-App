@@ -1,27 +1,29 @@
 package com.exam.planner.DSO;
 
+import com.exam.planner.DSO.Events.Event;
+
 public class User {
+    private String id;
     private String username;
     private String password;
-    private String schedule;
+    private Planner planner;
 
-    public User(){
-        this.username = null;
-        this.password = null;
-        this.schedule = null;
-    }
-
-    public User(String un, String pwd, String sch){
+    public User(String id, String un, String pwd){
+        this.id = id;
         this.username = un;
         this.password = pwd;
-        this.schedule = sch;
+        this.planner = new Planner(id);
     }
 
     public String toString(){
-        return "UserName: "+username + "\tPassword: "+password+"\tSchedule: "+schedule;
+        return "ID: " + id + " Username: " + username;
     }
 
     public String getUsername(){ return username; }
     public String getPassword() { return password; }
-    public String getSchedule() { return schedule; }
+    public String getId() { return id; }
+
+    public void addEvent(Event e){ planner.addEvent(e); }
+    public boolean removeEvent(String id){ return planner.removeEvent(id); }
+    public boolean isDuplicate(Event e){ return planner.eventListContains(e); }
 }
