@@ -5,19 +5,14 @@ package com.exam.planner.Logic.Login.data.model;
  */
 public class LoggedInUser {
 
-    private String userId;
     private String displayName;
     private boolean firstLogin;
 
-    public LoggedInUser(String userId, String displayName, boolean firstLogin) {
-        this.userId = userId;
+    public LoggedInUser(String displayName, boolean firstLogin) {
         this.displayName = displayName;
         this.firstLogin = firstLogin;
     }
 
-    public String getUserId() {
-        return userId;
-    }
 
     public String getDisplayName() {
         return displayName;

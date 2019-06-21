@@ -4,27 +4,28 @@ import com.exam.planner.DSO.User;
 import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 
 import org.junit.Test;
+import org.junit.Assert;
 
 public class UserPersistenceStubTest {
 
     @Test
     public void testDoIExist(){
         UserPersistenceStub db = new UserPersistenceStub();
-        assert(db.doIExist("username", "password"));
-        assert(!db.doIExist("garbage", "trash"));
+        Assert.assertTrue("Didn't find existing id", db.doIExist("12345"));
+        Assert.assertTrue("Found non existing id", !db.doIExist("nope"));
     }
 
     @Test
     public void testAddUser(){
         UserPersistenceStub db = new UserPersistenceStub();
         db.addUser(new User("test", "test", "test"));
-        assert(db.doIExist("test", "test"));
+        Assert.assertTrue("User wasn't successfully added", db.doIExist("test"));
     }
 
     @Test
     public void testRemoveUser(){
         UserPersistenceStub db = new UserPersistenceStub();
-        assert(db.removeUser(new User("username", "password", "junk")));
-        assert(!db.removeUser(new User("username", "password", "junk")));
+        Assert.assertTrue("User not successfully removed", db.removeUser("12345"));
+        Assert.assertTrue("Removed non existent user", !db.removeUser("12345"));
     }
 }
