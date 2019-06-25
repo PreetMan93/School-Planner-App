@@ -1,6 +1,7 @@
 package com.exam.planner.Logic.Login.data;
 
 import com.exam.planner.DSO.User;
+import com.exam.planner.Persistence.IUserPersistence;
 import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
 
@@ -11,7 +12,7 @@ import java.io.IOException;
  */
 public class LoginDataSource {
 
-    private UserPersistenceStub db = new UserPersistenceStub();
+    private IUserPersistence db = new UserPersistenceStub();
     //DBSetup db = new DBSetup(); codes broken :)
 
     public Result<LoggedInUser> login(String username, String password) {
