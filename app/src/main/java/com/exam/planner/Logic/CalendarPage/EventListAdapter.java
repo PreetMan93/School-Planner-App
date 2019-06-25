@@ -49,8 +49,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
                 //Toast.makeText(mContext, mEvents.get(position).getName(), Toast.LENGTH_SHORT).show();
                 Intent editEventIntent = new Intent(mContext, EventEditActivity.class);
-                editEventIntent.putExtra("eventName", mEvents.get(position).getName());
                 editEventIntent.putExtra("eventPos", position);
+                editEventIntent.putExtra("eventName", mEvents.get(position).getName());
+                editEventIntent.putExtra("eventStartDate", mEvents.get(position).getStartDateString());
+                editEventIntent.putExtra("eventStartTime", mEvents.get(position).getStartTimeString());
+                editEventIntent.putExtra("eventEndDate", mEvents.get(position).getEndDateString());
+                editEventIntent.putExtra("eventEndTime", mEvents.get(position).getEndTimeString());
+
                 ((Activity)mContext).startActivityForResult(editEventIntent, 1);
             }
         });

@@ -34,4 +34,145 @@
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/event_edit_start_date_field"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="YYYY/MM/DD"
+        android:inputType="date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.269"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_name_field" />
+
+    <EditText
+        android:id="@+id/event_edit_start_time_field"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="HH:MM"
+        android:inputType="time"
+        app:layout_constraintStart_toEndOf="@+id/event_edit_start_date_field"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_name_field" />
+
+    <EditText
+        android:id="@+id/event_edit_end_date_field"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="YYYY/MM/DD"
+        android:inputType="date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.269"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_start_date_field" />
+
+    <EditText
+        android:id="@+id/event_edit_end_time_field"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="HH:MM"
+        android:inputType="time"
+        app:layout_constraintStart_toEndOf="@+id/event_edit_end_date_field"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_start_date_field" />
+
+    <CheckBox
+        android:id="@+id/sunday_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="25dp"
+        android:text="U"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_end_date_field" />
+
+    <CheckBox
+        android:id="@+id/monday_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="25dp"
+        android:text="M"
+        app:layout_constraintStart_toEndOf="@+id/sunday_checkbox"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_end_date_field" />
+
+    <CheckBox
+        android:id="@+id/tuesday_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="25dp"
+        android:text="T"
+        app:layout_constraintStart_toEndOf="@+id/monday_checkbox"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_end_date_field" />
+
+    <CheckBox
+        android:id="@+id/wednesday_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="25dp"
+        android:text="W"
+        app:layout_constraintStart_toEndOf="@+id/tuesday_checkbox"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_end_date_field" />
+
+    <CheckBox
+        android:id="@+id/thursday_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="25dp"
+        android:text="R"
+        app:layout_constraintStart_toEndOf="@+id/wednesday_checkbox"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_end_date_field" />
+
+    <CheckBox
+        android:id="@+id/friday_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="25dp"
+        android:text="F"
+        app:layout_constraintStart_toEndOf="@+id/thursday_checkbox"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_end_date_field" />
+
+    <CheckBox
+        android:id="@+id/saturday_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="S"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/friday_checkbox"
+        app:layout_constraintTop_toBottomOf="@+id/event_edit_end_date_field" />
+
 </android.support.constraint.ConstraintLayout>

@@ -8,6 +8,7 @@ public class EventTest {
 
     Event testEvent = new Event();
     Event rightNow = new Event();
+
     @Test
     public void Event(){
         testEvent.printEvent();
