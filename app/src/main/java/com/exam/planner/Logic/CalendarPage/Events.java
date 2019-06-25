@@ -1,12 +1,46 @@
 package com.exam.planner.Logic.CalendarPage;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+class EventValidationException extends Exception{
+    public EventValidationException(String message){
+        super(message);
+    }
+}
+
+class EventDateOutOfBoundsException extends EventValidationException{
+    public EventDateOutOfBoundsException(String message){
+        super(message);
+    }
+}
+
+class EventDateInvalidFormatException extends EventValidationException{
+    public EventDateInvalidFormatException(String message){
+        super(message);
+    }
+}
+
+class EventTimeOutOfBoundsException extends EventValidationException{
+    public EventTimeOutOfBoundsException(String message){
+        super(message);
+    }
+}
+
+class EventTimeInvalidFormatException extends  EventValidationException{
+    public EventTimeInvalidFormatException(String message){
+        super(message);
+    }
+}
+
+
 class Event
 {
+    private static final String TAG = "Event";
     private String name;
     private DateTime startDate, endDate;
     private String id;
@@ -28,7 +62,70 @@ class Event
     public String getColour() {return this.colour;}
     public Boolean isPublic() {return this.isPublic;}
 
+    public static void validateDate(String date) throws EventDateInvalidFormatException, EventDateOutOfBoundsException{
+        String[] split = date.split("/");
+        if (split.length != 3)
+            throw(new EventDateInvalidFormatException("Date must follow the format YYYY/MM/DD"));
+        int year = Integer.parseInt(split[0]);
+        int month = Integer.parseInt(split[1]);
+        int day = Integer.parseInt(split[2]);
+        if (year < 1900)
+            throw(new EventDateOutOfBoundsException("Date must begin after the year 1900"));
+        if (month < 1 || month > 12)
+            throw(new EventDateOutOfBoundsException("Month must be between 1 and 12"));
+        if (day < 1 || day > 31)
+            throw(new EventDateOutOfBoundsException("Day must be between 1 and 31"));
+    }
+
+    public static void validateTime(String time) throws EventTimeInvalidFormatException, EventTimeOutOfBoundsException {
+        String[] split = time.split(":");
+        if (split.length != 2)
+            throw(new EventTimeInvalidFormatException("Time must follow the format HH:MM"));
+        int hour = Integer.parseInt(split[0]);
+        int minute = Integer.parseInt(split[1]);
+        if (hour < 0 || hour > 23)
+            throw(new EventTimeOutOfBoundsException("Hour must be between 0 and 23"));
+        if (minute < 0 || minute > 59)
+            throw(new EventTimeOutOfBoundsException("Minute must be between 0 and 59"));
+    }
+
+    public String getStartDateString(){return this.getStartDate().getDate().YEAR + "/" + this.getStartDate().getDate().MONTH + "/" + this.getStartDate().getDate().DAY_OF_MONTH;}
+
+    public String getStartTimeString(){return this.getStartDate().getHour() + ":" + this.getStartDate().getMinute();}
+
+    public String getEndDateString(){return this.getEndDate().getDate().YEAR + "/" + this.getEndDate().getDate().MONTH + "/" + this.getEndDate().getDate().DAY_OF_MONTH;}
+
+    public String getEndTimeString(){return this.getEndDate().getHour() + ":" + this.getEndDate().getMinute();}
+
     public void editName(String newName) {this.name = newName;}
+
+    public void editStartDate(String date, String time){
+        int year, month, day, hour, minute;
+        try {
+            Event.validateDate(date);
+            String[] split = date.split("/");
+            year = Integer.parseInt(split[0]);
+            month = Integer.parseInt(split[1]);
+            day = Integer.parseInt(split[2]);
+        } catch (EventValidationException e){
+            Log.d(TAG, "editStartDate() called with: date = [" + date + "]");
+            year = 1900;
+            month = 1;
+            day = 1;
+        }
+        try {
+            Event.validateTime(time);
+            String[] split = time.split(":");
+            hour = Integer.parseInt(split[0]);
+            minute = Integer.parseInt(split[1]);
+        } catch (EventValidationException e){
+            Log.d(TAG, "editStartDate() called with: time = [" + time + "]");
+            hour = 0;
+            minute = 0;
+        }
+        this.editStartDate(year, month, day, hour, minute);
+    }
+
     public void editStartDate(int year, int month, int day){
         GregorianCalendar now = new GregorianCalendar();
         GregorianCalendar newStartDate = new GregorianCalendar (year, month, day);
@@ -57,6 +154,34 @@ class Event
             System.out.println("You can't schedule an event prior to the current time.");
         }
     }
+
+    public void editEndDate(String date, String time){
+        int year, month, day, hour, minute;
+        try {
+            Event.validateDate(date);
+            String[] split = date.split("/");
+            year = Integer.parseInt(split[0]);
+            month = Integer.parseInt(split[1]);
+            day = Integer.parseInt(split[2]);
+        } catch (EventValidationException e){
+            Log.d(TAG, "editEndDate() called with: date = [" + date + "]");
+            year = 1900;
+            month = 1;
+            day = 1;
+        }
+        try {
+            Event.validateTime(time);
+            String[] split = time.split(":");
+            hour = Integer.parseInt(split[0]);
+            minute = Integer.parseInt(split[1]);
+        } catch (EventValidationException e){
+            Log.d(TAG, "editEndDate() called with: time = [" + time + "]");
+            hour = 0;
+            minute = 0;
+        }
+        this.editEndDate(year, month, day, hour, minute);
+    }
+
     public void editEndDate(int year, int month, int day){
         GregorianCalendar newEndDate = new GregorianCalendar (year, month, day);
         if (newEndDate.after(this.startDate)){
