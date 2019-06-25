@@ -7,6 +7,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
+
 class EventValidationException extends Exception{
     public EventValidationException(String message){
         super(message);
@@ -89,11 +93,11 @@ class Event
             throw(new EventTimeOutOfBoundsException("Minute must be between 0 and 59"));
     }
 
-    public String getStartDateString(){return this.getStartDate().getDate().YEAR + "/" + this.getStartDate().getDate().MONTH + "/" + this.getStartDate().getDate().DAY_OF_MONTH;}
+    public String getStartDateString(){return this.getStartDate().getDate().get(YEAR) + "/" + this.getStartDate().getDate().get(MONTH) + "/" + this.getStartDate().getDate().get(DAY_OF_MONTH);}
 
     public String getStartTimeString(){return this.getStartDate().getHour() + ":" + this.getStartDate().getMinute();}
 
-    public String getEndDateString(){return this.getEndDate().getDate().YEAR + "/" + this.getEndDate().getDate().MONTH + "/" + this.getEndDate().getDate().DAY_OF_MONTH;}
+    public String getEndDateString(){return this.getEndDate().getDate().get(YEAR) + "/" + this.getEndDate().getDate().get(MONTH) + "/" + this.getEndDate().getDate().get(DAY_OF_MONTH);}
 
     public String getEndTimeString(){return this.getEndDate().getHour() + ":" + this.getEndDate().getMinute();}
 
@@ -227,7 +231,7 @@ class DateTime
 
     public DateTime(){
         GregorianCalendar now = new GregorianCalendar(localTZ);
-        this.date = new GregorianCalendar(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+        this.date = new GregorianCalendar(now.get(YEAR), now.get(MONTH), now.get(DAY_OF_MONTH));
         this.date.setTimeZone(localTZ);
         this.hour = now.get(Calendar.HOUR_OF_DAY);
         this.minute = 0;
@@ -244,7 +248,7 @@ class DateTime
         this.minute = minute;
     }
     DateTime(DateTime currentTime, int offsetHour, int offsetMinute){ //this method isn't public because it would require a lot of error checking otherwise
-        this.date = new GregorianCalendar(currentTime.getDate().get(Calendar.YEAR), currentTime.getDate().get(Calendar.MONTH), currentTime.getDate().get(Calendar.DAY_OF_MONTH), currentTime.getHour() + offsetHour, currentTime.getMinute()+offsetMinute);
+        this.date = new GregorianCalendar(currentTime.getDate().get(YEAR), currentTime.getDate().get(MONTH), currentTime.getDate().get(DAY_OF_MONTH), currentTime.getHour() + offsetHour, currentTime.getMinute()+offsetMinute);
         this.date.setTimeZone(localTZ);
         this.hour = currentTime.getHour() + offsetHour;
         this.minute = currentTime.getMinute() + offsetMinute;
@@ -263,7 +267,7 @@ class DateTime
         this.minute = minute;
     }
     public void editTime(int hour, int minute){
-        GregorianCalendar newDate = new GregorianCalendar(this.date.get(Calendar.YEAR), this.date.get(Calendar.MONTH), this.date.get(Calendar.DAY_OF_MONTH), hour, minute);
+        GregorianCalendar newDate = new GregorianCalendar(this.date.get(YEAR), this.date.get(MONTH), this.date.get(DAY_OF_MONTH), hour, minute);
         this.date = newDate;
         this.date.setTimeZone(localTZ);
         this.hour = hour;
