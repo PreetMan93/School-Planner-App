@@ -1,4 +1,7 @@
 package com.exam.planner.DSO.Events;
 
-class EventDateInvalidFormatException {
+public class EventDateInvalidFormatException extends EventValidationException{
+    EventDateInvalidFormatException(String message){
+        super(message);
+    }
 }

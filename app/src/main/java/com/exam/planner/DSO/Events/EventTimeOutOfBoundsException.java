@@ -1,4 +1,7 @@
 package com.exam.planner.DSO.Events;
 
-class EventTimeOutOfBoundsException {
+public class EventTimeOutOfBoundsException extends EventValidationException{
+    EventTimeOutOfBoundsException(String message){
+        super(message);
+    }
 }
