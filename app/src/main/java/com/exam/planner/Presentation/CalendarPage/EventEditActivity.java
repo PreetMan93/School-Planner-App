@@ -1,10 +1,11 @@
-package com.exam.planner.Logic.CalendarPage;
+package com.exam.planner.Presentation.CalendarPage;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -93,18 +94,19 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    try{
-                        Event.validateDate(eventStartDateField.getText().toString());
-                        eventStartDate = eventStartDateField.getText().toString();
-                        Toast.makeText(EventEditActivity.this, "Valid date", Toast.LENGTH_SHORT).show();
-                    } catch (EventDateInvalidFormatException e){
-                        eventStartDateField.setText(eventStartDate);
-                        Toast.makeText(EventEditActivity.this, "Date must be formatted YYYY/MM/DD", Toast.LENGTH_SHORT).show();
-                    } catch (EventDateOutOfBoundsException e){
-                        eventStartDateField.setText(eventStartDate);
-                        Toast.makeText(EventEditActivity.this, "Please enter a valid date after January 1, 1900", Toast.LENGTH_SHORT).show();
-                    }
+                    updateDateField(eventStartDateField);
                 }
+            }
+        });
+
+        eventStartDateField.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    updateDateField(eventStartDateField);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -112,18 +114,19 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    try{
-                        Event.validateTime(eventStartTimeField.getText().toString());
-                        eventStartTime = eventStartTimeField.getText().toString();
-                        Toast.makeText(EventEditActivity.this, "Valid time", Toast.LENGTH_SHORT).show();
-                    } catch (EventTimeInvalidFormatException e){
-                        eventStartTimeField.setText(eventStartTime);
-                        Toast.makeText(EventEditActivity.this, "Time must be formatted HH:MM", Toast.LENGTH_SHORT).show();
-                    } catch (EventTimeOutOfBoundsException e){
-                        eventStartTimeField.setText(eventStartTime);
-                        Toast.makeText(EventEditActivity.this, "Please enter an hour from 0 and 23 and a minute from 0 to 59", Toast.LENGTH_SHORT).show();
-                    }
+                    updateTimeField(eventStartTimeField);
                 }
+            }
+        });
+
+        eventStartTimeField.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    updateTimeField(eventStartTimeField);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -131,18 +134,19 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    try{
-                        Event.validateDate(eventEndDateField.getText().toString());
-                        eventEndDate = eventEndDateField.getText().toString();
-                        Toast.makeText(EventEditActivity.this, "Valid date", Toast.LENGTH_SHORT).show();
-                    } catch (EventDateInvalidFormatException e){
-                        eventEndDateField.setText(eventEndDate);
-                        Toast.makeText(EventEditActivity.this, "Date must be formatted YYYY/MM/DD", Toast.LENGTH_SHORT).show();
-                    } catch (EventDateOutOfBoundsException e){
-                        eventEndDateField.setText(eventEndDate);
-                        Toast.makeText(EventEditActivity.this, "Please enter a valid date after January 1, 1900", Toast.LENGTH_SHORT).show();
-                    }
+                    updateDateField(eventEndDateField);
                 }
+            }
+        });
+
+        eventEndDateField.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    updateDateField(eventEndDateField);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -150,18 +154,19 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    try{
-                        Event.validateTime(eventEndTimeField.getText().toString());
-                        eventEndTime = eventEndTimeField.getText().toString();
-                        Toast.makeText(EventEditActivity.this, "Valid time", Toast.LENGTH_SHORT).show();
-                    } catch (EventTimeInvalidFormatException e){
-                        eventEndTimeField.setText(eventEndTime);
-                        Toast.makeText(EventEditActivity.this, "Time must be formatted HH:MM", Toast.LENGTH_SHORT).show();
-                    } catch (EventTimeOutOfBoundsException e){
-                        eventEndTimeField.setText(eventEndTime);
-                        Toast.makeText(EventEditActivity.this, "Please enter an hour from 0 and 23 and a minute from 0 to 59", Toast.LENGTH_SHORT).show();
-                    }
+                    updateTimeField(eventEndTimeField);
                 }
+            }
+        });
+
+        eventEndTimeField.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    updateTimeField(eventEndTimeField);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -184,4 +189,31 @@ public class EventEditActivity extends AppCompatActivity {
         });
     }
 
+    private void updateDateField(EditText field){
+        try{
+            Event.validateDate(field.getText().toString());
+            eventStartDate = field.getText().toString();
+            Toast.makeText(EventEditActivity.this, "Valid date", Toast.LENGTH_SHORT).show();
+        } catch (EventDateInvalidFormatException e){
+            field.setText(eventStartDate);
+            Toast.makeText(EventEditActivity.this, "Date must be formatted YYYY/MM/DD", Toast.LENGTH_SHORT).show();
+        } catch (EventDateOutOfBoundsException e){
+            field.setText(eventStartDate);
+            Toast.makeText(EventEditActivity.this, "Please enter a valid date after January 1, 1900", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateTimeField(EditText field){
+        try{
+            Event.validateTime(field.getText().toString());
+            eventEndTime = field.getText().toString();
+            Toast.makeText(EventEditActivity.this, "Valid time", Toast.LENGTH_SHORT).show();
+        } catch (EventTimeInvalidFormatException e){
+            field.setText(eventEndTime);
+            Toast.makeText(EventEditActivity.this, "Time must be formatted HH:MM", Toast.LENGTH_SHORT).show();
+        } catch (EventTimeOutOfBoundsException e){
+            field.setText(eventEndTime);
+            Toast.makeText(EventEditActivity.this, "Please enter an hour from 0 and 23 and a minute from 0 to 59", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

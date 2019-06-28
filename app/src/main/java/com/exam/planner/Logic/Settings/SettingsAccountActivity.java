@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.exam.planner.Logic.CalendarPage.CalendarActivity;
+import com.exam.planner.Presentation.CalendarPage.CalendarActivity;
 import com.exam.planner.R;
 
 public class SettingsAccountActivity extends AppCompatActivity {

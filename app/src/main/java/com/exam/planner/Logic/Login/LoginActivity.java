@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.exam.planner.Logic.CalendarPage.CalendarActivity;
+import com.exam.planner.Presentation.CalendarPage.CalendarActivity;
 import com.exam.planner.Logic.Utility.PrefManager;
 import com.exam.planner.Logic.Register.RegisterActivity;
 import com.exam.planner.R;

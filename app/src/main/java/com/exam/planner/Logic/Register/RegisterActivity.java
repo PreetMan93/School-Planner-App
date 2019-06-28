@@ -3,16 +3,14 @@ package com.exam.planner.Logic.Register;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.exam.planner.Logic.CalendarPage.CalendarActivity;
+import com.exam.planner.Presentation.CalendarPage.CalendarActivity;
 import com.exam.planner.Logic.Utility.PrefManager;
-import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 import com.exam.planner.R;
 
 public class RegisterActivity extends AppCompatActivity {

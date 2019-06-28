@@ -1,4 +1,4 @@
-package com.exam.planner.Logic.CalendarPage;
+package com.exam.planner.Presentation.CalendarPage;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -73,7 +73,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         Event event1 = new Event();
         event1.editName("Homework 1");
-        event1.editStartDate(1991, 12, 13, 12, 00);
+        event1.editStartDate(2022, 12, 13, 14, 25);
 
         Event event2 = new Event();
         event2.editName("Homework 2");
@@ -95,5 +95,4 @@ public class CalendarActivity extends AppCompatActivity {
         eventListView.setAdapter(adapter);
         eventListView.setLayoutManager(new LinearLayoutManager(this));
     }
-
 }

@@ -10,11 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Logic.CalendarPage.EventEditActivity"
+            android:name=".Presentation.CalendarPage.EventEditActivity"
             android:label="@string/title_activity_event_edit"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".Logic.CalendarPage.CalendarActivity"
+            android:name=".Presentation.CalendarPage.CalendarActivity"
             android:label="@string/title_activity_calendar"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
