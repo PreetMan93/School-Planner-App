@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.exam.planner.DSO.Events.Event;
 import com.exam.planner.R;
 
 import java.util.ArrayList;

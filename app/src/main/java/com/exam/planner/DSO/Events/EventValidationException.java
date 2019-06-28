@@ -1,4 +1,7 @@
 package com.exam.planner.DSO.Events;
 
-class EventValidationException {
+public class EventValidationException extends Exception{
+    EventValidationException(String message){
+        super(message);
+    }
 }
