@@ -130,11 +130,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean result = loginViewModel.attemptLogin(usernameEditText.getText().toString(),
                                     passwordEditText.getText().toString());
-                //boolean firstTimeUser = loginViewModel.isNewUser();
                 if (!result){
                     AlertDialog alert = builder.create();
                     alert.show();
-                    try{ Looper.loop(); }
+                    try{ Looper.loop(); } // Niffty trick that I hope stops execution until answering
                     catch(RuntimeException e){}
                 }
                 else{
