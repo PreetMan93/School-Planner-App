@@ -1,4 +1,4 @@
-package com.exam.planner.Logic.Register;
+package com.exam.planner.Presentation.LoginAndRegister;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

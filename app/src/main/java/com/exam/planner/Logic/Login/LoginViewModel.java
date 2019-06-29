@@ -11,7 +11,7 @@ import com.exam.planner.R;
 
 public class LoginViewModel extends ViewModel {
 
-    private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
+    private MutableLiveData<FormState> FormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
     private boolean newUser;
@@ -21,11 +21,11 @@ public class LoginViewModel extends ViewModel {
         newUser = true;
     }
 
-    LiveData<LoginFormState> getLoginFormState() {
-        return loginFormState;
+    public LiveData<FormState> getFormState() {
+        return FormState;
     }
 
-    LiveData<LoginResult> getLoginResult() {
+    public LiveData<LoginResult> getLoginResult() {
         return loginResult;
     }
 
@@ -47,29 +47,62 @@ public class LoginViewModel extends ViewModel {
 
     public void loginDataChanged(String username, String password) {
         if (!isUserNameValid(username)) {
-            loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));
+            FormState.setValue(new FormState(R.string.invalid_username, null));
         } else if (!isPasswordValid(password)) {
-            loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));
+            FormState.setValue(new FormState(null, R.string.invalid_password));
         } else {
-            loginFormState.setValue(new LoginFormState(true));
+            FormState.setValue(new FormState(true));
         }
     }
 
-    // A placeholder username validation check
+    public void registerDataChanged(String username, String password1, String password2){
+        if(!isUserNameValid(username)) {
+            FormState.setValue(new FormState(R.string.invalid_username, null));
+        } else if(!isPasswordValid(password1)) {
+            FormState.setValue(new FormState(null, R.string.invalid_password));
+        } else if(!isPasswordTheSame(password1, password2)){
+            FormState.setValue(new FormState(null, R.string.passwords_dont_match));
+        } else {
+            FormState.setValue((new FormState(true)));
+        }
+    }
+
+
     private boolean isUserNameValid(String username) {
         if (username == null) {
             return false;
-        }
-        if (username.length() < 3) {
+        } else if(username.trim().length() < 3) {
+            return false;
+        } else if(invalidCharacters(username)) {
             return false;
         } else {
             return !username.trim().isEmpty();
         }
     }
 
-    // A placeholder password validation check
     private boolean isPasswordValid(String password) {
-        return password != null && password.trim().length() > 5;
+        if (password == null){
+            return false;
+        } else if (password.trim().length() < 5){
+            return false;
+        } else if (invalidCharacters(password)){
+            return false;
+        } else{
+            return true;
+        }
+    }
+
+    private boolean isPasswordTheSame(String pass1, String pass2){
+        return pass1.equals(pass2);
+    }
+
+    private boolean invalidCharacters(String string){
+        String badChars = "!@#$%^&*()-\\\'~?<>,.";
+        for(String s : string.split("")){
+            if(badChars.contains(s))
+                return true;
+        }
+        return false;
     }
 
     public boolean isNewUser(){ return newUser; }

@@ -1,4 +1,4 @@
-package com.exam.planner.Logic.Login;
+package com.exam.planner.Presentation.LoginAndRegister;
 
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
@@ -20,9 +20,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.exam.planner.Logic.Login.FormState;
+import com.exam.planner.Logic.Login.LoginViewModel;
+import com.exam.planner.Logic.Login.LoginViewModelFactory;
 import com.exam.planner.Presentation.CalendarPage.CalendarActivity;
 import com.exam.planner.Logic.Utility.PrefManager;
-import com.exam.planner.Logic.Register.RegisterActivity;
 import com.exam.planner.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -74,18 +76,18 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+        loginViewModel.getFormState().observe(this, new Observer<FormState>() {
             @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
+            public void onChanged(@Nullable FormState formState) {
+                if (formState == null) {
                     return;
                 }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
+                loginButton.setEnabled(formState.isDataValid());
+                if (formState.getUsernameError() != null) {
+                    usernameEditText.setError(getString(formState.getUsernameError()));
                 }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
+                if (formState.getPasswordError() != null) {
+                    passwordEditText.setError(getString(formState.getPasswordError()));
                 }
             }
         });
