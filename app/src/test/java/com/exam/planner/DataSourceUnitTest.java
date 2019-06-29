@@ -1,14 +1,14 @@
 package com.exam.planner;
 
-import com.exam.planner.Logic.Login.data.LoginDataSource;
+import com.exam.planner.Logic.Login.data.DataSource;
 import com.exam.planner.Logic.Login.data.Result;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
 
 import org.junit.Test;
 
-public class LoginDataSourceUnitTest {
+public class DataSourceUnitTest {
 
-    LoginDataSource dataSource = new LoginDataSource();
+    DataSource dataSource = new DataSource();
 
     @Test
     public void testFirstTimeUser(){

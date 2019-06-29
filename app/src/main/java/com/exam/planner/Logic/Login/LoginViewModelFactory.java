@@ -4,9 +4,8 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import com.exam.planner.Logic.Login.LoginViewModel;
-import com.exam.planner.Logic.Login.data.LoginDataSource;
-import com.exam.planner.Logic.Login.data.LoginRepository;
+import com.exam.planner.Logic.Login.data.DataSource;
+import com.exam.planner.Logic.Login.data.Repository;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
@@ -19,7 +18,7 @@ public class LoginViewModelFactory implements ViewModelProvider.Factory {
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(LoginViewModel.class)) {
-            return (T) new LoginViewModel(LoginRepository.getInstance(new LoginDataSource()));
+            return (T) new LoginViewModel(Repository.getInstance(new DataSource()));
         } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

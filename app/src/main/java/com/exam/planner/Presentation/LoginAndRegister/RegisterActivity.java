@@ -1,14 +1,25 @@
 package com.exam.planner.Presentation.LoginAndRegister;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.exam.planner.Logic.Login.FormState;
+import com.exam.planner.Logic.Login.LoginViewModel;
+import com.exam.planner.Logic.Login.LoginViewModelFactory;
 import com.exam.planner.Presentation.CalendarPage.CalendarActivity;
 import com.exam.planner.Logic.Utility.PrefManager;
 import com.exam.planner.R;
@@ -20,10 +31,11 @@ public class RegisterActivity extends AppCompatActivity {
        created in login
      */
 
+    private LoginViewModel loginViewModel;
+
     private EditText usernameEditText, passwordEditText, confirmPasswordEditText, secretQuestionEditText,
                      secretAnswerEditText;
     private CheckBox checkBox;
-    private String username, password, confirmPassword, secretQuestion, secretAnswer;
 
     private PrefManager prefManager;
 
@@ -35,6 +47,9 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         final Intent intent = new Intent(this, CalendarActivity.class);
+        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
+                .get(LoginViewModel.class);
+
 
         usernameEditText = findViewById(R.id.registerEmail);
         passwordEditText = findViewById(R.id.registerPassword);
@@ -42,65 +57,66 @@ public class RegisterActivity extends AppCompatActivity {
         secretAnswerEditText = findViewById(R.id.registerSecretAnswer);
         secretQuestionEditText = findViewById(R.id.registerSecretQuestion);
         registerButton = findViewById(R.id.registerButton);
+        registerButton.setEnabled(false);
         checkBox = findViewById(R.id.saveInfo);
 
         prefManager = new PrefManager(this);
         prefManager.checkSharedPreferences(usernameEditText, passwordEditText, checkBox);
 
 
+        loginViewModel.getFormState().observe(this, new Observer<FormState>() {
+            @Override
+            public void onChanged(@Nullable FormState formState) {
+                if (formState == null) {
+                    return;
+                }
+                registerButton.setEnabled(formState.isDataValid());
+                if (formState.getUsernameError() != null) {
+                    usernameEditText.setError(getString(formState.getUsernameError()));
+                }
+                if (formState.getPasswordError() != null) {
+                    confirmPasswordEditText.setError(getString(formState.getPasswordError()));
+                }
+            }
+        });
+
+
+        TextWatcher afterTextChangedListener = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // ignore
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                loginViewModel.registerDataChanged(usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString(), confirmPasswordEditText.getText().toString());
+            }
+        };
+        usernameEditText.addTextChangedListener(afterTextChangedListener);
+        passwordEditText.addTextChangedListener(afterTextChangedListener);
+        confirmPasswordEditText.addTextChangedListener(afterTextChangedListener);
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 prefManager.setPreferences(checkBox.isChecked(), usernameEditText, passwordEditText);
-                register();
+                loginViewModel.register(usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString(), secretQuestionEditText.getText().toString(),
+                        secretAnswerEditText.getText().toString());
+                toast();
                 startActivity(intent);
             }
         });
     }
 
-    public void register() {
-        setStrings();
-
-        if(validateText()) {
-            success();
-
-        }
-        else {
-            Toast.makeText(this,"Signup failure",Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void setStrings() {
-
-        username = usernameEditText.getText().toString().trim();
-        password = passwordEditText.getText().toString().trim();
-        confirmPassword = confirmPasswordEditText.getText().toString().trim();
-        secretQuestion = secretQuestionEditText.getText().toString().trim();
-        secretAnswer = secretAnswerEditText.getText().toString().trim();
-    }
-
-    public boolean validateText() {
-        boolean isValid = true;
-
-        if(password.isEmpty() || password.length() <=5) {
-            passwordEditText.setError("Please enter a valid password with more than 5 letters / numbers");
-            isValid = false;
-        }
-        if(confirmPassword.isEmpty() || !confirmPassword.equals(password)) {
-            confirmPasswordEditText.setError("Your passwords don't match");
-            isValid = false;
-        }
-        if(username.isEmpty() || username.length() < 3) {
-            usernameEditText.setError("User name must be at least 3 characters");
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    public void success() {
-        //TODO save credentials to persistence layer
-        Toast.makeText(this,"Success!",Toast.LENGTH_LONG).show();
+    public void toast() {
+        Toast.makeText(this,"Welcome!",Toast.LENGTH_LONG).show();
     }
 }
 

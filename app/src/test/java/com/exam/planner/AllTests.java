@@ -10,7 +10,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        LoginDataSourceUnitTest.class,
+        DataSourceUnitTest.class,
         EventTest.class,
         UserPersistenceStubTest.class,
         PlannerTest.class,

@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -127,14 +128,18 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginViewModel.login(usernameEditText.getText().toString(),
-                                passwordEditText.getText().toString());
-                boolean firstTimeUser = loginViewModel.isNewUser();
-                if (firstTimeUser){
+                boolean result = loginViewModel.attemptLogin(usernameEditText.getText().toString(),
+                                    passwordEditText.getText().toString());
+                //boolean firstTimeUser = loginViewModel.isNewUser();
+                if (!result){
                     AlertDialog alert = builder.create();
                     alert.show();
+                    try{ Looper.loop(); }
+                    catch(RuntimeException e){}
                 }
                 else{
+                    loginViewModel.login(usernameEditText.getText().toString(),
+                            passwordEditText.getText().toString());
                     loginViewModel.notNewUser();
                     prefManager.setPreferences(rememberInfoCheckBox.isChecked(), usernameEditText, passwordEditText);
                     tryEnableButton();

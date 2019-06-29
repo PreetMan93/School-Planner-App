@@ -6,31 +6,28 @@ import com.exam.planner.Logic.Login.data.model.LoggedInUser;
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
  */
-public class LoginRepository {
+public class Repository {
 
-    private static volatile LoginRepository instance;
+    private static volatile Repository instance;
 
-    private LoginDataSource dataSource;
+    private DataSource dataSource;
 
     // If user credentials will be cached in local storage, it is recommended it be encrypted
     // @see https://developer.android.com/training/articles/keystore
     private LoggedInUser user = null;
 
     // private constructor : singleton access
-    private LoginRepository(LoginDataSource dataSource) {
+    private Repository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public static LoginRepository getInstance(LoginDataSource dataSource) {
+    public static Repository getInstance(DataSource dataSource) {
         if (instance == null) {
-            instance = new LoginRepository(dataSource);
+            instance = new Repository(dataSource);
         }
         return instance;
     }
 
-    public boolean isLoggedIn() {
-        return user != null;
-    }
     public void notNew(){
         if(user != null){
             user.notNewUser();
@@ -43,9 +40,22 @@ public class LoginRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
+    public boolean attemptLogin(String username, String password){
+        return dataSource.attemptLogin(username, password);
+    }
+
     public Result<LoggedInUser> login(String username, String password) {
         // handle login
         Result<LoggedInUser> result = dataSource.login(username, password);
+        if (result instanceof Result.Success) {
+            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+        }
+        return result;
+    }
+
+    public Result<LoggedInUser> register(String username, String password, String SQ, String SA) {
+        // handle register
+        Result<LoggedInUser> result = dataSource.register(username, password, SQ, SA);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
         }

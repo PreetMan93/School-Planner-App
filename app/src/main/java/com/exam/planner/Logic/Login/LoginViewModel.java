@@ -3,8 +3,9 @@ package com.exam.planner.Logic.Login;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
-import com.exam.planner.Logic.Login.data.LoginRepository;
+import com.exam.planner.Logic.Login.data.Repository;
 import com.exam.planner.Logic.Login.data.Result;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
 import com.exam.planner.R;
@@ -12,12 +13,11 @@ import com.exam.planner.R;
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<FormState> FormState = new MutableLiveData<>();
-    private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
+    private Repository repository;
     private boolean newUser;
 
-    public LoginViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    public LoginViewModel(Repository repository) {
+        this.repository = repository;
         newUser = true;
     }
 
@@ -25,25 +25,34 @@ public class LoginViewModel extends ViewModel {
         return FormState;
     }
 
-    public LiveData<LoginResult> getLoginResult() {
-        return loginResult;
+    public boolean attemptLogin(String username, String password) {
+        return repository.attemptLogin(username, password);
     }
 
     public void login(String username, String password) {
-        // can be launched in a separate asynchronous job
-//        boolean newUser = false;
-        Result<LoggedInUser> result = loginRepository.login(username, password);
+        Result<LoggedInUser> result = repository.login(username, password);
 
         if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
             LoggedInUser newUserInfo = (LoggedInUser)((Result.Success)result).getData();
             newUser = newUserInfo.isFirstLogin();
         } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
+            Log.e("Login error", "If this login error happens good fucking luck mate");
+            //TODO: Potentially try to force this error to occur somehow so it can be handled
         }
-//        return newUser;
     }
+
+    public void register(String username, String password, String SQ, String SA) {
+        Result<LoggedInUser> result = repository.register(username, password, SQ, SA);
+
+        if (result instanceof Result.Success) {
+            LoggedInUser newUserInfo = (LoggedInUser)((Result.Success)result).getData();
+            newUser = true;
+        } else {
+            Log.e("Register error", "If this register error happens good fucking luck mate");
+            //TODO: Potentially try to force this error to occur somehow so it can be handled
+        }
+    }
+
 
     public void loginDataChanged(String username, String password) {
         if (!isUserNameValid(username)) {
@@ -67,7 +76,6 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
-
     private boolean isUserNameValid(String username) {
         if (username == null) {
             return false;
@@ -76,7 +84,7 @@ public class LoginViewModel extends ViewModel {
         } else if(invalidCharacters(username)) {
             return false;
         } else {
-            return !username.trim().isEmpty();
+            return true;
         }
     }
 
@@ -97,9 +105,9 @@ public class LoginViewModel extends ViewModel {
     }
 
     private boolean invalidCharacters(String string){
-        String badChars = "!@#$%^&*()-\\\'~?<>,.";
-        for(String s : string.split("")){
-            if(badChars.contains(s))
+        String badChars = "!@#$%^&*()-_~?<>,.";
+        for(int i = 0; i < string.length(); i++){
+            if(badChars.contains("" + string.charAt(i)))
                 return true;
         }
         return false;
@@ -108,6 +116,6 @@ public class LoginViewModel extends ViewModel {
     public boolean isNewUser(){ return newUser; }
 
     public void notNewUser(){
-        loginRepository.notNew();
+        repository.notNew();
     }
 }
