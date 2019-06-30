@@ -1,5 +1,6 @@
 package com.exam.planner.Logic.Login.data;
 
+import com.exam.planner.Logic.Login.LoginFailureException;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
 
 /**
@@ -20,6 +21,8 @@ public class Repository {
     private Repository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
+    public Repository(DataSource dataSource, boolean test){ this.dataSource = dataSource; }
 
     public static Repository getInstance(DataSource dataSource) {
         if (instance == null) {
@@ -46,7 +49,7 @@ public class Repository {
 
     public Result<LoggedInUser> login(String username, String password) {
         // handle login
-        Result<LoggedInUser> result = dataSource.login(username, password);
+        Result result = dataSource.login(username, password);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
         }
@@ -55,7 +58,7 @@ public class Repository {
 
     public Result<LoggedInUser> register(String username, String password, String SQ, String SA) {
         // handle register
-        Result<LoggedInUser> result = dataSource.register(username, password, SQ, SA);
+        Result result = dataSource.register(username, password, SQ, SA);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
         }

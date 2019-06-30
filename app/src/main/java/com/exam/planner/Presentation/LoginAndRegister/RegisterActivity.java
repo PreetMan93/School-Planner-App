@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.exam.planner.Logic.Login.FormState;
 import com.exam.planner.Logic.Login.LoginViewModel;
 import com.exam.planner.Logic.Login.LoginViewModelFactory;
+import com.exam.planner.Logic.Login.RegisterFailureException;
 import com.exam.planner.Presentation.CalendarPage.CalendarActivity;
 import com.exam.planner.Logic.Utility.PrefManager;
 import com.exam.planner.R;
@@ -106,9 +107,15 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 prefManager.setPreferences(checkBox.isChecked(), usernameEditText, passwordEditText);
-                loginViewModel.register(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString(), secretQuestionEditText.getText().toString(),
-                        secretAnswerEditText.getText().toString());
+                try {
+                    loginViewModel.register(usernameEditText.getText().toString(),
+                            passwordEditText.getText().toString(), secretQuestionEditText.getText().toString(),
+                            secretAnswerEditText.getText().toString());
+                } catch (RegisterFailureException e) {
+                    Toast.makeText(getApplicationContext(),"Register failure reload and try again", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),"Fatal Error", Toast.LENGTH_LONG).show();
+                }
                 toast();
                 startActivity(intent);
             }

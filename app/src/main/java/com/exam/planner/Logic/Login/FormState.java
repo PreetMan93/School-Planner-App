@@ -1,5 +1,6 @@
 package com.exam.planner.Logic.Login;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 
 /**
@@ -22,6 +23,12 @@ public class FormState {
         this.usernameError = null;
         this.passwordError = null;
         this.isDataValid = isDataValid;
+    }
+
+    public FormState(@Nullable Integer usernameError, @Nullable Integer passwordError, boolean valid){
+        this.usernameError = usernameError;
+        this.passwordError = passwordError;
+        this.isDataValid = valid;
     }
 
     @Nullable

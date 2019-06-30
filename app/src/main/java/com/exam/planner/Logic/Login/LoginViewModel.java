@@ -29,19 +29,24 @@ public class LoginViewModel extends ViewModel {
         return repository.attemptLogin(username, password);
     }
 
-    public void login(String username, String password) {
-        Result<LoggedInUser> result = repository.login(username, password);
+    public void login(String username, String password) throws LoginFailureException{
+        try {
+            Result<LoggedInUser> result = repository.login(username, password);
 
-        if (result instanceof Result.Success) {
-            LoggedInUser newUserInfo = (LoggedInUser)((Result.Success)result).getData();
-            newUser = newUserInfo.isFirstLogin();
-        } else {
-            Log.e("Login error", "If this login error happens good fucking luck mate");
-            //TODO: Potentially try to force this error to occur somehow so it can be handled
+            if (result instanceof Result.Success) {
+                LoggedInUser newUserInfo = (LoggedInUser) ((Result.Success) result).getData();
+                newUser = newUserInfo.isFirstLogin();
+            } else {
+                Log.e("Login error", "If this login error happens good fucking luck mate");
+                throw new LoginFailureException("Failed to login not sure how that could happen");
+                //TODO: Potentially try to force this error to occur somehow so it can be handled
+            }
+        } catch (RuntimeException e){
+            throw new LoginFailureException("Failed to login not sure how that could happen");
         }
     }
 
-    public void register(String username, String password, String SQ, String SA) {
+    public void register(String username, String password, String SQ, String SA) throws RegisterFailureException{
         Result<LoggedInUser> result = repository.register(username, password, SQ, SA);
 
         if (result instanceof Result.Success) {
@@ -49,6 +54,7 @@ public class LoginViewModel extends ViewModel {
             newUser = true;
         } else {
             Log.e("Register error", "If this register error happens good fucking luck mate");
+            throw new RegisterFailureException("Failed to register not sure how that could happen");
             //TODO: Potentially try to force this error to occur somehow so it can be handled
         }
     }

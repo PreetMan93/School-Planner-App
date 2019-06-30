@@ -28,9 +28,7 @@ public class User {
         this.planner = new Planner(id);
     }
 
-    public String toString(){
-        return "ID: " + id + " Username: " + username;
-    }
+    public String toString(){ return "ID: " + id + " Username: " + username; }
 
     public String getUsername(){ return username; }
     public String getPassword() { return password; }

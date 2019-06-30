@@ -24,4 +24,20 @@ public class UserTest {
         Assert.assertTrue("Failed to remove", u.removeEvent("123"));
         Assert.assertTrue("Removed non existent item", !u.removeEvent("123"));
     }
+
+    @Test
+    public void testGets(){
+        User u = new User("ID", "user", "pass", "question", "answer");
+        Assert.assertEquals(u.getId(), "ID");
+        Assert.assertEquals(u.getUsername(), "user");
+        Assert.assertEquals(u.getPassword(), "pass");
+        Assert.assertEquals(u.getSQ(), "question");
+        Assert.assertEquals(u.getSA(), "answer");
+    }
+
+    @Test
+    public void testToString(){
+        User u = new User("ID", "user", "pass");
+        Assert.assertEquals(u.toString(), "ID: ID Username: user");
+    }
 }

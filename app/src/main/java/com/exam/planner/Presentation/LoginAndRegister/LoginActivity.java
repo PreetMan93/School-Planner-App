@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.exam.planner.Logic.Login.FormState;
+import com.exam.planner.Logic.Login.LoginFailureException;
 import com.exam.planner.Logic.Login.LoginViewModel;
 import com.exam.planner.Logic.Login.LoginViewModelFactory;
 import com.exam.planner.Presentation.CalendarPage.CalendarActivity;
@@ -118,12 +119,19 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
+                    try {
+                        loginViewModel.login(usernameEditText.getText().toString(),
+                                passwordEditText.getText().toString());
+                    } catch (LoginFailureException e) {
+                        Toast.makeText(getApplicationContext(),"Login failure reload and try again", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Fatal Error", Toast.LENGTH_LONG).show();
+                    }
                 }
                 return false;
             }
         });
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,15 +143,20 @@ public class LoginActivity extends AppCompatActivity {
                     alert.show();
                     try{ Looper.loop(); } // Niffty trick that I hope stops execution until answering
                     catch(RuntimeException e){}
-                }
-                else{
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
-                    loginViewModel.notNewUser();
-                    prefManager.setPreferences(rememberInfoCheckBox.isChecked(), usernameEditText, passwordEditText);
-                    tryEnableButton();
-                    updateUiWithUser();
-                    finish();
+                } else {
+                    try {
+                        loginViewModel.login(usernameEditText.getText().toString(),
+                                passwordEditText.getText().toString());
+                        loginViewModel.notNewUser();
+                        prefManager.setPreferences(rememberInfoCheckBox.isChecked(), usernameEditText, passwordEditText);
+                        tryEnableButton();
+                        updateUiWithUser();
+                        finish();
+                    } catch (LoginFailureException e) {
+                        Toast.makeText(getApplicationContext(),"Login failure reload and try again", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Fatal Error", Toast.LENGTH_LONG).show();
+                    }
                 }
 
             }
