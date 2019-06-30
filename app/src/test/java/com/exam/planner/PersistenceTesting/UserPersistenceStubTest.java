@@ -11,7 +11,7 @@ public class UserPersistenceStubTest {
     @Test
     public void testDoIExist(){
         UserPersistenceStub db = new UserPersistenceStub();
-        Assert.assertTrue("Didn't find existing id", db.doIExist("12345"));
+        Assert.assertTrue("Didn't find existing id", db.doIExist("username"));
         Assert.assertTrue("Found non existing id", !db.doIExist("nope"));
     }
 

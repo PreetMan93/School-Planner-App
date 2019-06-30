@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class LoginViewModelTest {
 
-    private LoginViewModel loginViewModel = new LoginViewModel(new Repository(new DataSource(), true));
+    private LoginViewModel loginViewModel = new LoginViewModel(Repository.getInstance(new DataSource()));
 
 
     @Test

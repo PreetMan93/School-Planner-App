@@ -3,8 +3,11 @@ package com.exam.planner;
 import com.exam.planner.DSO.Events.EventTest;
 import com.exam.planner.DSO.PlannerTest;
 import com.exam.planner.DSO.UserTest;
+import com.exam.planner.LoginTesting.DataSourceUnitTest;
 import com.exam.planner.LoginTesting.FormStateTest;
 import com.exam.planner.LoginTesting.LoginViewModelFactoryTest;
+import com.exam.planner.LoginTesting.LoginViewModelTest;
+import com.exam.planner.LoginTesting.RepositoryTest;
 import com.exam.planner.PersistenceTesting.UserPersistenceStubTest;
 
 import org.junit.runner.RunWith;
@@ -18,7 +21,9 @@ import org.junit.runners.Suite;
         PlannerTest.class,
         UserTest.class,
         LoginViewModelFactoryTest.class,
-        FormStateTest.class
+        FormStateTest.class,
+        LoginViewModelTest.class,
+        RepositoryTest.class
 })
 public class AllTests
 {

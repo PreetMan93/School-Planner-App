@@ -36,6 +36,6 @@ public class LoginViewModelFactoryTest {
 
 class TestingViewModel extends LoginViewModel{
     public TestingViewModel(){
-        super(new Repository(new DataSource(), true));
+        super(Repository.getInstance(new DataSource()));
     }
 }

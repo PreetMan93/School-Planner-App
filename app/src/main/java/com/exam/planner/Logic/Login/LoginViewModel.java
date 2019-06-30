@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.exam.planner.Logic.Login.data.Repository;
 import com.exam.planner.Logic.Login.data.Result;
@@ -29,6 +30,7 @@ public class LoginViewModel extends ViewModel {
         return repository.attemptLogin(username, password);
     }
 
+    // A lot of redundant checking and validation just to try and 100% ensure success
     public void login(String username, String password) throws LoginFailureException{
         try {
             Result<LoggedInUser> result = repository.login(username, password);
@@ -39,23 +41,27 @@ public class LoginViewModel extends ViewModel {
             } else {
                 Log.e("Login error", "If this login error happens good fucking luck mate");
                 throw new LoginFailureException("Failed to login not sure how that could happen");
-                //TODO: Potentially try to force this error to occur somehow so it can be handled
             }
         } catch (RuntimeException e){
             throw new LoginFailureException("Failed to login not sure how that could happen");
         }
     }
 
-    public void register(String username, String password, String SQ, String SA) throws RegisterFailureException{
+    // A lot of redundant checking and validation just to try and 100% ensure success
+    public void register(String username, String password, String SQ, String SA) throws Exception{
         Result<LoggedInUser> result = repository.register(username, password, SQ, SA);
 
         if (result instanceof Result.Success) {
             LoggedInUser newUserInfo = (LoggedInUser)((Result.Success)result).getData();
             newUser = true;
-        } else {
-            Log.e("Register error", "If this register error happens good fucking luck mate");
-            throw new RegisterFailureException("Failed to register not sure how that could happen");
-            //TODO: Potentially try to force this error to occur somehow so it can be handled
+        } else if(result instanceof Result.Error){
+            Exception e = ((Result.Error)result).getError();
+            if (e instanceof RegisterFailureException) {
+                throw e;
+            } else {
+                Log.e("Register error", "If this register error happens good fucking luck mate");
+                throw new Exception(e.getMessage());
+            }
         }
     }
 
