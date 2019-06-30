@@ -50,6 +50,6 @@
         android:layout_height="wrap_content"
         android:text="Settings(Temp)"
         app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="end|bottom" />
+        app:layout_anchorGravity="start|bottom" />
 
 </android.support.design.widget.CoordinatorLayout>

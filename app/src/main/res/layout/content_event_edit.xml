@@ -20,6 +20,7 @@
         android:ems="10"
         android:hint="Event Name"
         android:inputType="textPersonName"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,6 +48,7 @@
         android:ems="10"
         android:hint="YYYY/MM/DD"
         android:inputType="date"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.269"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +64,7 @@
         android:ems="10"
         android:hint="HH:MM"
         android:inputType="time"
+        android:imeOptions="actionDone"
         app:layout_constraintStart_toEndOf="@+id/event_edit_start_date_field"
         app:layout_constraintTop_toBottomOf="@+id/event_edit_name_field" />
 
@@ -77,6 +80,7 @@
         android:ems="10"
         android:hint="YYYY/MM/DD"
         android:inputType="date"
+        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.269"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,6 +96,7 @@
         android:ems="10"
         android:hint="HH:MM"
         android:inputType="time"
+        android:imeOptions="actionDone"
         app:layout_constraintStart_toEndOf="@+id/event_edit_end_date_field"
         app:layout_constraintTop_toBottomOf="@+id/event_edit_start_date_field" />
 
@@ -174,5 +179,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/friday_checkbox"
         app:layout_constraintTop_toBottomOf="@+id/event_edit_end_date_field" />
+
+    <Button
+        android:id="@+id/event_edit_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
