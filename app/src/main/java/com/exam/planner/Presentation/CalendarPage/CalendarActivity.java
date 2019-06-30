@@ -30,15 +30,34 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
         Log.d(TAG, "onCreate: started");
 
-        final Button button = findViewById(R.id.SettingsButton);
+        final Button settingsButton = findViewById(R.id.SettingsButton);
         final Intent settingsIntent = new Intent(this, SettingsActivity.class);
 
-        EventListAdapter adapter = new EventListAdapter(this, mEvents);
+        final Button addEventButton = findViewById(R.id.add_event_button);
 
         populateEvents();
         initEventListView();
 
-        button.setOnClickListener(new View.OnClickListener() {
+        addEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = mEvents.size();
+                Event newEvent = new Event();
+                mEvents.add(newEvent);
+
+                Intent editEventIntent = new Intent(v.getContext(), EventEditActivity.class);
+                editEventIntent.putExtra("eventPos", position);
+                editEventIntent.putExtra("eventName", newEvent.getName());
+                editEventIntent.putExtra("eventStartDate", newEvent.getStartDateString());
+                editEventIntent.putExtra("eventStartTime", newEvent.getStartTimeString());
+                editEventIntent.putExtra("eventEndDate", newEvent.getEndDateString());
+                editEventIntent.putExtra("eventEndTime", newEvent.getEndTimeString());
+
+                ((Activity)v.getContext()).startActivityForResult(editEventIntent, 1);
+            }
+        });
+
+        settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(settingsIntent);
@@ -52,18 +71,27 @@ public class CalendarActivity extends AppCompatActivity {
         if (requestCode == 1){
             if (resultCode == Activity.RESULT_OK){
                 int eventPos = data.getIntExtra("eventPos", -1);
-                String eventName = data.getStringExtra("eventName");
-                String eventStartDate = data.getStringExtra("eventStartDate");
-                String eventStartTime = data.getStringExtra("eventStartTime");
-                String eventEndDate = data.getStringExtra("eventEndDate");
-                String eventEndTime = data.getStringExtra("eventEndTime");
+                if (eventPos >= 0) {
+                    String eventName = data.getStringExtra("eventName");
+                    String eventStartDate = data.getStringExtra("eventStartDate");
+                    String eventStartTime = data.getStringExtra("eventStartTime");
+                    String eventEndDate = data.getStringExtra("eventEndDate");
+                    String eventEndTime = data.getStringExtra("eventEndTime");
 
-                Event editEvent = mEvents.get(eventPos);
-                editEvent.editName(eventName);
-                editEvent.editStartDate(eventStartDate, eventStartTime);
-                editEvent.editEndDate(eventEndDate, eventEndTime);
+                    Event editEvent = mEvents.get(eventPos);
+                    editEvent.editName(eventName);
+                    editEvent.editStartDate(eventStartDate, eventStartTime);
+                    editEvent.editEndDate(eventEndDate, eventEndTime);
 
-                adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
+                }
+            }else if (resultCode == Activity.RESULT_CANCELED){
+                int eventPos = data.getIntExtra("eventPos", -1);
+                if (eventPos >= 0) {
+                    mEvents.remove(eventPos);
+
+                    adapter.notifyDataSetChanged();
+                }
             }
         }
     }
@@ -76,21 +104,16 @@ public class CalendarActivity extends AppCompatActivity {
         event1.editStartDate(2022, 12, 13, 14, 25);
 
         Event event2 = new Event();
-        event2.editName("Homework 2");
-        event2.editStartDate(1991, 12, 13, 13, 25);
-
-        Event event3 = new Event();
-        event3.editName("Homework 3");
-        event3.editStartDate(1991, 12, 13, 14, 59);
+        event2.editName("Test 1");
+        event2.editStartDate(2022, 12, 15, 14, 25);
 
         mEvents.add(event1);
         mEvents.add(event2);
-        mEvents.add(event3);
     }
 
     private void initEventListView() {
         Log.d(TAG, "initEventListView: init recyclerview");
-        RecyclerView eventListView = findViewById(R.id.eventListView);
+        RecyclerView eventListView = findViewById(R.id.event_list_view);
         adapter = new EventListAdapter(this, mEvents);
         eventListView.setAdapter(adapter);
         eventListView.setLayoutManager(new LinearLayoutManager(this));

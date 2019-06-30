@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.exam.planner.DSO.Events.Event;
@@ -90,6 +92,16 @@ public class EventEditActivity extends AppCompatActivity {
             }
         });
 
+        eventNameField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE){
+                    eventName = eventNameField.getText().toString();
+                }
+                return false;
+            }
+        });
+
         eventStartDateField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -99,12 +111,12 @@ public class EventEditActivity extends AppCompatActivity {
             }
         });
 
-        eventStartDateField.setOnKeyListener(new View.OnKeyListener() {
+        eventStartDateField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE){
                     updateDateField(eventStartDateField);
-                    return true;
+                    return false;
                 }
                 return false;
             }
@@ -119,12 +131,12 @@ public class EventEditActivity extends AppCompatActivity {
             }
         });
 
-        eventStartTimeField.setOnKeyListener(new View.OnKeyListener() {
+        eventStartTimeField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE){
                     updateTimeField(eventStartTimeField);
-                    return true;
+                    return false;
                 }
                 return false;
             }
@@ -139,12 +151,12 @@ public class EventEditActivity extends AppCompatActivity {
             }
         });
 
-        eventEndDateField.setOnKeyListener(new View.OnKeyListener() {
+        eventEndDateField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE){
                     updateDateField(eventEndDateField);
-                    return true;
+                    return false;
                 }
                 return false;
             }
@@ -159,14 +171,25 @@ public class EventEditActivity extends AppCompatActivity {
             }
         });
 
-        eventEndTimeField.setOnKeyListener(new View.OnKeyListener() {
+        eventEndTimeField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE){
                     updateTimeField(eventEndTimeField);
-                    return true;
+                    return false;
                 }
                 return false;
+            }
+        });
+
+        Button deleteButton = findViewById(R.id.event_edit_delete_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent deleteIntent = new Intent();
+                deleteIntent.putExtra("eventPos", eventPos);
+                setResult(Activity.RESULT_CANCELED, deleteIntent);
+                finish();
             }
         });
 
