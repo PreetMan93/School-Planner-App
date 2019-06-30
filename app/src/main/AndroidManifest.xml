@@ -19,7 +19,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".Logic.Login.LoginActivity"
+            android:name=".Presentation.LoginAndRegister.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
         <activity android:name=".Logic.Settings.SettingsCalendarActivity"></activity>
         <activity android:name=".Logic.Settings.SettingsAccountActivity" ></activity>
         <activity android:name=".Logic.Settings.SettingsActivity" ></activity>
-        <activity android:name=".Logic.Register.RegisterActivity" ></activity>
+        <activity android:name=".Presentation.LoginAndRegister.RegisterActivity" ></activity>
 
     </application>
 

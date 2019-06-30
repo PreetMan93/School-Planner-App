@@ -21,6 +21,10 @@ public class UserPersistenceStub implements IUserPersistence {
             users.add(newUsr);
     }
 
+    public void displayUsers(){
+        for (User u: users) System.out.println(u.toString());
+    }
+
     /*@Override
     public boolean removeUser(User user){
         int index;
@@ -34,14 +38,24 @@ public class UserPersistenceStub implements IUserPersistence {
     @Override
     public boolean removeUser(String id){
         int index;
-        if((index = indexOfUser(id)) != -1) {
+        if((index = indexOfUserID(id)) != -1) {
             users.remove(index);
             return true;
         }
         return false;
     }
 
-    private int indexOfUser(String id){
+    private int indexOfUserUsername(String username){
+        int index = 0;
+        for(User u: users) {
+            if(u.getUsername().equals(username))
+                return index;
+            index++;
+        }
+        return -1;
+    }
+
+    private int indexOfUserID(String id){
         int index = 0;
         for(User u: users) {
             if(u.getId().equals(id))
@@ -62,8 +76,8 @@ public class UserPersistenceStub implements IUserPersistence {
     }
 
     @Override
-    public boolean doIExist(String id){
-        return indexOfUser(id) != -1;
+    public boolean doIExist(String username){
+        return indexOfUserUsername(username) != -1;
     }
 
     @Override

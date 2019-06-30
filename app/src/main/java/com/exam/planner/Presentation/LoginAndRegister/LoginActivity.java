@@ -1,4 +1,4 @@
-package com.exam.planner.Logic.Login;
+package com.exam.planner.Presentation.LoginAndRegister;
 
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -20,9 +21,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.exam.planner.Logic.Login.FormState;
+import com.exam.planner.Logic.Login.LoginFailureException;
+import com.exam.planner.Logic.Login.LoginViewModel;
+import com.exam.planner.Logic.Login.LoginViewModelFactory;
 import com.exam.planner.Presentation.CalendarPage.CalendarActivity;
 import com.exam.planner.Logic.Utility.PrefManager;
-import com.exam.planner.Logic.Register.RegisterActivity;
 import com.exam.planner.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -74,18 +78,18 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+        loginViewModel.getFormState().observe(this, new Observer<FormState>() {
             @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
+            public void onChanged(@Nullable FormState formState) {
+                if (formState == null) {
                     return;
                 }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
+                loginButton.setEnabled(formState.isDataValid());
+                if (formState.getUsernameError() != null) {
+                    usernameEditText.setError(getString(formState.getUsernameError()));
                 }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
+                if (formState.getPasswordError() != null) {
+                    passwordEditText.setError(getString(formState.getPasswordError()));
                 }
             }
         });
@@ -115,29 +119,44 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
+                    try {
+                        loginViewModel.login(usernameEditText.getText().toString(),
+                                passwordEditText.getText().toString());
+                    } catch (LoginFailureException e) {
+                        Toast.makeText(getApplicationContext(),"Login failure reload and try again", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Fatal Error", Toast.LENGTH_LONG).show();
+                    }
                 }
                 return false;
             }
         });
 
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginViewModel.login(usernameEditText.getText().toString(),
-                                passwordEditText.getText().toString());
-                boolean firstTimeUser = loginViewModel.isNewUser();
-                if (firstTimeUser){
+                boolean result = loginViewModel.attemptLogin(usernameEditText.getText().toString(),
+                                    passwordEditText.getText().toString());
+                if (!result){
                     AlertDialog alert = builder.create();
                     alert.show();
-                }
-                else{
-                    loginViewModel.notNewUser();
-                    prefManager.setPreferences(rememberInfoCheckBox.isChecked(), usernameEditText, passwordEditText);
-                    tryEnableButton();
-                    updateUiWithUser();
-                    finish();
+                    try{ Looper.loop(); } // Niffty trick that I hope stops execution until answering
+                    catch(RuntimeException e){}
+                } else {
+                    try {
+                        loginViewModel.login(usernameEditText.getText().toString(),
+                                passwordEditText.getText().toString());
+                        loginViewModel.notNewUser();
+                        prefManager.setPreferences(rememberInfoCheckBox.isChecked(), usernameEditText, passwordEditText);
+                        tryEnableButton();
+                        updateUiWithUser();
+                        finish();
+                    } catch (LoginFailureException e) {
+                        Toast.makeText(getApplicationContext(),"Login failure reload and try again", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Fatal Error", Toast.LENGTH_LONG).show();
+                    }
                 }
 
             }
