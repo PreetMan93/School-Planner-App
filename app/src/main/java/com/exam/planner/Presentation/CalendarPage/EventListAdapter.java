@@ -42,13 +42,18 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         Log.d(TAG, "onBindViewHolder: called");
 
         //Get Event info and populate cells
-        holder.eventName.setText(mEvents.get(position).getName());
+        Event e = mEvents.get(position);
+        holder.eventName.setText(e.getName());
+        holder.eventStartDate.setText(e.getStartDateString());
+        holder.eventStartTime.setText(e.getStartTimeString());
+        holder.eventEndDate.setText(e.getEndDateString());
+        holder.eventEndTime.setText(e.getEndTimeString());
+
         holder.eventItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on " + mEvents.get(position));
 
-                //Toast.makeText(mContext, mEvents.get(position).getName(), Toast.LENGTH_SHORT).show();
                 Intent editEventIntent = new Intent(mContext, EventEditActivity.class);
                 editEventIntent.putExtra("eventPos", position);
                 editEventIntent.putExtra("eventName", mEvents.get(position).getName());
@@ -69,16 +74,16 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView image;
-        TextView eventName;
-        TextView eventId;
-        TextView eventEnd;
+        TextView eventName, eventStartDate, eventStartTime, eventEndDate, eventEndTime;
         RelativeLayout eventItemLayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
             eventName = itemView.findViewById(R.id.event_edit_name_field);
-            eventId = itemView.findViewById(R.id.event_id);
-            eventEnd = itemView.findViewById(R.id.event_end);
+            eventStartDate = itemView.findViewById(R.id.event_layout_start_date);
+            eventStartTime = itemView.findViewById(R.id.event_layout_start_time);
+            eventEndDate = itemView.findViewById(R.id.event_layout_end_date);
+            eventEndTime = itemView.findViewById(R.id.event_layout_end_time);
             eventItemLayout = itemView.findViewById(R.id.event_item_layout);
         }
     }
