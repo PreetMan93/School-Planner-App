@@ -101,11 +101,11 @@ public class CalendarActivity extends AppCompatActivity {
 
         Event event1 = new Event();
         event1.editName("Homework 1");
-        event1.editStartDate(2022, 12, 13, 14, 25);
+        event1.editStartDate(2022, 12, 13, 14, 00);
 
         Event event2 = new Event();
         event2.editName("Test 1");
-        event2.editStartDate(2022, 12, 15, 14, 25);
+        event2.editStartDate(2022, 12, 15, 14, 05);
 
         mEvents.add(event1);
         mEvents.add(event2);

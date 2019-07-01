@@ -2,7 +2,6 @@ package com.exam.planner.DSO.Events;
 
 import android.util.Log;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import static java.util.Calendar.DAY_OF_MONTH;
@@ -85,11 +84,23 @@ public class Event
 
     public String getStartDateString(){return this.getStartDate().getDate().get(YEAR) + "/" + this.getStartDate().getDate().get(MONTH) + "/" + this.getStartDate().getDate().get(DAY_OF_MONTH);}
 
-    public String getStartTimeString(){return this.getStartDate().getHour() + ":" + this.getStartDate().getMinute();}
+    public String getStartTimeString(){
+        String hour = Integer.toString(this.getStartDate().getHour());
+        String minute = Integer.toString(this.getStartDate().getMinute());
+        if (minute.length() == 1)
+            minute = "0" + minute;
+        return hour + ":" + minute;
+    }
 
     public String getEndDateString(){return this.getEndDate().getDate().get(YEAR) + "/" + this.getEndDate().getDate().get(MONTH) + "/" + this.getEndDate().getDate().get(DAY_OF_MONTH);}
 
-    public String getEndTimeString(){return this.getEndDate().getHour() + ":" + this.getEndDate().getMinute();}
+    public String getEndTimeString(){
+        String hour = Integer.toString(this.getEndDate().getHour());
+        String minute = Integer.toString(this.getEndDate().getMinute());
+        if (minute.length() == 1)
+            minute = "0" + minute;
+        return hour + ":" + minute;
+    }
 
     public void editName(String newName) {this.name = newName;}
 
