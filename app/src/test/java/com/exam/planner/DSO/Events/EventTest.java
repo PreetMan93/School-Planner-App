@@ -1,13 +1,21 @@
 package com.exam.planner.DSO.Events;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import static org.junit.Assert.*;
 
 public class EventTest {
-
-    Event testEvent = new Event();
-    Event rightNow = new Event();
+    Event testEvent;
+    Event rightNow;
+    @Before public void setUp(){
+        testEvent = new Event();
+        rightNow = new Event();
+    }
 
     @Test
     public void Event(){
@@ -35,7 +43,6 @@ public class EventTest {
     @Test
     public void editStartDate() {
         testEvent.editStartDate(2019,7,17);
-        // Todo Fix this test Evan
         assertTrue(rightNow.getStartDate().getDay()!=testEvent.getStartDate().getDay());
         assertTrue(testEvent.getStartDate().getDay()==17 && testEvent.getStartDate().getMonth() == 7);
     }
@@ -44,7 +51,6 @@ public class EventTest {
     public void editStartDate1() {
         testEvent.editStartDate(2019,7,18,1,2);
         assertTrue(rightNow.getStartDate().getDay()!=testEvent.getStartDate().getDay());
-        System.out.println(testEvent.getStartDate().getHour());
         assertTrue(testEvent.getStartDate().getDay()==18 && testEvent.getStartDate().getMonth() == 7 && testEvent.getStartDate().getHour() == 1 && testEvent.getStartDate().getMinute() == 2);
 
     }
@@ -63,14 +69,17 @@ public class EventTest {
 
     @Test
     public void editEndDate() {
-        testEvent.editEndDate(rightNow.getStartDate().getYear(),rightNow.getStartDate().getMonth(),rightNow.getStartDate().getDay()+1);
-        assertTrue(rightNow.getEndDate().getDay()!=testEvent.getEndDate().getDay());
-        assertTrue(testEvent.getEndDate().getDay()==rightNow.getStartDate().getDay()+1);
+        testEvent.editStartDate(rightNow.getStartDate().getYear(),8,1);
+        testEvent.getStartDate().printDate();
+        System.out.println("this worked");
+        testEvent.editEndDate(rightNow.getStartDate().getYear(),8,2);
+        assertTrue(rightNow.getEndDate().getMonth()!=testEvent.getEndDate().getMonth());
+        assertTrue(testEvent.getEndDate().getDay()==testEvent.getStartDate().getDay()+1);
     }
 
     @Test
     public void editEndDate1() {
-        testEvent.editEndDate(rightNow.getStartDate().getYear(),rightNow.getStartDate().getMonth(),rightNow.getStartDate().getDay(),0,42);
+        testEvent.editEndDate(rightNow.getStartDate().getYear(),rightNow.getStartDate().getMonth(),rightNow.getStartDate().getDay(),rightNow.getStartDate().getHour(),42);
         assertTrue(rightNow.getEndDate().getDay()==testEvent.getEndDate().getDay());
         assertTrue(testEvent.getEndDate().getDay()==rightNow.getStartDate().getDay() && testEvent.getEndDate().getMinute()==42);
     }
