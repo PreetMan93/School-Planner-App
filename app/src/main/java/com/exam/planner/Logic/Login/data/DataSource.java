@@ -8,11 +8,15 @@ import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
 
 /**
- * Class that handles authentication w/ login credentials and retrieves user information.
+ * Class that handles login/registration and retrieves user information.
  */
 public class DataSource {
 
-    private IUserPersistence db = new UserPersistenceStub();
+    private IUserPersistence db;
+
+    public DataSource(IUserPersistence db){
+        this.db = db;
+    }
 
     public boolean attemptLogin(String username, String password){
         return db.doIExist(username, password);
@@ -22,7 +26,8 @@ public class DataSource {
         try {
             LoggedInUser user;
             if(db.doIExist(username, password)){
-                user = new LoggedInUser(username, false);
+                User u = db.getUser(username, password);
+                user = new LoggedInUser(username, u.getId(),false, u.getPlanner());
             } else {
                 return new Result.Error(new LoginFailureException("Error logging in"));
             }
@@ -36,7 +41,8 @@ public class DataSource {
         try {
             LoggedInUser user;
             db.addUser(new User(java.util.UUID.randomUUID().toString(), username, password, secretQ, secretA));
-            user = new LoggedInUser(username, true);
+            User u = db.getUser(username, password);
+            user = new LoggedInUser(username, u.getId(),true, u.getPlanner());
             return new Result.Success<>(user);
         } catch (Exception e) {
             return new Result.Error(new RegisterFailureException("Error logging in "));

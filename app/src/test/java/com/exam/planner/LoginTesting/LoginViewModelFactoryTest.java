@@ -6,6 +6,7 @@ import com.exam.planner.Logic.Login.LoginViewModel;
 import com.exam.planner.Logic.Login.LoginViewModelFactory;
 import com.exam.planner.Logic.Login.data.DataSource;
 import com.exam.planner.Logic.Login.data.Repository;
+import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,6 +37,6 @@ public class LoginViewModelFactoryTest {
 
 class TestingViewModel extends LoginViewModel{
     public TestingViewModel(){
-        super(Repository.getInstance(new DataSource()));
+        super(Repository.getInstance(new UserPersistenceStub()));
     }
 }

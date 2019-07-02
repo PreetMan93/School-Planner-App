@@ -3,13 +3,14 @@ package com.exam.planner.LoginTesting;
 import com.exam.planner.Logic.Login.data.DataSource;
 import com.exam.planner.Logic.Login.data.Result;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
+import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 public class DataSourceUnitTest {
 
-    DataSource dataSource = new DataSource();
+    DataSource dataSource = new DataSource(new UserPersistenceStub());
 
     @Test
     public void testAttemptLoginFailure(){

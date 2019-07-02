@@ -11,15 +11,15 @@ public class UserPersistenceStubTest {
     @Test
     public void testDoIExist(){
         UserPersistenceStub db = new UserPersistenceStub();
-        Assert.assertTrue("Didn't find existing id", db.doIExist("username"));
-        Assert.assertTrue("Found non existing id", !db.doIExist("nope"));
+        Assert.assertTrue("Didn't find existing id", db.doIExist("username", "password"));
+        Assert.assertTrue("Found non existing id", !db.doIExist("nope", "nope"));
     }
 
     @Test
     public void testAddUser(){
         UserPersistenceStub db = new UserPersistenceStub();
         db.addUser(new User("test", "test", "test"));
-        Assert.assertTrue("User wasn't successfully added", db.doIExist("test"));
+        Assert.assertTrue("User wasn't successfully added", db.doIExist("test", "test"));
     }
 
     @Test

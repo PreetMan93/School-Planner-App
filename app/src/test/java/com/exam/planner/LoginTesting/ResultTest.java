@@ -17,7 +17,7 @@ public class ResultTest {
 
     @Test
     public void testSucess(){
-        Result result = new Result.Success(new LoggedInUser("name", true));
+        Result result = new Result.Success(new LoggedInUser("name", "ID",true, null));
         Assert.assertEquals(((LoggedInUser)((Result.Success) result).getData()).getDisplayName(), "name");
         Assert.assertTrue((result.toString()).contains("Success"));
     }

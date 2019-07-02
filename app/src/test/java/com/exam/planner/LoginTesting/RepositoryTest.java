@@ -4,13 +4,14 @@ import com.exam.planner.Logic.Login.data.DataSource;
 import com.exam.planner.Logic.Login.data.Repository;
 import com.exam.planner.Logic.Login.data.Result;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
+import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 public class RepositoryTest {
 
-    Repository test = Repository.getInstance(new DataSource());
+    Repository test = Repository.getInstance(new UserPersistenceStub());
 
     @Test
     public void testAttemptLoginSuccess(){

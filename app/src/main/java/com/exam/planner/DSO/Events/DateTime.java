@@ -2,7 +2,7 @@ package com.exam.planner.DSO.Events;
 
 import java.util.*;
 
-class DateTime
+public class DateTime
 {
     private GregorianCalendar date;
     private int hour, minute;

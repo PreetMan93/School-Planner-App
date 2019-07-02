@@ -37,4 +37,6 @@ public class Planner {
         }
         return false;
     }
+
+    public ArrayList<Event> getEventsList(){ return eventsList; }
 }

@@ -17,7 +17,7 @@ public class UserPersistenceStub implements IUserPersistence {
 
     @Override
     public void addUser(User newUsr){
-        if(!doIExist(newUsr.getId()))
+        if(!doIExist(newUsr.getUsername(), newUsr.getPassword()))
             users.add(newUsr);
     }
 
@@ -45,7 +45,7 @@ public class UserPersistenceStub implements IUserPersistence {
         return false;
     }
 
-    private int indexOfUserUsername(String username){
+    /*private int indexOfUserUsername(String username){
         int index = 0;
         for(User u: users) {
             if(u.getUsername().equals(username))
@@ -53,7 +53,7 @@ public class UserPersistenceStub implements IUserPersistence {
             index++;
         }
         return -1;
-    }
+    }*/
 
     private int indexOfUserID(String id){
         int index = 0;
@@ -65,10 +65,10 @@ public class UserPersistenceStub implements IUserPersistence {
         return -1;
     }
 
-    private int indexOfUser(String usernane, String password){
+    private int indexOfUser(String username, String password){
         int index = 0;
         for(User u: users) {
-            if(u.getUsername().equals(usernane) && u.getPassword().equals(password))
+            if(u.getUsername().equals(username) && u.getPassword().equals(password))
                 return index;
             index++;
         }
@@ -76,9 +76,14 @@ public class UserPersistenceStub implements IUserPersistence {
     }
 
     @Override
+    public User getUser(String username, String password) {
+        return users.get(indexOfUser(username, password));
+    }
+
+    /*@Override
     public boolean doIExist(String username){
         return indexOfUserUsername(username) != -1;
-    }
+    }*/
 
     @Override
     public boolean doIExist(String username, String password){
