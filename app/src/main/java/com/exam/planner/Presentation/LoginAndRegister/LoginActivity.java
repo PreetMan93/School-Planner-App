@@ -26,7 +26,6 @@ import com.exam.planner.Logic.Login.LoginFailureException;
 import com.exam.planner.Logic.Login.LoginViewModel;
 import com.exam.planner.Logic.Login.LoginViewModelFactory;
 import com.exam.planner.Presentation.CalendarPage.CalendarActivity;
-import com.exam.planner.Logic.Utility.PrefManager;
 import com.exam.planner.R;
 
 public class LoginActivity extends AppCompatActivity {

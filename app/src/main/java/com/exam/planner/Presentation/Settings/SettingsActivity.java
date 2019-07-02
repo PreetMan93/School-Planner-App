@@ -1,4 +1,4 @@
-package com.exam.planner.Logic.Settings;
+package com.exam.planner.Presentation.Settings;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
