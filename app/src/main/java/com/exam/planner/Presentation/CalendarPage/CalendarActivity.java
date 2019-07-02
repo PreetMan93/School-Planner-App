@@ -85,7 +85,7 @@ public class CalendarActivity extends AppCompatActivity {
 
                     adapter.notifyDataSetChanged();
                 }
-            }else if (resultCode == Activity.RESULT_CANCELED){
+            }else if (resultCode == 2){
                 int eventPos = data.getIntExtra("eventPos", -1);
                 if (eventPos >= 0) {
                     mEvents.remove(eventPos);

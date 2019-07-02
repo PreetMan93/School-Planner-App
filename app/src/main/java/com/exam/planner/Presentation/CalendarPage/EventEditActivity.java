@@ -106,7 +106,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    updateDateField(eventStartDateField);
+                    eventStartDate = updateDateField(eventStartDateField, eventStartDate);
                 }
             }
         });
@@ -115,7 +115,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE){
-                    updateDateField(eventStartDateField);
+                    eventStartDate = updateDateField(eventStartDateField, eventStartDate);
                     return false;
                 }
                 return false;
@@ -126,7 +126,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    updateTimeField(eventStartTimeField);
+                    eventStartTime = updateTimeField(eventStartTimeField, eventStartTime);
                 }
             }
         });
@@ -135,7 +135,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE){
-                    updateTimeField(eventStartTimeField);
+                    eventStartTime = updateTimeField(eventStartTimeField, eventStartTime);
                     return false;
                 }
                 return false;
@@ -146,7 +146,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    updateDateField(eventEndDateField);
+                    eventEndDate = updateDateField(eventEndDateField, eventEndDate);
                 }
             }
         });
@@ -155,7 +155,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE){
-                    updateDateField(eventEndDateField);
+                    eventEndDate = updateDateField(eventEndDateField, eventEndDate);
                     return false;
                 }
                 return false;
@@ -166,7 +166,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    updateTimeField(eventEndTimeField);
+                    eventEndTime = updateTimeField(eventEndTimeField, eventEndTime);
                 }
             }
         });
@@ -175,7 +175,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE){
-                    updateTimeField(eventEndTimeField);
+                    eventEndTime = updateTimeField(eventEndTimeField, eventEndTime);
                     return false;
                 }
                 return false;
@@ -188,7 +188,7 @@ public class EventEditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent deleteIntent = new Intent();
                 deleteIntent.putExtra("eventPos", eventPos);
-                setResult(Activity.RESULT_CANCELED, deleteIntent);
+                setResult(2, deleteIntent);
                 finish();
             }
         });
@@ -212,31 +212,33 @@ public class EventEditActivity extends AppCompatActivity {
         });
     }
 
-    private void updateDateField(EditText field){
+    private String updateDateField(EditText field, String var){
         try{
             Event.validateDate(field.getText().toString());
-            eventStartDate = field.getText().toString();
+            var = field.getText().toString();
             Toast.makeText(EventEditActivity.this, "Valid date", Toast.LENGTH_SHORT).show();
         } catch (EventDateInvalidFormatException e){
-            field.setText(eventStartDate);
+            field.setText(var);
             Toast.makeText(EventEditActivity.this, "Date must be formatted YYYY/MM/DD", Toast.LENGTH_SHORT).show();
         } catch (EventDateOutOfBoundsException e){
-            field.setText(eventStartDate);
+            field.setText(var);
             Toast.makeText(EventEditActivity.this, "Please enter a valid date after January 1, 1900", Toast.LENGTH_SHORT).show();
         }
+        return var;
     }
 
-    private void updateTimeField(EditText field){
+    private String updateTimeField(EditText field, String var){
         try{
             Event.validateTime(field.getText().toString());
-            eventEndTime = field.getText().toString();
+            var = field.getText().toString();
             Toast.makeText(EventEditActivity.this, "Valid time", Toast.LENGTH_SHORT).show();
         } catch (EventTimeInvalidFormatException e){
-            field.setText(eventEndTime);
+            field.setText(var);
             Toast.makeText(EventEditActivity.this, "Time must be formatted HH:MM", Toast.LENGTH_SHORT).show();
         } catch (EventTimeOutOfBoundsException e){
-            field.setText(eventEndTime);
+            field.setText(var);
             Toast.makeText(EventEditActivity.this, "Please enter an hour from 0 and 23 and a minute from 0 to 59", Toast.LENGTH_SHORT).show();
         }
+        return var;
     }
 }

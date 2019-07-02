@@ -62,6 +62,14 @@ public class Event
         int year = Integer.parseInt(split[0]);
         int month = Integer.parseInt(split[1]);
         int day = Integer.parseInt(split[2]);
+        try {
+            validateDate(year, month, day);
+        } catch (EventValidationException e) {
+            throw(e);
+        }
+    }
+
+    public static void validateDate(int year, int month, int day) throws EventDateOutOfBoundsException {
         if (year < 1900)
             throw(new EventDateOutOfBoundsException("Date must begin after the year 1900"));
         if (month < 1 || month > 12)
@@ -76,6 +84,14 @@ public class Event
             throw(new EventTimeInvalidFormatException("Time must follow the format HH:MM"));
         int hour = Integer.parseInt(split[0]);
         int minute = Integer.parseInt(split[1]);
+        try {
+            validateTime(hour, minute);
+        } catch (EventValidationException e){
+            throw(e);
+        }
+    }
+
+    public static void validateTime(int hour, int minute) throws EventTimeOutOfBoundsException {
         if (hour < 0 || hour > 23)
             throw(new EventTimeOutOfBoundsException("Hour must be between 0 and 23"));
         if (minute < 0 || minute > 59)
