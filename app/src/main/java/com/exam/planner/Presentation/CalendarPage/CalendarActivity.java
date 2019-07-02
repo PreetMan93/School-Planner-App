@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.exam.planner.DSO.Events.Event;
-import com.exam.planner.Logic.Settings.SettingsActivity;
+import com.exam.planner.Presentation.Settings.SettingsActivity;
 import com.exam.planner.R;
 
 import java.util.ArrayList;

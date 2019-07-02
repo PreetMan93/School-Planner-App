@@ -1,4 +1,4 @@
-package com.exam.planner.Logic.Utility;
+package com.exam.planner.Presentation.LoginAndRegister;
 
 import android.content.Context;
 import android.content.SharedPreferences;

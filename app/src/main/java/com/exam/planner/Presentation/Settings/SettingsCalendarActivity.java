@@ -1,9 +1,7 @@
-package com.exam.planner.Logic.Settings;
+package com.exam.planner.Presentation.Settings;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import com.exam.planner.R;
 
