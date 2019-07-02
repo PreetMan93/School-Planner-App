@@ -35,6 +35,7 @@ public class User {
     public String getId() { return id; }
     public String getSA() { return SA; }
     public String getSQ() { return SQ; }
+    public Planner getPlanner() { return planner; }
 
     public void addEvent(Event e){ planner.addEvent(e); }
     public boolean removeEvent(String id){ return planner.removeEvent(id); }

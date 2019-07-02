@@ -1,7 +1,12 @@
 package com.exam.planner.Logic.Login.data;
 
+import com.exam.planner.DSO.Events.DateTime;
+import com.exam.planner.DSO.Events.Event;
 import com.exam.planner.Logic.Login.LoginFailureException;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
+import com.exam.planner.Persistence.IUserPersistence;
+
+import java.util.ArrayList;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -16,15 +21,15 @@ public class Repository {
     private LoggedInUser user = null;
 
     // private constructor : singleton access
-    private Repository(DataSource dataSource) {
-        this.dataSource = dataSource;
+    private Repository(IUserPersistence db) {
+        this.dataSource = new DataSource(db);
     }
 
     //TODO: Flesh out this singleton class
 
-    public static Repository getInstance(DataSource dataSource) {
+    public static Repository getInstance(IUserPersistence db) {
         if (instance == null) {
-            instance = new Repository(dataSource);
+            instance = new Repository(db);
         }
         return instance;
     }
@@ -35,8 +40,30 @@ public class Repository {
         }
     }
 
+    public LoggedInUser getUser() { return user; }
+
     private void setLoggedInUser(LoggedInUser user) {
         this.user = user;
+    }
+
+    public ArrayList<Event> getEvent(String id){
+        ArrayList<Event> result = new ArrayList<>();
+
+        for(Event e: user.getPlanner().getEventsList()){
+            if(e.getId() == id)
+                result.add(e);
+        }
+        return result;
+    }
+
+    public ArrayList<Event> getEvents(DateTime date){
+        ArrayList<Event> result = new ArrayList<>();
+
+        for(Event e: user.getPlanner().getEventsList()){
+            if(e.getStartDate().getDay() == date.getDay() && e.getStartDate().getMonth() == date.getMonth())
+                result.add(e);
+        }
+        return result;
     }
 
     public boolean attemptLogin(String username, String password){
@@ -44,7 +71,7 @@ public class Repository {
     }
 
     public Result<LoggedInUser> login(String username, String password) {
-        // handle login
+        // Pass the data to the class that interacts with the DB
         Result result = dataSource.login(username, password);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
@@ -53,7 +80,7 @@ public class Repository {
     }
 
     public Result<LoggedInUser> register(String username, String password, String SQ, String SA) {
-        // handle register
+        // Pass the data to the class that interacts with the DB
         Result result = dataSource.register(username, password, SQ, SA);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());

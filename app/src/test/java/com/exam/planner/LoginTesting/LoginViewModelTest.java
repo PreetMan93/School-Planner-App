@@ -5,13 +5,14 @@ import com.exam.planner.Logic.Login.LoginViewModel;
 import com.exam.planner.Logic.Login.RegisterFailureException;
 import com.exam.planner.Logic.Login.data.DataSource;
 import com.exam.planner.Logic.Login.data.Repository;
+import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 public class LoginViewModelTest {
 
-    private LoginViewModel loginViewModel = new LoginViewModel(Repository.getInstance(new DataSource()));
+    private LoginViewModel loginViewModel = new LoginViewModel(Repository.getInstance(new UserPersistenceStub()));
 
 
     @Test
