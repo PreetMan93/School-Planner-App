@@ -21,13 +21,12 @@ public class LoginViewModel extends ViewModel {
         return repository.attemptLogin(username, password);
     }
 
-    // A lot of redundant checking and validation just to try and 100% ensure success
+    // A lot of redundant checking and validation
     public void login(String username, String password) throws LoginFailureException{
         try {
             Result<LoggedInUser> result = repository.login(username, password);
 
             if (result instanceof Result.Success) {
-                // LoggedInUser newUserInfo = (LoggedInUser) ((Result.Success) result).getData();
                 newUser = false; // newUserInfo.isFirstLogin();
             } else {
                 Log.e("Login error", "If this login error happens good fucking luck mate");
@@ -35,24 +34,29 @@ public class LoginViewModel extends ViewModel {
             }
         } catch (RuntimeException e){
             throw new LoginFailureException("Failed to login not sure how that could happen");
+        } catch (Exception e){
+            throw e; // If this occurs I have no idea what could have gone wrong
         }
     }
 
-    // A lot of redundant checking and validation just to try and 100% ensure success
+    // A lot of redundant checking and validation
     public void register(String username, String password, String SQ, String SA) throws Exception{
-        Result<LoggedInUser> result = repository.register(username, password, SQ, SA);
+        try {
+            Result<LoggedInUser> result = repository.register(username, password, SQ, SA);
 
-        if (result instanceof Result.Success) {
-            // LoggedInUser newUserInfo = (LoggedInUser)((Result.Success)result).getData();
-            newUser = true;
-        } else if(result instanceof Result.Error){
-            Exception e = ((Result.Error)result).getError();
-            if (e instanceof RegisterFailureException) {
-                throw e;
-            } else {
-                Log.e("Register error", "If this register error happens good fucking luck mate");
-                throw new Exception(e.getMessage());
+            if (result instanceof Result.Success) {
+                newUser = true;
+            } else if (result instanceof Result.Error) {
+                Exception e = ((Result.Error) result).getError();
+                if (e instanceof RegisterFailureException) {
+                    throw e;
+                } else {
+                    Log.e("Register error", "If this registration error happens good fucking luck mate");
+                    throw new Exception(e.getMessage());
+                }
             }
+        } catch (Exception e){
+            throw e; // If this triggers I have no idea what has happened
         }
     }
 
