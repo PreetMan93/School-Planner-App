@@ -13,13 +13,13 @@ public class FormState {
     private Integer passwordError;
     private boolean isDataValid;
 
-    FormState(@Nullable Integer usernameError, @Nullable Integer passwordError) {
+    public FormState(@Nullable Integer usernameError, @Nullable Integer passwordError) {
         this.usernameError = usernameError;
         this.passwordError = passwordError;
         this.isDataValid = false;
     }
 
-    FormState(boolean isDataValid) {
+    public FormState(boolean isDataValid) {
         this.usernameError = null;
         this.passwordError = null;
         this.isDataValid = isDataValid;

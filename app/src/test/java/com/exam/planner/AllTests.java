@@ -4,6 +4,7 @@ import com.exam.planner.DSO.Events.EventTest;
 import com.exam.planner.DSO.PlannerTest;
 import com.exam.planner.DSO.UserTest;
 import com.exam.planner.LoginTesting.DataSourceUnitTest;
+import com.exam.planner.LoginTesting.FormStateManagerTest;
 import com.exam.planner.LoginTesting.FormStateTest;
 import com.exam.planner.LoginTesting.LoginViewModelFactoryTest;
 import com.exam.planner.LoginTesting.LoginViewModelTest;
@@ -26,7 +27,8 @@ import org.junit.runners.Suite;
         FormStateTest.class,
         LoginViewModelTest.class,
         RepositoryTest.class,
-        ResultTest.class
+        ResultTest.class,
+        FormStateManagerTest.class
 })
 public class AllTests
 {

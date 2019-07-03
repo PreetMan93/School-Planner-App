@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.exam.planner.Logic.Login.FormState;
+import com.exam.planner.Logic.Login.FormStateManager;
 import com.exam.planner.Logic.Login.LoginFailureException;
 import com.exam.planner.Logic.Login.LoginViewModel;
 import com.exam.planner.Logic.Login.LoginViewModelFactory;
@@ -31,6 +32,7 @@ import com.exam.planner.R;
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
+    private FormStateManager formStateManager;
     private PrefManager prefManager;
 
     private EditText usernameEditText, passwordEditText;
@@ -47,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
+        formStateManager = new FormStateManager();
 
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
@@ -77,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        loginViewModel.getFormState().observe(this, new Observer<FormState>() {
+        formStateManager.getFormState().observe(this, new Observer<FormState>() {
             @Override
             public void onChanged(@Nullable FormState formState) {
                 if (formState == null) {
@@ -107,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
+                formStateManager.loginDataChanged(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }
         };

@@ -1,29 +1,20 @@
 package com.exam.planner.Logic.Login;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.exam.planner.Logic.Login.data.Repository;
 import com.exam.planner.Logic.Login.data.Result;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
-import com.exam.planner.R;
 
 public class LoginViewModel extends ViewModel {
 
-    private MutableLiveData<FormState> FormState = new MutableLiveData<>();
     private Repository repository;
     private boolean newUser;
 
     public LoginViewModel(Repository repository) {
         this.repository = repository;
         newUser = true;
-    }
-
-    public LiveData<FormState> getFormState() {
-        return FormState;
     }
 
     public boolean attemptLogin(String username, String password) {
@@ -36,8 +27,8 @@ public class LoginViewModel extends ViewModel {
             Result<LoggedInUser> result = repository.login(username, password);
 
             if (result instanceof Result.Success) {
-                LoggedInUser newUserInfo = (LoggedInUser) ((Result.Success) result).getData();
-                newUser = newUserInfo.isFirstLogin();
+                // LoggedInUser newUserInfo = (LoggedInUser) ((Result.Success) result).getData();
+                newUser = false; // newUserInfo.isFirstLogin();
             } else {
                 Log.e("Login error", "If this login error happens good fucking luck mate");
                 throw new LoginFailureException("Failed to login not sure how that could happen");
@@ -52,7 +43,7 @@ public class LoginViewModel extends ViewModel {
         Result<LoggedInUser> result = repository.register(username, password, SQ, SA);
 
         if (result instanceof Result.Success) {
-            LoggedInUser newUserInfo = (LoggedInUser)((Result.Success)result).getData();
+            // LoggedInUser newUserInfo = (LoggedInUser)((Result.Success)result).getData();
             newUser = true;
         } else if(result instanceof Result.Error){
             Exception e = ((Result.Error)result).getError();
@@ -65,68 +56,7 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
-
-    public void loginDataChanged(String username, String password) {
-        if (!isUserNameValid(username)) {
-            FormState.setValue(new FormState(R.string.invalid_username, null));
-        } else if (!isPasswordValid(password)) {
-            FormState.setValue(new FormState(null, R.string.invalid_password));
-        } else {
-            FormState.setValue(new FormState(true));
-        }
-    }
-
-    public void registerDataChanged(String username, String password1, String password2){
-        if(!isUserNameValid(username)) {
-            FormState.setValue(new FormState(R.string.invalid_username, null));
-        } else if(!isPasswordValid(password1)) {
-            FormState.setValue(new FormState(null, R.string.invalid_password));
-        } else if(!isPasswordTheSame(password1, password2)){
-            FormState.setValue(new FormState(null, R.string.passwords_dont_match));
-        } else {
-            FormState.setValue((new FormState(true)));
-        }
-    }
-
-    private boolean isUserNameValid(String username) {
-        if (username == null) {
-            return false;
-        } else if(username.trim().length() < 3) {
-            return false;
-        } else if(invalidCharacters(username)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean isPasswordValid(String password) {
-        if (password == null){
-            return false;
-        } else if (password.trim().length() < 5){
-            return false;
-        } else if (invalidCharacters(password)){
-            return false;
-        } else{
-            return true;
-        }
-    }
-
-    private boolean isPasswordTheSame(String pass1, String pass2){
-        return pass1.equals(pass2);
-    }
-
-    private boolean invalidCharacters(String string){
-        String badChars = "!@#$%^&*()-_~?<>,.";
-        for(int i = 0; i < string.length(); i++){
-            if(badChars.contains("" + string.charAt(i)))
-                return true;
-        }
-        return false;
-    }
-
     public boolean isNewUser(){ return newUser; }
-
     public void notNewUser(){
         repository.notNew();
     }
