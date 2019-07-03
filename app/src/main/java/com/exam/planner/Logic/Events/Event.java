@@ -1,4 +1,4 @@
-package com.exam.planner.DSO.Events;
+package com.exam.planner.Logic.Events;
 
 import android.util.Log;
 
@@ -72,7 +72,7 @@ public class Event
     public static void validateDate(int year, int month, int day) throws EventDateOutOfBoundsException {
         if (year < 1900)
             throw(new EventDateOutOfBoundsException("Date must begin after the year 1900"));
-        if (month < 1 || month > 12)
+        if (month < 0 || month > 11)
             throw(new EventDateOutOfBoundsException("Month must be between 1 and 12"));
         if (day < 1 || day > 31)
             throw(new EventDateOutOfBoundsException("Day must be between 1 and 31"));
@@ -96,6 +96,11 @@ public class Event
             throw(new EventTimeOutOfBoundsException("Hour must be between 0 and 23"));
         if (minute < 0 || minute > 59)
             throw(new EventTimeOutOfBoundsException("Minute must be between 0 and 59"));
+    }
+
+    public void validateEndDate(DateTime newEndDate) throws EndDatePriorToStartDateException{
+        if (newEndDate.getDate().before(this.getStartDate().getDate()))
+            throw(new EndDatePriorToStartDateException("You can't schedule an end time prior to the start time."));
     }
 
     public String getStartDateString(){return this.getStartDate().getDate().get(YEAR) + "/" + this.getStartDate().getDate().get(MONTH) + "/" + this.getStartDate().getDate().get(DAY_OF_MONTH);}
@@ -148,31 +153,43 @@ public class Event
     }
 
     public void editStartDate(int year, int month, int day){
-        GregorianCalendar now = new GregorianCalendar();
-        GregorianCalendar newStartDate = new GregorianCalendar (year, month-1, day);
-        if (now.before(newStartDate)){
-            this.startDate.editDate(year,month,day);
-            if(this.endDate.getDate().before(this.startDate.getDate())){
-                this.endDate.editDate(this.getStartDate().getYear(),this.getStartDate().getMonth()+1,this.getStartDate().getDay());
-                this.endDate.addTime(1,0);
-            }
+        try {
+            Event.validateDate(year, month, day);
         }
-        else{
-            System.out.println("You can't schedule an event prior to the current time.");
+        catch (EventValidationException e){
+            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "]");
+            year = 1900;
+            month = 1;
+            day = 1;
+        }
+        this.startDate.editDate(year, month, day);
+        if (this.endDate.getDate().before(this.startDate.getDate())) {
+            this.endDate.editDate(this.getStartDate().getYear(), this.getStartDate().getMonth(), this.getStartDate().getDay(), this.getStartDate().getHour(), this.getStartDate().getMinute());
+            this.endDate.addTime(1, 0);
         }
     }
     public void editStartDate(int year, int month, int day, int hour, int minute){
-        GregorianCalendar now = new GregorianCalendar();
-        GregorianCalendar newStartDate = new GregorianCalendar (year, month-1, day, hour, minute);
-        if (now.before(newStartDate)){
-            this.startDate.editDate(year,month,day, hour, minute);
-            if(this.endDate.getDate().before(this.startDate.getDate())){
-                this.endDate.editDate(this.getStartDate().getYear(),this.getStartDate().getMonth()+1,this.getStartDate().getDay(),this.getStartDate().getHour(),this.getStartDate().getMinute());
-                this.endDate.addTime(1,0);
-            }
+        try {
+            Event.validateDate(year, month, day);
         }
-        else{
-            System.out.println("You can't schedule an event prior to the current time.");
+        catch (EventValidationException e){
+            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "]");
+            year = 1900;
+            month = 1;
+            day = 1;
+        }
+        try {
+            Event.validateTime(hour, minute);
+        }
+        catch (EventValidationException e){
+            Log.d(TAG, "editStartDate() called with: time = [" + hour + ":" + minute + "]");
+            hour = 0;
+            minute = 0;
+        }
+        this.startDate.editDate(year, month, day, hour, minute);
+        if (this.endDate.getDate().before(this.startDate.getDate())) {
+            this.endDate.editDate(this.getStartDate().getYear(), this.getStartDate().getMonth(), this.getStartDate().getDay(), this.getStartDate().getHour(), this.getStartDate().getMinute());
+            this.endDate.addTime(1, 0);
         }
     }
 
@@ -204,22 +221,60 @@ public class Event
     }
 
     public void editEndDate(int year, int month, int day){
-        GregorianCalendar newEndDate = new GregorianCalendar (year, month-1, day);
-        if (newEndDate.after(this.startDate.getDate())){
-            this.endDate.editDate(year,month,day);
+        try {
+            Event.validateDate(year, month, day);
         }
-        else{
-            System.out.println("You can't schedule an end time prior to the start time.");
+        catch (EventValidationException e){
+            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "]");
+            year = 1900;
+            month = 1;
+            day = 1;
         }
+        try {
+            DateTime newEndDate = new DateTime(year, month, day, 0, 0);
+            this.validateEndDate(newEndDate);
+        }
+        catch (EventValidationException e){
+            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "] and time = [ 0:00 ] ");
+            Log.d(TAG, "current start date is = [" + this.getStartDateString() + "] and time = [" + this.getStartTimeString() + "] ");
+            year = 1900;
+            month = 1;
+            day = 1;
+        }
+        this.endDate.editDate(year,month,day);
     }
     public void editEndDate(int year, int month, int day, int hour, int minute){
-        GregorianCalendar newEndDate = new GregorianCalendar (year, month-1, day, hour, minute);
-        if (newEndDate.after(this.startDate.getDate())){
-            this.endDate.editDate(year,month,day, hour, minute);
+        try {
+            Event.validateDate(year, month, day);
         }
-        else{
-            System.out.println("You can't schedule an end time prior to the start time.");
+        catch (EventValidationException e){
+            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "]");
+            year = 1900;
+            month = 1;
+            day = 1;
         }
+        try {
+            Event.validateTime(hour, minute);
+        }
+        catch (EventValidationException e){
+            Log.d(TAG, "editStartDate() called with: time = [" + hour + ":" + minute + "]");
+            hour = 0;
+            minute = 0;
+        }
+        try{
+            DateTime newEndDate = new DateTime (year, month, day,hour,minute);
+            this.validateEndDate(newEndDate);
+        }
+        catch (EventValidationException e){
+            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "] and time = [" + hour + ":" + minute + "] ");
+            Log.d(TAG, "current start date is = [" + this.getStartDateString() + "] and time = [" + this.getStartTimeString() + "] ");
+            year = 1900;
+            month = 1;
+            day = 1;
+            hour = 0;
+            minute = 0;
+        }
+        this.endDate.editDate(year,month,day, hour, minute);
     }
     public void editId (String newId){this.id = newId;}
     void editColour(String newColour){this.colour = newColour;}

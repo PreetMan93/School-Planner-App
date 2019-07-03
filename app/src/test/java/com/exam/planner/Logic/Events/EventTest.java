@@ -1,11 +1,7 @@
-package com.exam.planner.DSO.Events;
+package com.exam.planner.Logic.Events;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 import static org.junit.Assert.*;
 
@@ -26,18 +22,6 @@ public class EventTest {
     public void editName() {
         testEvent.editName("Testing");
         assertTrue(testEvent.getName().equals("Testing"));
-    }
-
-    @Test
-    public void editStartDateFailure() {
-        testEvent.editStartDate(2019,5,12);
-        assertTrue(rightNow.getStartDate().getDay()==testEvent.getStartDate().getDay());
-    }
-
-    @Test
-    public void editStartDateFailure1() {
-        testEvent.editStartDate(2019,5,12, 1, 1);
-        assertTrue(rightNow.getStartDate().getDay()==testEvent.getStartDate().getDay());
     }
 
     @Test
@@ -70,8 +54,6 @@ public class EventTest {
     @Test
     public void editEndDate() {
         testEvent.editStartDate(rightNow.getStartDate().getYear(),8,1);
-        testEvent.getStartDate().printDate();
-        System.out.println("this worked");
         testEvent.editEndDate(rightNow.getStartDate().getYear(),8,2);
         assertTrue(rightNow.getEndDate().getMonth()!=testEvent.getEndDate().getMonth());
         assertTrue(testEvent.getEndDate().getDay()==testEvent.getStartDate().getDay()+1);

@@ -1,4 +1,4 @@
-package com.exam.planner.DSO.Events;
+package com.exam.planner.Logic.Events;
 
 import java.util.*;
 
@@ -15,7 +15,7 @@ public class DateTime
         this.minute = 0;
     }
     public DateTime(int year, int month, int day, int hour, int minute){
-        this.date = new GregorianCalendar(year,month-1,day,hour,minute);
+        this.date = new GregorianCalendar(year,month,day,hour,minute);
         this.hour = hour;
         this.minute = minute;
     }
@@ -27,7 +27,7 @@ public class DateTime
     }
     public GregorianCalendar getDate(){return date;}
     public int getYear(){return date.get(Calendar.YEAR);}
-    public int getMonth(){return date.get(Calendar.MONTH) + 1;}  //This looks dumb because Gregorian Calendar is dumb. For some reason ONLY MONTHS start counting from 0
+    public int getMonth(){return date.get(Calendar.MONTH);}  //This looks dumb because Gregorian Calendar is dumb. For some reason ONLY MONTHS start counting from 0
     public int getDay(){return date.get(Calendar.DAY_OF_MONTH);}
     public int getHour(){return hour;}
     public int getMinute(){return minute;}
@@ -36,11 +36,11 @@ public class DateTime
         System.out.println(this.getHour()+":"+this.getMinute());
     }
     public void editDate(int year, int month, int day){
-        this.date = new GregorianCalendar(year, month-1, day, this.hour, this.minute);
+        this.date = new GregorianCalendar(year, month, day, this.hour, this.minute);
         this.date.setTimeZone(TimeZone.getDefault());
     }
     public void editDate(int year, int month, int day, int hour, int minute){
-        this.date = new GregorianCalendar(year,month-1,day,hour,minute);
+        this.date = new GregorianCalendar(year,month,day,hour,minute);
         this.date.setTimeZone(TimeZone.getDefault());
         this.hour = hour;
         this.minute = minute;
@@ -55,8 +55,8 @@ public class DateTime
     public void dateCopy(DateTime eventToCopy){
         this.date = new GregorianCalendar(eventToCopy.getYear(),eventToCopy.getMonth(),eventToCopy.getDay(),eventToCopy.getHour(),eventToCopy.getMinute());
         this.date.setTimeZone(TimeZone.getDefault());
-        this.hour = hour;
-        this.minute = minute;
+        this.hour = eventToCopy.getHour();
+        this.minute = eventToCopy.getMinute();
     }
     void addTime(int hour, int minute){
         this.date.add((GregorianCalendar.HOUR_OF_DAY), hour);

@@ -1,6 +1,6 @@
 package com.exam.planner;
 
-import com.exam.planner.DSO.Events.EventTest;
+import com.exam.planner.Logic.Events.EventTest;
 import com.exam.planner.DSO.PlannerTest;
 import com.exam.planner.DSO.UserTest;
 import com.exam.planner.LoginTesting.DataSourceUnitTest;
@@ -11,7 +11,6 @@ import com.exam.planner.LoginTesting.RepositoryTest;
 import com.exam.planner.LoginTesting.ResultTest;
 import com.exam.planner.PersistenceTesting.UserPersistenceStubTest;
 
-import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

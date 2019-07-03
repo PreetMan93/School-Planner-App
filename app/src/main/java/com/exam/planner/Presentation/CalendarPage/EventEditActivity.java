@@ -14,11 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.exam.planner.DSO.Events.Event;
-import com.exam.planner.DSO.Events.EventDateInvalidFormatException;
-import com.exam.planner.DSO.Events.EventDateOutOfBoundsException;
-import com.exam.planner.DSO.Events.EventTimeInvalidFormatException;
-import com.exam.planner.DSO.Events.EventTimeOutOfBoundsException;
+import com.exam.planner.Logic.Events.Event;
+import com.exam.planner.Logic.Events.EventDateInvalidFormatException;
+import com.exam.planner.Logic.Events.EventDateOutOfBoundsException;
+import com.exam.planner.Logic.Events.EventTimeInvalidFormatException;
+import com.exam.planner.Logic.Events.EventTimeOutOfBoundsException;
 import com.exam.planner.R;
 
 public class EventEditActivity extends AppCompatActivity {
