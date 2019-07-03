@@ -1,6 +1,5 @@
 package com.exam.planner.Logic.Login;
 
-import android.content.Intent;
 import android.support.annotation.Nullable;
 
 /**

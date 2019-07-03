@@ -12,7 +12,6 @@ import com.exam.planner.LoginTesting.RepositoryTest;
 import com.exam.planner.LoginTesting.ResultTest;
 import com.exam.planner.PersistenceTesting.UserPersistenceStubTest;
 
-import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
