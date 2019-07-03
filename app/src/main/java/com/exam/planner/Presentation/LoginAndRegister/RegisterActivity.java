@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.exam.planner.Logic.Login.FormState;
+import com.exam.planner.Logic.Login.FormStateManager;
 import com.exam.planner.Logic.Login.LoginViewModel;
 import com.exam.planner.Logic.Login.LoginViewModelFactory;
 import com.exam.planner.Logic.Login.RegisterFailureException;
@@ -29,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
      */
 
     private LoginViewModel loginViewModel;
+    private FormStateManager formStateManager;
 
     private EditText usernameEditText, passwordEditText, confirmPasswordEditText, secretQuestionEditText,
                      secretAnswerEditText;
@@ -46,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, CalendarActivity.class);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
-
+        formStateManager = new FormStateManager();
 
         usernameEditText = findViewById(R.id.registerEmail);
         passwordEditText = findViewById(R.id.registerPassword);
@@ -61,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
         prefManager.checkSharedPreferences(usernameEditText, passwordEditText, checkBox);
 
 
-        loginViewModel.getFormState().observe(this, new Observer<FormState>() {
+        formStateManager.getFormState().observe(this, new Observer<FormState>() {
             @Override
             public void onChanged(@Nullable FormState formState) {
                 if (formState == null) {
@@ -91,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.registerDataChanged(usernameEditText.getText().toString(),
+                formStateManager.registerDataChanged(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString(), confirmPasswordEditText.getText().toString());
             }
         };

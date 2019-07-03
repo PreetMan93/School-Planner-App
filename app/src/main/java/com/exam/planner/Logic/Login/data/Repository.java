@@ -2,7 +2,6 @@ package com.exam.planner.Logic.Login.data;
 
 import com.exam.planner.DSO.Events.DateTime;
 import com.exam.planner.DSO.Events.Event;
-import com.exam.planner.Logic.Login.LoginFailureException;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
 import com.exam.planner.Persistence.IUserPersistence;
 
@@ -24,8 +23,6 @@ public class Repository {
     private Repository(IUserPersistence db) {
         this.dataSource = new DataSource(db);
     }
-
-    //TODO: Flesh out this singleton class
 
     public static Repository getInstance(IUserPersistence db) {
         if (instance == null) {
@@ -50,7 +47,7 @@ public class Repository {
         ArrayList<Event> result = new ArrayList<>();
 
         for(Event e: user.getPlanner().getEventsList()){
-            if(e.getId() == id)
+            if(e.getId().equals(id))
                 result.add(e);
         }
         return result;

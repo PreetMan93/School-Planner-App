@@ -4,7 +4,6 @@ import com.exam.planner.DSO.User;
 import com.exam.planner.Logic.Login.LoginFailureException;
 import com.exam.planner.Logic.Login.RegisterFailureException;
 import com.exam.planner.Persistence.IUserPersistence;
-import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
 
 /**
