@@ -4,25 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Presentation.Settings.SettingsActivity">
+    tools:context=".Presentation.Settings.SettingsAccountActivity">
 
-    <Button
-        android:id="@+id/settingsAccount"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/NavBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchorGravity="top|center">
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/HomeTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_home" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/SettingsTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_settings" />
+
+    </android.support.design.widget.TabLayout>
+
+    <EditText
+        android:id="@+id/settingsAccountUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="126dp"
-        android:text="@string/action_account_settings"
+        android:layout_marginTop="300dp"
+        android:ems="10"
+        android:hint="@string/prompt_new_email"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/settingsCalendar"
+    <EditText
+        android:id="@+id/settingsAccountPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="210dp"
-        android:text="@string/action_calendar_settings"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="@string/prompt_new_password"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/settingsAccountUsername" />
+
+    <EditText
+        android:id="@+id/settingsAccountConfirmNewPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="@string/prompt_new_confirm_password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsAccountPassword" />
+
+    <Button
+        android:id="@+id/AccountSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/action_save_settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsAccountConfirmNewPassword"
+        app:layout_constraintVertical_bias="0.091" />
+
+    <TextView
+        android:id="@+id/userSettingsMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/user_settings_message"
+        app:layout_constraintBottom_toTopOf="@+id/settingsAccountUsername"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/NavBar"
+        app:layout_constraintTop_toBottomOf="@+id/NavBar" />
+
 </android.support.constraint.ConstraintLayout>
