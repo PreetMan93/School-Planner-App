@@ -1,6 +1,6 @@
 package com.exam.planner.DSO;
 
-import com.exam.planner.DSO.Events.Event;
+import com.exam.planner.Logic.Events.Event;
 
 import org.junit.Assert;
 import org.junit.Test;

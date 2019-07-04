@@ -1,4 +1,4 @@
-package com.exam.planner.DSO.Events;
+package com.exam.planner.Logic.Events;
 
 public class EventTimeInvalidFormatException extends EventValidationException{
     EventTimeInvalidFormatException(String message){

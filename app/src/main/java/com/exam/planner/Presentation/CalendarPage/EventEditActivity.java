@@ -14,11 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.exam.planner.DSO.Events.Event;
-import com.exam.planner.DSO.Events.EventDateInvalidFormatException;
-import com.exam.planner.DSO.Events.EventDateOutOfBoundsException;
-import com.exam.planner.DSO.Events.EventTimeInvalidFormatException;
-import com.exam.planner.DSO.Events.EventTimeOutOfBoundsException;
+import com.exam.planner.Logic.Events.Event;
+import com.exam.planner.Logic.Events.EventDateInvalidFormatException;
+import com.exam.planner.Logic.Events.DateOutOfBoundsException;
+import com.exam.planner.Logic.Events.EventTimeInvalidFormatException;
+import com.exam.planner.Logic.Events.TimeOutOfBoundsException;
 import com.exam.planner.R;
 
 public class EventEditActivity extends AppCompatActivity {
@@ -220,7 +220,7 @@ public class EventEditActivity extends AppCompatActivity {
         } catch (EventDateInvalidFormatException e){
             field.setText(var);
             Toast.makeText(EventEditActivity.this, "Date must be formatted YYYY/MM/DD", Toast.LENGTH_SHORT).show();
-        } catch (EventDateOutOfBoundsException e){
+        } catch (DateOutOfBoundsException e){
             field.setText(var);
             Toast.makeText(EventEditActivity.this, "Please enter a valid date after January 1, 1900", Toast.LENGTH_SHORT).show();
         }
@@ -235,7 +235,7 @@ public class EventEditActivity extends AppCompatActivity {
         } catch (EventTimeInvalidFormatException e){
             field.setText(var);
             Toast.makeText(EventEditActivity.this, "Time must be formatted HH:MM", Toast.LENGTH_SHORT).show();
-        } catch (EventTimeOutOfBoundsException e){
+        } catch (TimeOutOfBoundsException e){
             field.setText(var);
             Toast.makeText(EventEditActivity.this, "Please enter an hour from 0 and 23 and a minute from 0 to 59", Toast.LENGTH_SHORT).show();
         }

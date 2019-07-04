@@ -1,4 +1,4 @@
-package com.exam.planner.DSO.Events;
+package com.exam.planner.Logic.Events;
 
 public class EventValidationException extends Exception{
     EventValidationException(String message){

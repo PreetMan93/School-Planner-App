@@ -1,8 +1,8 @@
 package com.exam.planner.DSO;
 
 
-//import com.exam.planner.DSO.Events
-import com.exam.planner.DSO.Events.Event;
+//import com.exam.planner.Logic.Events
+import com.exam.planner.Logic.Events.Event;
 import java.util.ArrayList;
 
 public class Planner {
