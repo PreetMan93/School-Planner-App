@@ -1,7 +1,7 @@
 package com.exam.planner.LoginTesting;
 
-import com.exam.planner.DSO.Events.DateTime;
-import com.exam.planner.DSO.Events.Event;
+import com.exam.planner.Logic.Events.DateTime;
+import com.exam.planner.Logic.Events.Event;
 import com.exam.planner.Logic.Login.data.Repository;
 import com.exam.planner.Logic.Login.data.Result;
 import com.exam.planner.Persistence.Stubs.UserPersistenceStub;

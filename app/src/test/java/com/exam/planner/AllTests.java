@@ -1,6 +1,6 @@
 package com.exam.planner;
 
-import com.exam.planner.DSO.Events.EventTest;
+import com.exam.planner.Logic.Events.EventTest;
 import com.exam.planner.DSO.PlannerTest;
 import com.exam.planner.DSO.UserTest;
 import com.exam.planner.LoginTesting.DataSourceUnitTest;
