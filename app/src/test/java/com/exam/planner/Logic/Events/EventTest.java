@@ -19,6 +19,21 @@ public class EventTest {
     }
 
     @Test
+    public void Getters(){
+        assertTrue(testEvent.getStartYear()==testEvent.getStartDate().getYear());
+        assertTrue(testEvent.getStartMonth()==testEvent.getStartDate().getMonth());
+        assertTrue(testEvent.getStartDay()==testEvent.getStartDate().getDay());
+        assertTrue(testEvent.getStartHour()==testEvent.getStartDate().getHour());
+        assertTrue(testEvent.getStartMinute()==0);
+        
+        assertTrue(testEvent.getEndYear()==testEvent.getEndDate().getYear());
+        assertTrue(testEvent.getEndMonth()==testEvent.getEndDate().getMonth());
+        assertTrue(testEvent.getEndDay()==testEvent.getEndDate().getDay());
+        assertTrue(testEvent.getEndHour()==testEvent.getStartHour()+1);
+        assertTrue(testEvent.getEndMinute()==0);
+
+    }
+    @Test
     public void Event2(){
         Event newEvent = new Event("Comp3430");
         assertTrue(newEvent.getId().equals("Comp3430"));
@@ -73,6 +88,23 @@ public class EventTest {
     }
 
     @Test
+    public void editTime()throws TimeOutOfBoundsException{
+        testEvent.getStartDate().editTime(1,1);
+        assertTrue(testEvent.getStartHour()==1);
+        assertTrue(testEvent.getStartMinute()==1);
+    }
+
+    @Test(expected = Exception.class)
+    public void editTime2()throws TimeOutOfBoundsException{
+        testEvent.getStartDate().editTime(24,1);
+    }
+
+    @Test(expected = Exception.class)
+    public void editTime3()throws TimeOutOfBoundsException {
+        testEvent.getStartDate().editTime(1, 60);
+    }
+
+        @Test
     public void editId() {
         testEvent.editId("Comp3350");
         assertTrue(testEvent.getId().equals("Comp3350"));
@@ -108,17 +140,6 @@ public class EventTest {
     }
 
     @Test
-    public void isEndDatePriorToStart(){
-        assertTrue(!testEvent.endDatePriorToStart());
-    }
-
-    @Test
-    public void isEndDatePriorToStart2() throws DateOutOfBoundsException {
-        testEvent.editEndDate(2018,10,12);
-        assertTrue(testEvent.endDatePriorToStart());
-    }
-
-    @Test
     public void testCompareEvent(){
         Event a = new Event();
         a.editId("123");
@@ -128,4 +149,5 @@ public class EventTest {
         b.editId("321");
         assertTrue(!a.compare(b));
     }
+
 }
