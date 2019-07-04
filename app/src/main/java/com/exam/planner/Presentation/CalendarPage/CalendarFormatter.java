@@ -44,12 +44,20 @@ public class CalendarFormatter {
         String[] split = date.split("/");
         if (split.length != 3)
             throw(new CalendarInvalidFormatException("Date must follow the format YYYY/MM/DD"));
+        for (int i = 0; i<3; i++){
+            if(split[i].length() == 0)
+                throw(new CalendarInvalidFormatException("Date must follow the format YYYY/MM/DD"));
+        }
     }
 
     public static void validateTimeFormat(String time) throws CalendarInvalidFormatException {
         String[] split = time.split(":");
         if (split.length != 2)
             throw(new CalendarInvalidFormatException("Time must follow the format HH:MM"));
+        for (int i = 0; i<2; i++){
+            if(split[i].length() == 0)
+                throw(new CalendarInvalidFormatException("Time must follow the format HH:MM"));
+        }
     }
 }
 
