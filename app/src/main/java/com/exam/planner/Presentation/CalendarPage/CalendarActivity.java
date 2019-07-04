@@ -3,7 +3,6 @@ package com.exam.planner.Presentation.CalendarPage;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.exam.planner.DSO.Events.Event;
+import com.exam.planner.Logic.Events.DateOutOfBoundsException;
+import com.exam.planner.Logic.Events.Event;
+import com.exam.planner.Logic.Events.TimeOutOfBoundsException;
 import com.exam.planner.Presentation.Settings.SettingsActivity;
 import com.exam.planner.R;
 
@@ -36,9 +37,13 @@ public class CalendarActivity extends AppCompatActivity {
 
         final Button addEventButton = findViewById(R.id.add_event_button);
 
-        final TabLayout navigationBar = findViewById(R.id.NavBar);
-
-        populateEvents();
+        try {
+            populateEvents();
+        } catch (DateOutOfBoundsException e) {
+            e.printStackTrace();
+        } catch (TimeOutOfBoundsException e) {
+            e.printStackTrace();
+        }
         initEventListView();
 
         addEventButton.setOnClickListener(new View.OnClickListener() {
@@ -66,26 +71,6 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
-        navigationBar.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-                if(tab.getText().equals("Settings")){
-                    startActivity(settingsIntent);
-                }
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-
-
     }
 
     @Override
@@ -112,10 +97,22 @@ public class CalendarActivity extends AppCompatActivity {
                     editEvent = new Event();
                     mEvents.add(editEvent);
                 }
-
+                
                 editEvent.editName(eventName);
-                editEvent.editStartDate(eventStartDate, eventStartTime);
-                editEvent.editEndDate(eventEndDate, eventEndTime);
+                try {
+                    editEvent.editStartDate(eventStartDate, eventStartTime);
+                } catch (DateOutOfBoundsException e) {
+                    e.printStackTrace();
+                } catch (TimeOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    editEvent.editEndDate(eventEndDate, eventEndTime);
+                } catch (DateOutOfBoundsException e) {
+                    e.printStackTrace();
+                } catch (TimeOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
 
                 adapter.notifyDataSetChanged();
             }else if (resultCode == 2){
@@ -129,7 +126,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 
-    private void populateEvents() {
+    private void populateEvents() throws DateOutOfBoundsException, TimeOutOfBoundsException {
         Log.d(TAG, "populateEvents: preparing events");
 
         Event event1 = new Event();
