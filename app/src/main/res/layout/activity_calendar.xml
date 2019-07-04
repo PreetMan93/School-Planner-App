@@ -38,12 +38,4 @@
 
     </android.support.design.widget.TabLayout>
 
-    <Button
-        android:id="@+id/SettingsButton"
-        android:layout_width="94dp"
-        android:layout_height="wrap_content"
-        android:text="Settings(Temp)"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="start|bottom" />
-
 </android.support.design.widget.CoordinatorLayout>

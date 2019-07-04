@@ -33,7 +33,6 @@ public class CalendarActivity extends AppCompatActivity {
 
         final TabLayout navigationBar = findViewById(R.id.NavBar);
 
-        final Button settingsButton = findViewById(R.id.SettingsButton);
         final Intent settingsIntent = new Intent(this, SettingsActivity.class);
 
         final Button addEventButton = findViewById(R.id.add_event_button);
@@ -69,13 +68,6 @@ public class CalendarActivity extends AppCompatActivity {
                 editEventIntent.putExtra("eventEndMinute", e.getEndMinute());
 
                 ((Activity)v.getContext()).startActivityForResult(editEventIntent, 1);
-            }
-        });
-
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(settingsIntent);
             }
         });
 
