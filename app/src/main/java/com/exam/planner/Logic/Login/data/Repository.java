@@ -36,7 +36,8 @@ public class Repository {
             user.notNewUser();
         }
     }
-
+    public ArrayList<Event> getEvents(){return user.getPlanner().getEventsList();}
+    public void addEvent(Event e){user.addEvent(e);}
     public LoggedInUser getUser() { return user; }
 
     private void setLoggedInUser(LoggedInUser user) {

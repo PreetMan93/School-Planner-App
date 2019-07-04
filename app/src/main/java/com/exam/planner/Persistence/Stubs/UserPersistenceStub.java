@@ -1,6 +1,7 @@
 package com.exam.planner.Persistence.Stubs;
 
 import com.exam.planner.DSO.User;
+import com.exam.planner.Logic.Events.Event;
 import com.exam.planner.Persistence.IUserPersistence;
 
 import java.util.ArrayList;
@@ -13,6 +14,10 @@ public class UserPersistenceStub implements IUserPersistence {
         this.users = new ArrayList<User>();
         users.add(new User("12345", "username", "password"));
         users.add(new User("54321", "Username", "Password"));
+
+        Event event1 = new Event("1234");
+        users.get(0).addEvent(event1);
+        users.get(1).addEvent(event1);
     }
 
     @Override

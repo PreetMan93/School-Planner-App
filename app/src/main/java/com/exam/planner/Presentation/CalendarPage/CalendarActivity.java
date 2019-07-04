@@ -14,16 +14,21 @@ import android.widget.Button;
 import com.exam.planner.Logic.Events.DateOutOfBoundsException;
 import com.exam.planner.Logic.Events.Event;
 import com.exam.planner.Logic.Events.TimeOutOfBoundsException;
+import com.exam.planner.Logic.Login.data.Repository;
+import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 import com.exam.planner.Presentation.Settings.SettingsActivity;
 import com.exam.planner.R;
 
 import java.util.ArrayList;
+
+import static com.exam.planner.Logic.Login.data.Repository.getInstance;
 
 public class CalendarActivity extends AppCompatActivity {
     private static final String TAG = "CalendarActivity";
 
     private ArrayList<Event> mEvents = new ArrayList<>();
     private EventListAdapter adapter;
+    private Repository repo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +36,14 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
         Log.d(TAG, "onCreate: started");
 
+        repo = getInstance(new UserPersistenceStub());
+
         final TabLayout navigationBar = findViewById(R.id.NavBar);
 
         final Intent settingsIntent = new Intent(this, SettingsActivity.class);
 
         final Button addEventButton = findViewById(R.id.add_event_button);
 
-        try {
-            populateEvents();
-        } catch (DateOutOfBoundsException e) {
-            e.printStackTrace();
-        } catch (TimeOutOfBoundsException e) {
-            e.printStackTrace();
-        }
         initEventListView();
 
         addEventButton.setOnClickListener(new View.OnClickListener() {
@@ -122,10 +122,11 @@ public class CalendarActivity extends AppCompatActivity {
                     editEvent = mEvents.get(eventPos);
                 else {
                     editEvent = new Event();
-                    mEvents.add(editEvent);
+                    repo.addEvent(editEvent);
                 }
                 
                 editEvent.editName(eventName);
+                editEvent.editId(java.util.UUID.randomUUID().toString());
                 try {
                     editEvent.editStartDate(startYear, startMonth, startDay, startHour, startMinute);
                 } catch (DateOutOfBoundsException e) {
@@ -145,35 +146,20 @@ public class CalendarActivity extends AppCompatActivity {
             }else if (resultCode == 2){
                 int eventPos = data.getIntExtra("eventPos", -1);
                 if (eventPos >= 0) {
-                    mEvents.remove(eventPos);
-
+                    //mEvents.remove(eventPos)
+                    repo.getUser().getPlanner().getEventsList().remove(eventPos);
                     adapter.notifyDataSetChanged();
                 }
             }
         }
     }
 
-    private void populateEvents() throws DateOutOfBoundsException, TimeOutOfBoundsException {
-        Log.d(TAG, "populateEvents: preparing events");
 
-        Event event1 = new Event();
-        event1.editName("Homework 1");
-        event1.editStartDate(2022, 11, 13, 14, 00);
-        event1.editEndDate(2022, 11, 13, 14, 30);
-        mEvents.add(event1);
-
-        Event event2 = new Event();
-        event2.editName("Test 1");
-        event2.editStartDate(2022, 11, 15, 14, 05);
-        event2.editEndDate(2022, 11, 16, 14, 00);
-
-        mEvents.add(event2);
-    }
 
     private void initEventListView() {
         Log.d(TAG, "initEventListView: init recyclerview");
         RecyclerView eventListView = findViewById(R.id.event_list_view);
-        adapter = new EventListAdapter(this, mEvents);
+        adapter = new EventListAdapter(this, repo.getEvents());
         eventListView.setAdapter(adapter);
         eventListView.setLayoutManager(new LinearLayoutManager(this));
     }

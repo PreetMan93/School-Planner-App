@@ -1,6 +1,7 @@
 package com.exam.planner.Logic.Login.data.model;
 
 import com.exam.planner.DSO.Planner;
+import com.exam.planner.Logic.Events.Event;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
@@ -20,7 +21,8 @@ public class LoggedInUser {
         this.planner = planner;
     }
 
-
+    public void addEvent(Event e){planner.addEvent(e);}
+    public void removeEvent(String id){planner.removeEvent(id);}
     public String getDisplayName() {
         return displayName;
     }

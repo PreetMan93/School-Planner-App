@@ -51,8 +51,9 @@ public class RepositoryTest {
     @Test
     public void testGetEventsByDayMonth(){
         test.login("username", "password");
+        int numCurrEvents = test.getEvents(new DateTime()).size();
         test.getUser().getPlanner().addEvent(new Event("ID"));
         test.getUser().getPlanner().addEvent(new Event("ID"));
-        Assert.assertEquals(test.getEvents(new DateTime()).size(), 2);
+        Assert.assertEquals(test.getEvents(new DateTime()).size(), 2 + numCurrEvents);
     }
 }
