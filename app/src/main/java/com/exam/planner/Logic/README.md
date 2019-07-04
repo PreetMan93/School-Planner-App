@@ -1,7 +1,7 @@
 # Logic
 
 ## Login
-- The **LoginViewModel** is the class that interacts with the activity and will pawn off requests to other classes
+- The **LoginViewModel** is the class that interacts with the activity and will forward requests to other classes
 - The **FormStateManager** monitors the user input to make sure everything they are inputting is valid
   giving them real time up to date knowledge.
 - Have two Custom exceptions which will be handled by the UI and toast messages to the user upon them triggering
