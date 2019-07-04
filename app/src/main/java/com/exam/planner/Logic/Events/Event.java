@@ -77,10 +77,7 @@ public class Event
     }
 
     public boolean endDatePriorToStart(){
-        if (this.getEndDate().getDate().before(this.getStartDate().getDate()))
-            return true;
-        else
-            return false;
+        return this.getEndDate().getDate().before(this.getStartDate().getDate());
     }
 
     public String getStartDateString(){return this.getStartDate().getDate().get(YEAR) + "/" + this.getStartDate().getDate().get(MONTH) + "/" + this.getStartDate().getDate().get(DAY_OF_MONTH);}
