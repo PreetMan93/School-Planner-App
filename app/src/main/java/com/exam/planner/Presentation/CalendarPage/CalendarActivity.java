@@ -97,23 +97,22 @@ public class CalendarActivity extends AppCompatActivity {
                     editEvent = new Event();
                     mEvents.add(editEvent);
                 }
-
-                    Event editEvent = mEvents.get(eventPos);
-                    editEvent.editName(eventName);
-                    try {
-                        editEvent.editStartDate(eventStartDate, eventStartTime);
-                    } catch (DateOutOfBoundsException e) {
-                        e.printStackTrace();
-                    } catch (TimeOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        editEvent.editEndDate(eventEndDate, eventEndTime);
-                    } catch (DateOutOfBoundsException e) {
-                        e.printStackTrace();
-                    } catch (TimeOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
+                
+                editEvent.editName(eventName);
+                try {
+                    editEvent.editStartDate(eventStartDate, eventStartTime);
+                } catch (DateOutOfBoundsException e) {
+                    e.printStackTrace();
+                } catch (TimeOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    editEvent.editEndDate(eventEndDate, eventEndTime);
+                } catch (DateOutOfBoundsException e) {
+                    e.printStackTrace();
+                } catch (TimeOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
 
                 adapter.notifyDataSetChanged();
             }else if (resultCode == 2){
