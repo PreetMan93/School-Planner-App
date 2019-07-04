@@ -18,13 +18,13 @@ public class EventTest {
         String test;
         testEvent.printEvent();
         test = testEvent.getStartDateString();
-        System.out.print(test);
+        System.out.println(test);
         test = testEvent.getStartTimeString();
-        System.out.print(test);
+        System.out.println(test);
         test = testEvent.getEndDateString();
-        System.out.print(test);
+        System.out.println(test);
         test = testEvent.getEndTimeString();
-        System.out.print(test);
+        System.out.println(test);
     }
 
     @Test
