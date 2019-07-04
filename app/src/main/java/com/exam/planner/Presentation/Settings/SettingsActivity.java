@@ -1,40 +1,44 @@
 package com.exam.planner.Presentation.Settings;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TabHost;
+import android.widget.TextView;
 
+import com.exam.planner.Logic.Login.data.DataSource;
+import com.exam.planner.Logic.Login.data.Repository;
+import com.exam.planner.Logic.Login.data.model.LoggedInUser;
+import com.exam.planner.Presentation.CalendarPage.CalendarActivity;
 import com.exam.planner.R;
 
 public class SettingsActivity extends AppCompatActivity {
-
-    Button settingsAccountButton;
-
-    Button settingsCalendarButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        settingsAccountButton = findViewById(R.id.settingsAccount);
-        settingsCalendarButton = findViewById(R.id.settingsCalendar);
+        final TabLayout navigationBar = findViewById(R.id.NavBar);
+        final Intent homeIntent = new Intent(this, CalendarActivity.class);
+        navigationBar.getTabAt(1).select();
 
-        settingsAccountButton .setOnClickListener(new View.OnClickListener() {
+        navigationBar.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), SettingsAccountActivity.class);
-                startActivity(intent);
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getText().equals("Home")){
+                    startActivity(homeIntent);
+                }
             }
-        });
-
-        settingsCalendarButton .setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),SettingsCalendarActivity.class);
-                startActivity(intent);
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
             }
         });
 

@@ -28,19 +28,13 @@
             android:id="@+id/HomeTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Not" />
+            android:text="@string/action_home" />
 
         <android.support.design.widget.TabItem
             android:id="@+id/SettingsTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Functioning" />
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/ComingSoonTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Yet" />
+            android:text="@string/action_settings" />
 
     </android.support.design.widget.TabLayout>
 

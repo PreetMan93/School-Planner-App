@@ -3,6 +3,7 @@ package com.exam.planner.Presentation.CalendarPage;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,8 @@ public class CalendarActivity extends AppCompatActivity {
 
         final Button addEventButton = findViewById(R.id.add_event_button);
 
+        final TabLayout navigationBar = findViewById(R.id.NavBar);
+
         populateEvents();
         initEventListView();
 
@@ -62,6 +65,26 @@ public class CalendarActivity extends AppCompatActivity {
                 startActivity(settingsIntent);
             }
         });
+
+        navigationBar.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                if(tab.getText().equals("Settings")){
+                    startActivity(settingsIntent);
+                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+
 
     }
 
