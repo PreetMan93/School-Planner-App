@@ -44,23 +44,33 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         //Get Event info and populate cells
         Event e = mEvents.get(position);
         holder.eventName.setText(e.getName());
-        holder.eventStartDate.setText(e.getStartDateString());
-        holder.eventStartTime.setText(e.getStartTimeString());
-        holder.eventEndDate.setText(e.getEndDateString());
-        holder.eventEndTime.setText(e.getEndTimeString());
+        holder.eventStartDate.setText(CalendarFormatter.dateToString(e.getStartYear(), e.getStartMonth(), e.getStartDay()));
+        holder.eventStartTime.setText(CalendarFormatter.timeToString(e.getStartHour(), e.getStartMinute()));
+        holder.eventEndDate.setText(CalendarFormatter.dateToString(e.getEndYear(), e.getEndMonth(), e.getEndDay()));
+        holder.eventEndTime.setText(CalendarFormatter.timeToString(e.getEndHour(), e.getEndMinute()));
 
         holder.eventItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on " + mEvents.get(position));
 
+                Event e = mEvents.get(position);
+
                 Intent editEventIntent = new Intent(mContext, EventEditActivity.class);
                 editEventIntent.putExtra("eventPos", position);
-                editEventIntent.putExtra("eventName", mEvents.get(position).getName());
-                editEventIntent.putExtra("eventStartDate", mEvents.get(position).getStartDateString());
-                editEventIntent.putExtra("eventStartTime", mEvents.get(position).getStartTimeString());
-                editEventIntent.putExtra("eventEndDate", mEvents.get(position).getEndDateString());
-                editEventIntent.putExtra("eventEndTime", mEvents.get(position).getEndTimeString());
+                editEventIntent.putExtra("eventName", e.getName());
+
+                editEventIntent.putExtra("eventStartYear", e.getStartYear());
+                editEventIntent.putExtra("eventStartMonth", e.getStartMonth());
+                editEventIntent.putExtra("eventStartDay", e.getStartDay());
+                editEventIntent.putExtra("eventStartHour", e.getStartHour());
+                editEventIntent.putExtra("eventStartMinute", e.getStartMinute());
+
+                editEventIntent.putExtra("eventEndYear", e.getEndYear());
+                editEventIntent.putExtra("eventEndMonth", e.getEndMonth());
+                editEventIntent.putExtra("eventEndDay", e.getEndDay());
+                editEventIntent.putExtra("eventEndHour", e.getEndHour());
+                editEventIntent.putExtra("eventEndMinute", e.getEndMinute());
 
                 ((Activity)mContext).startActivityForResult(editEventIntent, 1);
             }

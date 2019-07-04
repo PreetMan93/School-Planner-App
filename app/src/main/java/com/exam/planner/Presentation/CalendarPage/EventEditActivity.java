@@ -14,10 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.exam.planner.Logic.Events.Event;
-import com.exam.planner.Logic.Events.EventDateInvalidFormatException;
 import com.exam.planner.Logic.Events.DateOutOfBoundsException;
-import com.exam.planner.Logic.Events.EventTimeInvalidFormatException;
+import com.exam.planner.Logic.Events.Event;
+import com.exam.planner.Logic.Events.EventValidationException;
 import com.exam.planner.Logic.Events.TimeOutOfBoundsException;
 import com.exam.planner.R;
 
@@ -25,10 +24,11 @@ public class EventEditActivity extends AppCompatActivity {
 
     private int eventPos;
     private String eventName;
-    private String eventStartDate;
-    private String eventStartTime;
-    private String eventEndDate;
-    private String eventEndTime;
+    private int startYear, startMonth, startDay, startHour, startMinute;
+    private int endYear, endMonth, endDay, endHour, endMinute;
+
+    private EditText eventNameField, eventStartDateField, eventStartTimeField, eventEndDateField, eventEndTimeField;
+    private CheckBox sundayBox, mondayBox, tuesdayBox, wednesdayBox, thursdayBox, fridayBox, saturdayBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,19 +37,19 @@ public class EventEditActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final EditText eventNameField = findViewById(R.id.event_edit_name_field);
-        final EditText eventStartDateField = findViewById(R.id.event_edit_start_date_field);
-        final EditText eventStartTimeField = findViewById(R.id.event_edit_start_time_field);
-        final EditText eventEndDateField = findViewById(R.id.event_edit_end_date_field);
-        final EditText eventEndTimeField = findViewById(R.id.event_edit_end_time_field);
+        eventNameField = findViewById(R.id.event_edit_name_field);
+        eventStartDateField = findViewById(R.id.event_edit_start_date_field);
+        eventStartTimeField = findViewById(R.id.event_edit_start_time_field);
+        eventEndDateField = findViewById(R.id.event_edit_end_date_field);
+        eventEndTimeField = findViewById(R.id.event_edit_end_time_field);
 
-        final CheckBox sundayBox = findViewById(R.id.sunday_checkbox);
-        final CheckBox mondayBox = findViewById(R.id.monday_checkbox);
-        final CheckBox tuesdayBox = findViewById(R.id.tuesday_checkbox);
-        final CheckBox wednesdayBox = findViewById(R.id.wednesday_checkbox);
-        final CheckBox thursdayBox = findViewById(R.id.thursday_checkbox);
-        final CheckBox fridayBox = findViewById(R.id.friday_checkbox);
-        final CheckBox saturdayBox = findViewById(R.id.saturday_checkbox);
+        sundayBox = findViewById(R.id.sunday_checkbox);
+        mondayBox = findViewById(R.id.monday_checkbox);
+        tuesdayBox = findViewById(R.id.tuesday_checkbox);
+        wednesdayBox = findViewById(R.id.wednesday_checkbox);
+        thursdayBox = findViewById(R.id.thursday_checkbox);
+        fridayBox = findViewById(R.id.friday_checkbox);
+        saturdayBox = findViewById(R.id.saturday_checkbox);
 
         eventPos = getIntent().getIntExtra("eventPos", -1);
 
@@ -59,29 +59,62 @@ public class EventEditActivity extends AppCompatActivity {
         }else
             eventName = "";
 
-        if (getIntent().hasExtra("eventStartDate")){
-            eventStartDate = getIntent().getStringExtra("eventStartDate");
-            eventStartDateField.setText(eventStartDate);
-        }else
-            eventStartDate = "";
+        if (getIntent().hasExtra("eventStartYear"))
+            startYear = getIntent().getIntExtra("eventStartYear", 1900);
+        else
+            startYear = 1900;
 
-        if (getIntent().hasExtra("eventStartTime")){
-            eventStartTime = getIntent().getStringExtra("eventStartTime");
-            eventStartTimeField.setText(eventStartTime);
-        }else
-            eventStartTime = "";
+        if (getIntent().hasExtra("eventStartMonth"))
+            startMonth = getIntent().getIntExtra("eventStartMonth", 1);
+        else
+            startMonth = 1;
 
-        if (getIntent().hasExtra("eventEndDate")){
-            eventEndDate = getIntent().getStringExtra("eventEndDate");
-            eventEndDateField.setText(eventEndDate);
-        }else
-            eventEndDate = "";
+        if (getIntent().hasExtra("eventStartDay"))
+            startDay = getIntent().getIntExtra("eventStartDay", 1);
+        else
+            startDay = 1;
 
-        if (getIntent().hasExtra("eventEndTime")){
-            eventEndTime = getIntent().getStringExtra("eventEndTime");
-            eventEndTimeField.setText(eventEndTime);
-        }else
-            eventEndTime = "";
+        if (getIntent().hasExtra("eventStartHour"))
+            startHour = getIntent().getIntExtra("eventStartHour", 0);
+        else
+            startHour = 0;
+
+        if (getIntent().hasExtra("eventStartMinute"))
+            startMinute = getIntent().getIntExtra("eventStartMinute", 0);
+        else
+            startMinute = 0;
+
+
+        if (getIntent().hasExtra("eventEndYear"))
+            endYear = getIntent().getIntExtra("eventEndYear", 1900);
+        else
+            endYear = 1900;
+
+        if (getIntent().hasExtra("eventEndMonth"))
+            endMonth = getIntent().getIntExtra("eventEndMonth", 1);
+        else
+            endMonth = 1;
+
+        if (getIntent().hasExtra("eventEndDay"))
+            endDay = getIntent().getIntExtra("eventEndDay", 1);
+        else
+            endDay = 1;
+
+        if (getIntent().hasExtra("eventEndHour"))
+            endHour = getIntent().getIntExtra("eventEndHour", 0);
+        else
+            endHour = 0;
+
+        if (getIntent().hasExtra("eventEndMinute"))
+            endMinute = getIntent().getIntExtra("eventEndMinute", 0);
+        else
+            endMinute = 0;
+
+        eventStartDateField.setText(CalendarFormatter.dateToString(startYear, startMonth, startDay));
+        eventStartTimeField.setText(CalendarFormatter.timeToString(startHour, startMinute));
+        eventEndDateField.setText(CalendarFormatter.dateToString(endYear, endMonth, endDay));
+        eventEndTimeField.setText(CalendarFormatter.timeToString(endHour, endMinute));
+
 
         eventNameField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -106,7 +139,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    eventStartDate = updateDateField(eventStartDateField, eventStartDate);
+                    updateStartDateField();
                 }
             }
         });
@@ -115,7 +148,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE){
-                    eventStartDate = updateDateField(eventStartDateField, eventStartDate);
+                    updateStartDateField();
                     return false;
                 }
                 return false;
@@ -126,7 +159,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    eventStartTime = updateTimeField(eventStartTimeField, eventStartTime);
+                    updateStartTimeField();
                 }
             }
         });
@@ -135,7 +168,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE){
-                    eventStartTime = updateTimeField(eventStartTimeField, eventStartTime);
+                    updateStartTimeField();
                     return false;
                 }
                 return false;
@@ -146,7 +179,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    eventEndDate = updateDateField(eventEndDateField, eventEndDate);
+                    updateEndDateField();
                 }
             }
         });
@@ -155,7 +188,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE){
-                    eventEndDate = updateDateField(eventEndDateField, eventEndDate);
+                    updateEndDateField();
                     return false;
                 }
                 return false;
@@ -166,7 +199,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    eventEndTime = updateTimeField(eventEndTimeField, eventEndTime);
+                    updateEndTimeField();
                 }
             }
         });
@@ -175,7 +208,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE){
-                    eventEndTime = updateTimeField(eventEndTimeField, eventEndTime);
+                    updateEndTimeField();
                     return false;
                 }
                 return false;
@@ -197,48 +230,100 @@ public class EventEditActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = getIntent();
-                returnIntent.putExtra("eventPos", eventPos);
-                returnIntent.putExtra("eventName", eventName);
-                returnIntent.putExtra("eventStartDate", eventStartDate);
-                returnIntent.putExtra("eventStartTime", eventStartTime);
-                returnIntent.putExtra("eventEndDate", eventEndDate);
-                returnIntent.putExtra("eventEndTime", eventEndTime);
-                boolean[] repeatArray = {sundayBox.isChecked(), mondayBox.isChecked(), tuesdayBox.isChecked(), wednesdayBox.isChecked(), thursdayBox.isChecked(), fridayBox.isChecked(), saturdayBox.isChecked()};
-                returnIntent.putExtra("eventRepeatList", repeatArray);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
+                try {
+                    Event.validateEndAfterStart(startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute);
+                    
+                    Intent returnIntent = getIntent();
+
+                    returnIntent.putExtra("eventPos", eventPos);
+                    returnIntent.putExtra("eventName", eventName);
+
+                    returnIntent.putExtra("eventStartYear", startYear);
+                    returnIntent.putExtra("eventStartMonth", startMonth);
+                    returnIntent.putExtra("eventStartDay", startDay);
+                    returnIntent.putExtra("eventStartHour", startHour);
+                    returnIntent.putExtra("eventStartMinute", startMinute);
+
+                    returnIntent.putExtra("eventEndYear", endYear);
+                    returnIntent.putExtra("eventEndMonth", endMonth);
+                    returnIntent.putExtra("eventEndDay", endDay);
+                    returnIntent.putExtra("eventEndHour", endHour);
+                    returnIntent.putExtra("eventEndMinute", endMinute);
+
+                    boolean[] repeatArray = {sundayBox.isChecked(), mondayBox.isChecked(), tuesdayBox.isChecked(), wednesdayBox.isChecked(), thursdayBox.isChecked(), fridayBox.isChecked(), saturdayBox.isChecked()};
+                    returnIntent.putExtra("eventRepeatList", repeatArray);
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                } catch (EventValidationException e) {
+                    Toast.makeText(EventEditActivity.this, "Events must start before they end", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
-    private String updateDateField(EditText field, String var){
-        try{
-            Event.validateDate(field.getText().toString());
-            var = field.getText().toString();
+    private void updateStartDateField() {
+        try {
+            int[] date = CalendarFormatter.dateToInt(eventStartDateField.getText().toString());
+            Event.validateDate(date[0], date[1], date[2]);
+            startYear = date[0];
+            startMonth = date[1];
+            startDay = date[2];
             Toast.makeText(EventEditActivity.this, "Valid date", Toast.LENGTH_SHORT).show();
-        } catch (EventDateInvalidFormatException e){
-            field.setText(var);
+        } catch (CalendarInvalidFormatException e) {
+            eventStartDateField.setText(CalendarFormatter.dateToString(startYear, startMonth, startDay));
             Toast.makeText(EventEditActivity.this, "Date must be formatted YYYY/MM/DD", Toast.LENGTH_SHORT).show();
-        } catch (DateOutOfBoundsException e){
-            field.setText(var);
+        } catch (DateOutOfBoundsException e) {
+            eventStartDateField.setText(CalendarFormatter.dateToString(startYear, startMonth, startDay));
             Toast.makeText(EventEditActivity.this, "Please enter a valid date after January 1, 1900", Toast.LENGTH_SHORT).show();
         }
-        return var;
     }
 
-    private String updateTimeField(EditText field, String var){
-        try{
-            Event.validateTime(field.getText().toString());
-            var = field.getText().toString();
+    private void updateEndDateField() {
+        try {
+            int[] date = CalendarFormatter.dateToInt(eventEndDateField.getText().toString());
+            Event.validateDate(date[0], date[1], date[2]);
+            endYear = date[0];
+            endMonth = date[1];
+            endDay = date[2];
+            Toast.makeText(EventEditActivity.this, "Valid date", Toast.LENGTH_SHORT).show();
+        } catch (CalendarInvalidFormatException e) {
+            eventEndDateField.setText(CalendarFormatter.dateToString(endYear, endMonth, endDay));
+            Toast.makeText(EventEditActivity.this, "Date must be formatted YYYY/MM/DD", Toast.LENGTH_SHORT).show();
+        } catch (DateOutOfBoundsException e) {
+            eventEndDateField.setText(CalendarFormatter.dateToString(endYear, endMonth, endDay));
+            Toast.makeText(EventEditActivity.this, "Please enter a valid date after January 1, 1900", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateStartTimeField() {
+        try {
+            int[] time = CalendarFormatter.timeToInt(eventStartTimeField.getText().toString());
+            Event.validateTime(time[0], time[1]);
+            startHour = time[0];
+            startMinute = time[1];
             Toast.makeText(EventEditActivity.this, "Valid time", Toast.LENGTH_SHORT).show();
-        } catch (EventTimeInvalidFormatException e){
-            field.setText(var);
+        } catch (CalendarInvalidFormatException e) {
+            eventStartTimeField.setText(CalendarFormatter.timeToString(startHour, startMinute));
             Toast.makeText(EventEditActivity.this, "Time must be formatted HH:MM", Toast.LENGTH_SHORT).show();
         } catch (TimeOutOfBoundsException e){
-            field.setText(var);
+            eventStartTimeField.setText(CalendarFormatter.timeToString(startHour, startMinute));
             Toast.makeText(EventEditActivity.this, "Please enter an hour from 0 and 23 and a minute from 0 to 59", Toast.LENGTH_SHORT).show();
         }
-        return var;
+    }
+
+    private void updateEndTimeField() {
+        try {
+            int[] time = CalendarFormatter.timeToInt(eventEndTimeField.getText().toString());
+            Event.validateTime(time[0], time[1]);
+            endHour = time[0];
+            endMinute = time[1];
+            Toast.makeText(EventEditActivity.this, "Valid time", Toast.LENGTH_SHORT).show();
+        } catch (CalendarInvalidFormatException e) {
+            eventEndTimeField.setText(CalendarFormatter.timeToString(endHour, endMinute));
+            Toast.makeText(EventEditActivity.this, "Time must be formatted HH:MM", Toast.LENGTH_SHORT).show();
+        } catch (TimeOutOfBoundsException e){
+            eventEndTimeField.setText(CalendarFormatter.timeToString(endHour, endMinute));
+            Toast.makeText(EventEditActivity.this, "Please enter an hour from 0 and 23 and a minute from 0 to 59", Toast.LENGTH_SHORT).show();
+        }
     }
 }
