@@ -22,9 +22,7 @@ import java.util.ArrayList;
 public class CalendarActivity extends AppCompatActivity {
     private static final String TAG = "CalendarActivity";
 
-    //variables
     private ArrayList<Event> mEvents = new ArrayList<>();
-
     private EventListAdapter adapter;
 
     @Override
@@ -52,16 +50,23 @@ public class CalendarActivity extends AppCompatActivity {
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //int position = mEvents.size();
-                Event newEvent = new Event();
+                Event e = new Event();
 
                 Intent editEventIntent = new Intent(v.getContext(), EventEditActivity.class);
                 editEventIntent.putExtra("eventPos", -1);
-                editEventIntent.putExtra("eventName", newEvent.getName());
-                editEventIntent.putExtra("eventStartDate", newEvent.getStartDateString());
-                editEventIntent.putExtra("eventStartTime", newEvent.getStartTimeString());
-                editEventIntent.putExtra("eventEndDate", newEvent.getEndDateString());
-                editEventIntent.putExtra("eventEndTime", newEvent.getEndTimeString());
+                editEventIntent.putExtra("eventName", e.getName());
+
+                editEventIntent.putExtra("eventStartYear", e.getStartYear());
+                editEventIntent.putExtra("eventStartMonth", e.getStartMonth());
+                editEventIntent.putExtra("eventStartDay", e.getStartDay());
+                editEventIntent.putExtra("eventStartHour", e.getStartHour());
+                editEventIntent.putExtra("eventStartMinute", e.getStartMinute());
+
+                editEventIntent.putExtra("eventEndYear", e.getEndYear());
+                editEventIntent.putExtra("eventEndMonth", e.getEndMonth());
+                editEventIntent.putExtra("eventEndDay", e.getEndDay());
+                editEventIntent.putExtra("eventEndHour", e.getEndHour());
+                editEventIntent.putExtra("eventEndMinute", e.getEndMinute());
 
                 ((Activity)v.getContext()).startActivityForResult(editEventIntent, 1);
             }
@@ -107,10 +112,18 @@ public class CalendarActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK){
                 int eventPos = data.getIntExtra("eventPos", -1);
                 String eventName = data.getStringExtra("eventName");
-                String eventStartDate = data.getStringExtra("eventStartDate");
-                String eventStartTime = data.getStringExtra("eventStartTime");
-                String eventEndDate = data.getStringExtra("eventEndDate");
-                String eventEndTime = data.getStringExtra("eventEndTime");
+
+                int startYear = data.getIntExtra("eventStartYear", 1900);
+                int startMonth = data.getIntExtra("eventStartMonth", 1);
+                int startDay = data.getIntExtra("eventStartDay", 1);
+                int startHour = data.getIntExtra("eventStartHour", 0);
+                int startMinute = data.getIntExtra("eventStartMinute", 0);
+
+                int endYear = data.getIntExtra("eventEndYear", 1900);
+                int endMonth = data.getIntExtra("eventEndMonth", 1);
+                int endDay = data.getIntExtra("eventEndDay", 1);
+                int endHour = data.getIntExtra("eventEndHour", 0);
+                int endMinute = data.getIntExtra("eventEndMinute", 0);
 
                 Event editEvent;
                 if (eventPos >= 0)
@@ -122,14 +135,14 @@ public class CalendarActivity extends AppCompatActivity {
                 
                 editEvent.editName(eventName);
                 try {
-                    editEvent.editStartDate(eventStartDate, eventStartTime);
+                    editEvent.editStartDate(startYear, startMonth, startDay, startHour, startMinute);
                 } catch (DateOutOfBoundsException e) {
                     e.printStackTrace();
                 } catch (TimeOutOfBoundsException e) {
                     e.printStackTrace();
                 }
                 try {
-                    editEvent.editEndDate(eventEndDate, eventEndTime);
+                    editEvent.editEndDate(endYear, endMonth, endDay, endHour, endMinute);
                 } catch (DateOutOfBoundsException e) {
                     e.printStackTrace();
                 } catch (TimeOutOfBoundsException e) {
@@ -153,13 +166,15 @@ public class CalendarActivity extends AppCompatActivity {
 
         Event event1 = new Event();
         event1.editName("Homework 1");
-        event1.editStartDate(2022, 12, 13, 14, 00);
+        event1.editStartDate(2022, 11, 13, 14, 00);
+        event1.editEndDate(2022, 11, 13, 14, 30);
+        mEvents.add(event1);
 
         Event event2 = new Event();
         event2.editName("Test 1");
-        event2.editStartDate(2022, 12, 15, 14, 05);
+        event2.editStartDate(2022, 11, 15, 14, 05);
+        event2.editEndDate(2022, 11, 16, 14, 00);
 
-        mEvents.add(event1);
         mEvents.add(event2);
     }
 

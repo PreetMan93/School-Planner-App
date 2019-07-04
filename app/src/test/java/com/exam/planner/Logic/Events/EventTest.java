@@ -15,16 +15,7 @@ public class EventTest {
 
     @Test
     public void Event(){
-        String test;
         testEvent.printEvent();
-        test = testEvent.getStartDateString();
-        System.out.println(test);
-        test = testEvent.getStartTimeString();
-        System.out.println(test);
-        test = testEvent.getEndDateString();
-        System.out.println(test);
-        test = testEvent.getEndTimeString();
-        System.out.println(test);
     }
 
     @Test
@@ -51,12 +42,6 @@ public class EventTest {
         assertTrue(rightNow.getStartDate().getDay()!=testEvent.getStartDate().getDay());
         assertTrue(testEvent.getStartDate().getDay()==18 && testEvent.getStartDate().getMonth() == 7 && testEvent.getStartDate().getHour() == 1 && testEvent.getStartDate().getMinute() == 2);
 
-    }
-    @Test
-    public void editStartDate3()throws DateOutOfBoundsException, TimeOutOfBoundsException {
-        testEvent.editStartDate("2019/7/18","1:2");
-        assertTrue(rightNow.getStartDate().getDay()!=testEvent.getStartDate().getDay());
-        assertTrue(testEvent.getStartDate().getDay()==18 && testEvent.getStartDate().getMonth() == 7 && testEvent.getStartDate().getHour() == 1 && testEvent.getStartDate().getMinute() == 2);
     }
 
     @Test(expected = Exception.class)
@@ -85,12 +70,6 @@ public class EventTest {
         testEvent.editEndDate(rightNow.getStartDate().getYear(),rightNow.getStartDate().getMonth(),rightNow.getStartDate().getDay(),rightNow.getStartDate().getHour(),42);
         assertTrue(rightNow.getEndDate().getDay()==testEvent.getEndDate().getDay());
         assertTrue(testEvent.getEndDate().getDay()==rightNow.getStartDate().getDay() && testEvent.getEndDate().getMinute()==42);
-    }
-    @Test
-    public void editEndDate3()throws DateOutOfBoundsException, TimeOutOfBoundsException {
-        testEvent.editEndDate("2019/7/18","1:2");
-        assertTrue(rightNow.getEndDate().getDay()!=testEvent.getEndDate().getDay());
-        assertTrue(testEvent.getEndDate().getDay()==18 && testEvent.getEndDate().getMonth() == 7 && testEvent.getEndDate().getHour() == 1 && testEvent.getEndDate().getMinute() == 2);
     }
 
     @Test
@@ -148,44 +127,5 @@ public class EventTest {
         assertTrue(a.compare(b));
         b.editId("321");
         assertTrue(!a.compare(b));
-    }
-
-    @Test
-    public void validateDate() throws EventDateInvalidFormatException, DateOutOfBoundsException {
-        testEvent.validateDate("2019/10/10");
-    }
-    @Test(expected = Exception.class)
-    public void validateDateFailure() throws EventDateInvalidFormatException, DateOutOfBoundsException {
-        testEvent.validateDate("2019");
-    }
-    @Test(expected = Exception.class)
-    public void validateDateFailure2() throws EventDateInvalidFormatException, DateOutOfBoundsException {
-        testEvent.validateDate("1800/10/10");
-    }
-    @Test(expected = Exception.class)
-    public void validateDateFailure3() throws EventDateInvalidFormatException, DateOutOfBoundsException {
-        testEvent.validateDate("2019/13/10");
-    }
-    @Test(expected = Exception.class)
-    public void validateDateFailure4() throws EventDateInvalidFormatException, DateOutOfBoundsException {
-        testEvent.validateDate("2019/10/34");
-    }
-
-
-    @Test
-    public void validateTime() throws EventTimeInvalidFormatException, TimeOutOfBoundsException {
-        testEvent.validateTime("23:59");
-    }
-    @Test(expected = Exception.class)
-    public void validateTime2() throws EventTimeInvalidFormatException, TimeOutOfBoundsException {
-        testEvent.validateTime("23");
-    }
-    @Test(expected = Exception.class)
-    public void validateTime3() throws EventTimeInvalidFormatException, TimeOutOfBoundsException {
-        testEvent.validateTime("25:59");
-    }
-    @Test(expected = Exception.class)
-    public void validateTime4() throws EventTimeInvalidFormatException, TimeOutOfBoundsException {
-        testEvent.validateTime("23:72");
     }
 }
