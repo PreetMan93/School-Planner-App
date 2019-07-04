@@ -1,3 +1,20 @@
+# Iteration 2
+
+The Calendar bug from Iteration 1 is a result of the Android memory cleaner destroying inactive Activities on low-spec devices. We are aware of this and it will be fixed wit Persistance integration.
+The CalendarActivity class and EventEditActivity class underwent significant refactoring to adhere to SOLID principles, and plenty of formatting code was extracted from the Logic layer into a new CalendarFormatter class
+Event and DateTime class refactored to follow SOLID principles, and moved validation to DateTime class to provide less astonishment for Event methods.
+Settings button was removed and refactored to have a navigation bar at the top of the app, need to implement fragments to create a 'real' tab navigation bar (will do in iteration 3).
+Login has been refactored. Splitting the form monitoring from the view model and just making the view model a distributor of information.
+#### New UI
+    - Add new event button
+    - save event button
+    - Delete event button
+    - Tabs at the top function
+    - Improvements to event list layout, CalendarActivity layout, EventEditActivity layout
+    - Login/Registration fields dynamically inform user of bad input
+
+Unforeseen complications arose for the team member responsible for DB implementation too late into the Iteration to adapt to. As a result, we are still relying on a convincing Fake DB across the app
+
 # Iteration 1
 Valid user login information:
 - username: "username"
