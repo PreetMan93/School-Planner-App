@@ -1,9 +1,12 @@
-package com.exam.planner.DSO.Events;
+package com.exam.planner.Logic.Events;
+
+import android.util.Log;
 
 import java.util.*;
 
 public class DateTime
 {
+    private static final String TAG = "DateTime";
     private GregorianCalendar date;
     private int hour, minute;
 
@@ -15,11 +18,11 @@ public class DateTime
         this.minute = 0;
     }
     public DateTime(int year, int month, int day, int hour, int minute){
-        this.date = new GregorianCalendar(year,month-1,day,hour,minute);
+        this.date = new GregorianCalendar(year,month,day,hour,minute);
         this.hour = hour;
         this.minute = minute;
     }
-    DateTime(DateTime currentTime, int offsetHour, int offsetMinute){ //this method isn't public because it would require a lot of error checking otherwise
+    DateTime(DateTime currentTime, int offsetHour, int offsetMinute){
         this.date = new GregorianCalendar(currentTime.getDate().get(Calendar.YEAR), currentTime.getDate().get(Calendar.MONTH), currentTime.getDate().get(Calendar.DAY_OF_MONTH), currentTime.getHour() + offsetHour, currentTime.getMinute()+offsetMinute);
         this.date.setTimeZone(TimeZone.getDefault());
         this.hour = currentTime.getHour() + offsetHour;
@@ -27,7 +30,7 @@ public class DateTime
     }
     public GregorianCalendar getDate(){return date;}
     public int getYear(){return date.get(Calendar.YEAR);}
-    public int getMonth(){return date.get(Calendar.MONTH) + 1;}  //This looks dumb because Gregorian Calendar is dumb. For some reason ONLY MONTHS start counting from 0
+    public int getMonth(){return date.get(Calendar.MONTH);}
     public int getDay(){return date.get(Calendar.DAY_OF_MONTH);}
     public int getHour(){return hour;}
     public int getMinute(){return minute;}
@@ -35,25 +38,38 @@ public class DateTime
         System.out.print(this.getMonth()+"/"+this.getDay()+ "/"+this.getYear()+ "  ");
         System.out.println(this.getHour()+":"+this.getMinute());
     }
-    public void editDate(int year, int month, int day){
-        this.date = new GregorianCalendar(year, month-1, day, this.hour, this.minute);
+    public void editDate(int year, int month, int day) throws DateOutOfBoundsException{
+        try {
+            this.validateDate(year, month, day);
+        }
+        catch (DateTimeValidationException e){
+            throw(e);
+        }
+        this.date = new GregorianCalendar(year, month, day, this.hour, this.minute);
         this.date.setTimeZone(TimeZone.getDefault());
     }
-    public void editDate(int year, int month, int day, int hour, int minute){
-        this.date = new GregorianCalendar(year,month-1,day,hour,minute);
+    public void editDate(int year, int month, int day, int hour, int minute) throws DateOutOfBoundsException, TimeOutOfBoundsException{
+        try {
+            this.validateDate(year, month, day);
+            this.validateTime(hour,minute);
+        }
+        catch (DateTimeValidationException e){
+            throw(e);
+        }
+        this.date = new GregorianCalendar(year,month,day,hour,minute);
         this.date.setTimeZone(TimeZone.getDefault());
         this.hour = hour;
         this.minute = minute;
     }
-    public void editTime(int hour, int minute){
+    public void editTime(int hour, int minute)throws TimeOutOfBoundsException{
+        try {
+            this.validateTime(hour,minute);
+        }
+        catch (DateTimeValidationException e){
+            throw (e);
+        }
         GregorianCalendar newDate = new GregorianCalendar(this.date.get(Calendar.YEAR), this.date.get(Calendar.MONTH), this.date.get(Calendar.DAY_OF_MONTH), hour, minute);
         this.date = newDate;
-        this.date.setTimeZone(TimeZone.getDefault());
-        this.hour = hour;
-        this.minute = minute;
-    }
-    public void dateCopy(DateTime eventToCopy){
-        this.date = new GregorianCalendar(eventToCopy.getYear(),eventToCopy.getMonth(),eventToCopy.getDay(),eventToCopy.getHour(),eventToCopy.getMinute());
         this.date.setTimeZone(TimeZone.getDefault());
         this.hour = hour;
         this.minute = minute;
@@ -63,5 +79,19 @@ public class DateTime
         this.date.add((GregorianCalendar.MINUTE), minute);
         this.hour = this.date.get(Calendar.HOUR_OF_DAY);
         this.minute = this.date.get(Calendar.HOUR_OF_DAY);
+    }
+    public static void validateDate(int year, int month, int day) throws DateOutOfBoundsException {
+        if (year < 1900)
+            throw(new DateOutOfBoundsException("Date must begin after the year 1900"));
+        if (month < 0 || month > 11)
+            throw(new DateOutOfBoundsException("Month must be between 0 and 11"));
+        if (day < 1 || day > 31)
+            throw(new DateOutOfBoundsException("Day must be between 1 and 31"));
+    }
+    public static void validateTime(int hour, int minute) throws TimeOutOfBoundsException {
+        if (hour < 0 || hour > 23)
+            throw(new TimeOutOfBoundsException("Hour must be between 0 and 23"));
+        if (minute < 0 || minute > 59)
+            throw(new TimeOutOfBoundsException("Minute must be between 0 and 59"));
     }
 }

@@ -1,7 +1,7 @@
 package com.exam.planner.Logic.Login.data;
 
-import com.exam.planner.DSO.Events.DateTime;
-import com.exam.planner.DSO.Events.Event;
+import com.exam.planner.Logic.Events.DateTime;
+import com.exam.planner.Logic.Events.Event;
 import com.exam.planner.Logic.Login.data.model.LoggedInUser;
 import com.exam.planner.Persistence.IUserPersistence;
 

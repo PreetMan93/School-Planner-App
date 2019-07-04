@@ -1,6 +1,6 @@
 package com.exam.planner.DSO;
 
-import com.exam.planner.DSO.Events.Event;
+import com.exam.planner.Logic.Events.Event;
 
 public class User {
     private String id;

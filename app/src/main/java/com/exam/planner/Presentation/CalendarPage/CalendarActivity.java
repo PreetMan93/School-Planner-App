@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.exam.planner.DSO.Events.Event;
+import com.exam.planner.Logic.Events.DateOutOfBoundsException;
+import com.exam.planner.Logic.Events.Event;
+import com.exam.planner.Logic.Events.TimeOutOfBoundsException;
 import com.exam.planner.Presentation.Settings.SettingsActivity;
 import com.exam.planner.R;
 
@@ -35,7 +37,13 @@ public class CalendarActivity extends AppCompatActivity {
 
         final Button addEventButton = findViewById(R.id.add_event_button);
 
-        populateEvents();
+        try {
+            populateEvents();
+        } catch (DateOutOfBoundsException e) {
+            e.printStackTrace();
+        } catch (TimeOutOfBoundsException e) {
+            e.printStackTrace();
+        }
         initEventListView();
 
         addEventButton.setOnClickListener(new View.OnClickListener() {
@@ -90,9 +98,22 @@ public class CalendarActivity extends AppCompatActivity {
                     mEvents.add(editEvent);
                 }
 
-                editEvent.editName(eventName);
-                editEvent.editStartDate(eventStartDate, eventStartTime);
-                editEvent.editEndDate(eventEndDate, eventEndTime);
+                    Event editEvent = mEvents.get(eventPos);
+                    editEvent.editName(eventName);
+                    try {
+                        editEvent.editStartDate(eventStartDate, eventStartTime);
+                    } catch (DateOutOfBoundsException e) {
+                        e.printStackTrace();
+                    } catch (TimeOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        editEvent.editEndDate(eventEndDate, eventEndTime);
+                    } catch (DateOutOfBoundsException e) {
+                        e.printStackTrace();
+                    } catch (TimeOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
 
                 adapter.notifyDataSetChanged();
             }else if (resultCode == 2){
@@ -106,7 +127,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 
-    private void populateEvents() {
+    private void populateEvents() throws DateOutOfBoundsException, TimeOutOfBoundsException {
         Log.d(TAG, "populateEvents: preparing events");
 
         Event event1 = new Event();
