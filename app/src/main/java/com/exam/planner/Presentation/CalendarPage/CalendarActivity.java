@@ -49,12 +49,11 @@ public class CalendarActivity extends AppCompatActivity {
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = mEvents.size();
+                //int position = mEvents.size();
                 Event newEvent = new Event();
-                mEvents.add(newEvent);
 
                 Intent editEventIntent = new Intent(v.getContext(), EventEditActivity.class);
-                editEventIntent.putExtra("eventPos", position);
+                editEventIntent.putExtra("eventPos", -1);
                 editEventIntent.putExtra("eventName", newEvent.getName());
                 editEventIntent.putExtra("eventStartDate", newEvent.getStartDateString());
                 editEventIntent.putExtra("eventStartTime", newEvent.getStartTimeString());
@@ -75,16 +74,29 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: CalendarActivity is gone!");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1){
             if (resultCode == Activity.RESULT_OK){
                 int eventPos = data.getIntExtra("eventPos", -1);
-                if (eventPos >= 0) {
-                    String eventName = data.getStringExtra("eventName");
-                    String eventStartDate = data.getStringExtra("eventStartDate");
-                    String eventStartTime = data.getStringExtra("eventStartTime");
-                    String eventEndDate = data.getStringExtra("eventEndDate");
-                    String eventEndTime = data.getStringExtra("eventEndTime");
+                String eventName = data.getStringExtra("eventName");
+                String eventStartDate = data.getStringExtra("eventStartDate");
+                String eventStartTime = data.getStringExtra("eventStartTime");
+                String eventEndDate = data.getStringExtra("eventEndDate");
+                String eventEndTime = data.getStringExtra("eventEndTime");
+
+                Event editEvent;
+                if (eventPos >= 0)
+                    editEvent = mEvents.get(eventPos);
+                else {
+                    editEvent = new Event();
+                    mEvents.add(editEvent);
+                }
 
                     Event editEvent = mEvents.get(eventPos);
                     editEvent.editName(eventName);
@@ -103,8 +115,7 @@ public class CalendarActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    adapter.notifyDataSetChanged();
-                }
+                adapter.notifyDataSetChanged();
             }else if (resultCode == 2){
                 int eventPos = data.getIntExtra("eventPos", -1);
                 if (eventPos >= 0) {

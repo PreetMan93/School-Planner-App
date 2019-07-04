@@ -186,7 +186,7 @@ public class EventEditActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent deleteIntent = new Intent();
+                Intent deleteIntent = getIntent();
                 deleteIntent.putExtra("eventPos", eventPos);
                 setResult(2, deleteIntent);
                 finish();
@@ -197,7 +197,7 @@ public class EventEditActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent();
+                Intent returnIntent = getIntent();
                 returnIntent.putExtra("eventPos", eventPos);
                 returnIntent.putExtra("eventName", eventName);
                 returnIntent.putExtra("eventStartDate", eventStartDate);

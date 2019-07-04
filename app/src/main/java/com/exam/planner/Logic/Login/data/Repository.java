@@ -24,8 +24,6 @@ public class Repository {
         this.dataSource = new DataSource(db);
     }
 
-    //TODO: Flesh out this singleton class
-
     public static Repository getInstance(IUserPersistence db) {
         if (instance == null) {
             instance = new Repository(db);
@@ -49,7 +47,7 @@ public class Repository {
         ArrayList<Event> result = new ArrayList<>();
 
         for(Event e: user.getPlanner().getEventsList()){
-            if(e.getId() == id)
+            if(e.getId().equals(id))
                 result.add(e);
         }
         return result;

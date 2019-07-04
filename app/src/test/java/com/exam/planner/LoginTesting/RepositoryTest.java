@@ -1,9 +1,9 @@
 package com.exam.planner.LoginTesting;
 
-import com.exam.planner.Logic.Login.data.DataSource;
+import com.exam.planner.DSO.Events.DateTime;
+import com.exam.planner.DSO.Events.Event;
 import com.exam.planner.Logic.Login.data.Repository;
 import com.exam.planner.Logic.Login.data.Result;
-import com.exam.planner.Logic.Login.data.model.LoggedInUser;
 import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
 
 import org.junit.Assert;
@@ -41,4 +41,18 @@ public class RepositoryTest {
         Assert.assertTrue(res instanceof Result.Success);
     }
 
+    @Test
+    public void testGetEventById(){
+        test.login("username", "password");
+        test.getUser().getPlanner().addEvent(new Event("ID"));
+        Assert.assertEquals(test.getEvent("ID").get(0).getId(), "ID");
+    }
+
+    @Test
+    public void testGetEventsByDayMonth(){
+        test.login("username", "password");
+        test.getUser().getPlanner().addEvent(new Event("ID"));
+        test.getUser().getPlanner().addEvent(new Event("ID"));
+        Assert.assertEquals(test.getEvents(new DateTime()).size(), 2);
+    }
 }
