@@ -144,13 +144,15 @@ public class CalendarActivity extends AppCompatActivity {
 
         Event event1 = new Event();
         event1.editName("Homework 1");
-        event1.editStartDate(2022, 12, 13, 14, 00);
+        event1.editStartDate(2022, 11, 13, 14, 00);
+        event1.editEndDate(2022, 11, 13, 14, 30);
+        mEvents.add(event1);
 
         Event event2 = new Event();
         event2.editName("Test 1");
-        event2.editStartDate(2022, 12, 15, 14, 05);
+        event2.editStartDate(2022, 11, 15, 14, 05);
+        event2.editEndDate(2022, 11, 16, 14, 00);
 
-        mEvents.add(event1);
         mEvents.add(event2);
     }
 
