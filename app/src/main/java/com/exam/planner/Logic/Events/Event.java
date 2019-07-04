@@ -60,41 +60,21 @@ public class Event {
         System.out.println("isPublic? "+this.isPublic);
     }
 
-    public boolean endDatePriorToStart() {
-        return this.getEndDate().getDate().before(this.getStartDate().getDate());
-    }
-
-    public static void validateDate(int year, int month, int day) throws DateOutOfBoundsException {
-        if (year < 1900)
-            throw(new DateOutOfBoundsException("Date must begin after the year 1900"));
-        if (month < 1 || month > 12)
-            throw(new DateOutOfBoundsException("Month must be between 1 and 12"));
-        if (day < 1 || day > 31)
-            throw(new DateOutOfBoundsException("Day must be between 1 and 31"));
-    }
-
-    public static void validateTime(int hour, int minute) throws TimeOutOfBoundsException {
-        if (hour < 0 || hour > 23)
-            throw(new TimeOutOfBoundsException("Hour must be between 0 and 23"));
-        if (minute < 0 || minute > 59)
-            throw(new TimeOutOfBoundsException("Minute must be between 0 and 59"));
-    }
-
-    public static void validateEndAfterStart(int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute) throws EventValidationException {
+    public static void validateEndAfterStart(int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute) throws DateTimeValidationException {
         //Nested 'if' is because each successive time increment only needs to be checked if all previous time increments are equal
         if (startYear > endYear)
-            throw(new EventValidationException("Start date must be before end date (Year)"));
+            throw(new DateTimeValidationException("Start date must be before end date (Year)"));
         if (startYear == endYear) {
             if (startMonth > endMonth)
-                throw(new EventValidationException("Start date must be before end date (Month)"));
+                throw(new DateTimeValidationException("Start date must be before end date (Month)"));
             if (startMonth == endMonth) {
                 if (startDay > endDay)
-                    throw(new EventValidationException("Start date must be before end date (Day)"));
+                    throw(new DateTimeValidationException("Start date must be before end date (Day)"));
                 if (startDay == endDay) {
                     if (startHour > endHour)
-                        throw(new EventValidationException("Start time must be before end time (Hour)"));
+                        throw(new DateTimeValidationException("Start time must be before end time (Hour)"));
                     if (startHour == endHour && startMinute >= endMinute)
-                        throw(new EventValidationException("Start time must be before end time (Minute)"));
+                        throw(new DateTimeValidationException("Start time must be before end time (Minute)"));
                 }
             }
         }

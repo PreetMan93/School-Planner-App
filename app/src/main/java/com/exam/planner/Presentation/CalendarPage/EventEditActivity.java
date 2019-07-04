@@ -15,8 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.exam.planner.Logic.Events.DateOutOfBoundsException;
+import com.exam.planner.Logic.Events.DateTime;
+import com.exam.planner.Logic.Events.DateTimeValidationException;
 import com.exam.planner.Logic.Events.Event;
-import com.exam.planner.Logic.Events.EventValidationException;
 import com.exam.planner.Logic.Events.TimeOutOfBoundsException;
 import com.exam.planner.R;
 
@@ -254,7 +255,7 @@ public class EventEditActivity extends AppCompatActivity {
                     returnIntent.putExtra("eventRepeatList", repeatArray);
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
-                } catch (EventValidationException e) {
+                } catch (DateTimeValidationException e) {
                     Toast.makeText(EventEditActivity.this, "Events must start before they end", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -264,7 +265,7 @@ public class EventEditActivity extends AppCompatActivity {
     private void updateStartDateField() {
         try {
             int[] date = CalendarFormatter.dateToInt(eventStartDateField.getText().toString());
-            Event.validateDate(date[0], date[1], date[2]);
+            DateTime.validateDate(date[0], date[1], date[2]);
             startYear = date[0];
             startMonth = date[1];
             startDay = date[2];
@@ -281,7 +282,7 @@ public class EventEditActivity extends AppCompatActivity {
     private void updateEndDateField() {
         try {
             int[] date = CalendarFormatter.dateToInt(eventEndDateField.getText().toString());
-            Event.validateDate(date[0], date[1], date[2]);
+            DateTime.validateDate(date[0], date[1], date[2]);
             endYear = date[0];
             endMonth = date[1];
             endDay = date[2];
@@ -298,7 +299,7 @@ public class EventEditActivity extends AppCompatActivity {
     private void updateStartTimeField() {
         try {
             int[] time = CalendarFormatter.timeToInt(eventStartTimeField.getText().toString());
-            Event.validateTime(time[0], time[1]);
+            DateTime.validateTime(time[0], time[1]);
             startHour = time[0];
             startMinute = time[1];
             Toast.makeText(EventEditActivity.this, "Valid time", Toast.LENGTH_SHORT).show();
@@ -314,7 +315,7 @@ public class EventEditActivity extends AppCompatActivity {
     private void updateEndTimeField() {
         try {
             int[] time = CalendarFormatter.timeToInt(eventEndTimeField.getText().toString());
-            Event.validateTime(time[0], time[1]);
+            DateTime.validateTime(time[0], time[1]);
             endHour = time[0];
             endMinute = time[1];
             Toast.makeText(EventEditActivity.this, "Valid time", Toast.LENGTH_SHORT).show();
