@@ -55,52 +55,32 @@ public class Event
         System.out.println("Colour: "+this.colour);
         System.out.println("isPublic? "+this.isPublic);
     }
-    public static void validateDate(String date) throws EventDateInvalidFormatException, EventDateOutOfBoundsException{
+    public static void validateDate(String date) throws EventDateInvalidFormatException, DateOutOfBoundsException{
         String[] split = date.split("/");
         if (split.length != 3)
             throw(new EventDateInvalidFormatException("Date must follow the format YYYY/MM/DD"));
         int year = Integer.parseInt(split[0]);
         int month = Integer.parseInt(split[1]);
         int day = Integer.parseInt(split[2]);
-        try {
-            validateDate(year, month, day);
-        } catch (EventValidationException e) {
-            throw(e);
-        }
+        DateTime test = new DateTime();
+        test.editDate(year,month,day);
     }
 
-    public static void validateDate(int year, int month, int day) throws EventDateOutOfBoundsException {
-        if (year < 1900)
-            throw(new EventDateOutOfBoundsException("Date must begin after the year 1900"));
-        if (month < 0 || month > 11)
-            throw(new EventDateOutOfBoundsException("Month must be between 1 and 12"));
-        if (day < 1 || day > 31)
-            throw(new EventDateOutOfBoundsException("Day must be between 1 and 31"));
-    }
-
-    public static void validateTime(String time) throws EventTimeInvalidFormatException, EventTimeOutOfBoundsException {
+    public static void validateTime(String time) throws EventTimeInvalidFormatException, TimeOutOfBoundsException {
         String[] split = time.split(":");
         if (split.length != 2)
             throw(new EventTimeInvalidFormatException("Time must follow the format HH:MM"));
         int hour = Integer.parseInt(split[0]);
         int minute = Integer.parseInt(split[1]);
-        try {
-            validateTime(hour, minute);
-        } catch (EventValidationException e){
-            throw(e);
-        }
+        DateTime test = new DateTime();
+        test.editTime(hour,minute);
     }
 
-    public static void validateTime(int hour, int minute) throws EventTimeOutOfBoundsException {
-        if (hour < 0 || hour > 23)
-            throw(new EventTimeOutOfBoundsException("Hour must be between 0 and 23"));
-        if (minute < 0 || minute > 59)
-            throw(new EventTimeOutOfBoundsException("Minute must be between 0 and 59"));
-    }
-
-    public void validateEndDate(DateTime newEndDate) throws EndDatePriorToStartDateException{
-        if (newEndDate.getDate().before(this.getStartDate().getDate()))
-            throw(new EndDatePriorToStartDateException("You can't schedule an end time prior to the start time."));
+    public boolean endDatePriorToStart(){
+        if (this.getEndDate().getDate().before(this.getStartDate().getDate()))
+            return true;
+        else
+            return false;
     }
 
     public String getStartDateString(){return this.getStartDate().getDate().get(YEAR) + "/" + this.getStartDate().getDate().get(MONTH) + "/" + this.getStartDate().getDate().get(DAY_OF_MONTH);}
@@ -125,7 +105,7 @@ public class Event
 
     public void editName(String newName) {this.name = newName;}
 
-    public void editStartDate(String date, String time){
+    public void editStartDate(String date, String time) throws DateOutOfBoundsException, TimeOutOfBoundsException {
         int year, month, day, hour, minute;
         try {
             Event.validateDate(date);
@@ -152,48 +132,14 @@ public class Event
         this.editStartDate(year, month, day, hour, minute);
     }
 
-    public void editStartDate(int year, int month, int day){
-        try {
-            Event.validateDate(year, month, day);
-        }
-        catch (EventValidationException e){
-            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "]");
-            year = 1900;
-            month = 1;
-            day = 1;
-        }
+    public void editStartDate(int year, int month, int day)throws DateOutOfBoundsException{
         this.startDate.editDate(year, month, day);
-        if (this.endDate.getDate().before(this.startDate.getDate())) {
-            this.endDate.editDate(this.getStartDate().getYear(), this.getStartDate().getMonth(), this.getStartDate().getDay(), this.getStartDate().getHour(), this.getStartDate().getMinute());
-            this.endDate.addTime(1, 0);
-        }
     }
-    public void editStartDate(int year, int month, int day, int hour, int minute){
-        try {
-            Event.validateDate(year, month, day);
-        }
-        catch (EventValidationException e){
-            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "]");
-            year = 1900;
-            month = 1;
-            day = 1;
-        }
-        try {
-            Event.validateTime(hour, minute);
-        }
-        catch (EventValidationException e){
-            Log.d(TAG, "editStartDate() called with: time = [" + hour + ":" + minute + "]");
-            hour = 0;
-            minute = 0;
-        }
+    public void editStartDate(int year, int month, int day, int hour, int minute)throws DateOutOfBoundsException,TimeOutOfBoundsException{
         this.startDate.editDate(year, month, day, hour, minute);
-        if (this.endDate.getDate().before(this.startDate.getDate())) {
-            this.endDate.editDate(this.getStartDate().getYear(), this.getStartDate().getMonth(), this.getStartDate().getDay(), this.getStartDate().getHour(), this.getStartDate().getMinute());
-            this.endDate.addTime(1, 0);
-        }
     }
 
-    public void editEndDate(String date, String time){
+    public void editEndDate(String date, String time)throws DateOutOfBoundsException, TimeOutOfBoundsException {
         int year, month, day, hour, minute;
         try {
             Event.validateDate(date);
@@ -220,60 +166,10 @@ public class Event
         this.editEndDate(year, month, day, hour, minute);
     }
 
-    public void editEndDate(int year, int month, int day){
-        try {
-            Event.validateDate(year, month, day);
-        }
-        catch (EventValidationException e){
-            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "]");
-            year = 1900;
-            month = 1;
-            day = 1;
-        }
-        try {
-            DateTime newEndDate = new DateTime(year, month, day, 0, 0);
-            this.validateEndDate(newEndDate);
-        }
-        catch (EventValidationException e){
-            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "] and time = [ 0:00 ] ");
-            Log.d(TAG, "current start date is = [" + this.getStartDateString() + "] and time = [" + this.getStartTimeString() + "] ");
-            year = 1900;
-            month = 1;
-            day = 1;
-        }
+    public void editEndDate(int year, int month, int day)throws DateOutOfBoundsException{
         this.endDate.editDate(year,month,day);
     }
-    public void editEndDate(int year, int month, int day, int hour, int minute){
-        try {
-            Event.validateDate(year, month, day);
-        }
-        catch (EventValidationException e){
-            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "]");
-            year = 1900;
-            month = 1;
-            day = 1;
-        }
-        try {
-            Event.validateTime(hour, minute);
-        }
-        catch (EventValidationException e){
-            Log.d(TAG, "editStartDate() called with: time = [" + hour + ":" + minute + "]");
-            hour = 0;
-            minute = 0;
-        }
-        try{
-            DateTime newEndDate = new DateTime (year, month, day,hour,minute);
-            this.validateEndDate(newEndDate);
-        }
-        catch (EventValidationException e){
-            Log.d(TAG, "editStartDate() called with: date = [" + year + "/" + month + "/" + day + "] and time = [" + hour + ":" + minute + "] ");
-            Log.d(TAG, "current start date is = [" + this.getStartDateString() + "] and time = [" + this.getStartTimeString() + "] ");
-            year = 1900;
-            month = 1;
-            day = 1;
-            hour = 0;
-            minute = 0;
-        }
+    public void editEndDate(int year, int month, int day, int hour, int minute)throws DateOutOfBoundsException, TimeOutOfBoundsException {
         this.endDate.editDate(year,month,day, hour, minute);
     }
     public void editId (String newId){this.id = newId;}
@@ -281,7 +177,7 @@ public class Event
     public void makeEventPublic() {this.isPublic = true;}
     public void makeEventPrivate() {this.isPublic = false;}
 
-    public Event eventCopy(Event newEvent, int year, int month, int day){
+    public Event eventCopy(Event newEvent, int year, int month, int day)throws DateOutOfBoundsException, TimeOutOfBoundsException {
         newEvent.editName(this.name);
         newEvent.editStartDate(year, month, day, this.startDate.getHour(), this.startDate.getMinute());
         newEvent.editEndDate(year, month, day, this.endDate.getHour(), this.endDate.getMinute());
