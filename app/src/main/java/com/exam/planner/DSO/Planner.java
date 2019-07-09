@@ -20,7 +20,6 @@ public class Planner {
     public void addEvent(Event e){
         eventsList.add(e);
     }
-
     public boolean removeEvent(String id){
         for(Event e: eventsList) {
             if(e.getId().equals(id)) {
@@ -39,20 +38,5 @@ public class Planner {
         return false;
     }
 
-    public Event getEvent(String id){
-        for (Event e: eventsList)
-            if (e.getId().equals(id))
-                return e;
-        return null;
-    }
-
     public ArrayList<Event> getEventsList(){ return eventsList; }
-
-    public ArrayList<Event> getEventsList(int year, int month, int day) {
-        ArrayList<Event> retList = new ArrayList<>();
-        for (Event e: eventsList)
-            if (e.getStartYear() == year && e.getStartMonth() == month && e.getStartDay() == day)
-                retList.add(e);
-        return retList;
-    }
 }

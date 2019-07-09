@@ -15,13 +15,7 @@ public class Event {
         this.id = null;
         this.colour = "grey";
     }
-
-    public Event(int year, int month, int day, int hour, int minute) {
-        this.name = null;
-        this.startDate = new DateTime(year, month, day, hour, minute);
-        this.endDate = new DateTime(startDate, 1, 0);
-    }
-
+    
     public Event(String id){
         this.name = null;
         this.startDate = new DateTime();

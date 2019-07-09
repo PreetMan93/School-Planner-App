@@ -23,7 +23,8 @@ import com.exam.planner.R;
 
 public class EventEditActivity extends AppCompatActivity {
 
-    private String eventName, eventId;
+    private int eventPos;
+    private String eventName;
     private int startYear, startMonth, startDay, startHour, startMinute;
     private int endYear, endMonth, endDay, endHour, endMinute;
 
@@ -51,7 +52,7 @@ public class EventEditActivity extends AppCompatActivity {
         fridayBox = findViewById(R.id.friday_checkbox);
         saturdayBox = findViewById(R.id.saturday_checkbox);
 
-        eventId = getIntent().getStringExtra("eventId");
+        eventPos = getIntent().getIntExtra("eventPos", -1);
 
         if (getIntent().hasExtra("eventName")){
             eventName = getIntent().getStringExtra("eventName");
@@ -220,11 +221,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent deleteIntent = getIntent();
-                deleteIntent.putExtra("eventId", eventId);
-                //packaged info includes start day so that the CalendarView can focus on the right day
-                deleteIntent.putExtra("eventStartYear", startYear);
-                deleteIntent.putExtra("eventStartMonth", startMonth);
-                deleteIntent.putExtra("eventStartDay", startDay);
+                deleteIntent.putExtra("eventPos", eventPos);
                 setResult(2, deleteIntent);
                 finish();
             }
@@ -239,7 +236,7 @@ public class EventEditActivity extends AppCompatActivity {
                     
                     Intent returnIntent = getIntent();
 
-                    returnIntent.putExtra("eventId", eventId);
+                    returnIntent.putExtra("eventPos", eventPos);
                     returnIntent.putExtra("eventName", eventNameField.getText().toString());
 
                     returnIntent.putExtra("eventStartYear", startYear);
