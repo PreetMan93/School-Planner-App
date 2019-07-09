@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 
 import com.exam.planner.Logic.Events.DateOutOfBoundsException;
 import com.exam.planner.Logic.Events.Event;
@@ -20,15 +21,17 @@ import com.exam.planner.Presentation.Settings.SettingsActivity;
 import com.exam.planner.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.exam.planner.Logic.Login.data.Repository.getInstance;
 
 public class CalendarActivity extends AppCompatActivity {
     private static final String TAG = "CalendarActivity";
 
-    private ArrayList<Event> mEvents = new ArrayList<>();
     private EventListAdapter adapter;
     private Repository repo;
+
+    private int sYear, sMonth, sDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +45,36 @@ public class CalendarActivity extends AppCompatActivity {
 
         final Intent settingsIntent = new Intent(this, SettingsActivity.class);
 
+        final CalendarView calendarView = findViewById(R.id.calendar_view);
         final Button addEventButton = findViewById(R.id.add_event_button);
 
-        initEventListView();
+        Calendar today = Calendar.getInstance();
+        sYear = today.get(Calendar.YEAR);
+        sMonth = today.get(Calendar.MONTH);
+        sDay = today.get(Calendar.DAY_OF_MONTH);
+        calendarView.setDate(today.getTimeInMillis(), true, true);
+
+        refreshEventListView(repo.getEvents(sYear, sMonth, sDay));
+
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                sYear = year;
+                sMonth = month;
+                sDay = dayOfMonth;
+                refreshEventListView(repo.getEvents(year, month, dayOfMonth));
+            }
+        });
 
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Event e = new Event();
+                Calendar now = Calendar.getInstance();
+                Event e = new Event(sYear, sMonth, sDay, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE));
 
                 Intent editEventIntent = new Intent(v.getContext(), EventEditActivity.class);
-                editEventIntent.putExtra("eventPos", -1);
+                editEventIntent.putExtra("eventId", "-1");
                 editEventIntent.putExtra("eventName", e.getName());
 
                 editEventIntent.putExtra("eventStartYear", e.getStartYear());
@@ -100,9 +122,10 @@ public class CalendarActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Calendar focusDay = Calendar.getInstance();
         if (requestCode == 1){
             if (resultCode == Activity.RESULT_OK){
-                int eventPos = data.getIntExtra("eventPos", -1);
+                String eventId = data.getStringExtra("eventId");
                 String eventName = data.getStringExtra("eventName");
 
                 int startYear = data.getIntExtra("eventStartYear", 1900);
@@ -117,16 +140,17 @@ public class CalendarActivity extends AppCompatActivity {
                 int endHour = data.getIntExtra("eventEndHour", 0);
                 int endMinute = data.getIntExtra("eventEndMinute", 0);
 
+                focusDay.set(startYear, startMonth, startDay);
+
                 Event editEvent;
-                if (eventPos >= 0)
-                    editEvent = repo.getEvents().get(eventPos);
+                if (!eventId.equals("-1"))
+                    editEvent = repo.getUser().getPlanner().getEvent(eventId);
                 else {
-                    editEvent = new Event();
+                    editEvent = new Event(java.util.UUID.randomUUID().toString());
                     repo.addEvent(editEvent);
                 }
                 
                 editEvent.editName(eventName);
-                editEvent.editId(java.util.UUID.randomUUID().toString());
                 try {
                     editEvent.editStartDate(startYear, startMonth, startDay, startHour, startMinute);
                 } catch (DateOutOfBoundsException e) {
@@ -141,25 +165,28 @@ public class CalendarActivity extends AppCompatActivity {
                 } catch (TimeOutOfBoundsException e) {
                     e.printStackTrace();
                 }
-
-                adapter.notifyDataSetChanged();
             }else if (resultCode == 2){
-                int eventPos = data.getIntExtra("eventPos", -1);
-                if (eventPos >= 0) {
-                    //mEvents.remove(eventPos)
-                    repo.getUser().getPlanner().getEventsList().remove(eventPos);
-                    adapter.notifyDataSetChanged();
-                }
+                String eventId = data.getStringExtra("eventId");
+                int startYear = data.getIntExtra("eventStartYear", 1900);
+                int startMonth = data.getIntExtra("eventStartMonth", 1);
+                int startDay = data.getIntExtra("eventStartDay", 1);
+
+                focusDay.set(startYear, startMonth, startDay);
+                repo.getUser().getPlanner().removeEvent(eventId);
             }
         }
+        sYear = focusDay.get(Calendar.YEAR);
+        sMonth = focusDay.get(Calendar.MONTH);
+        sDay = focusDay.get(Calendar.DAY_OF_MONTH);
+        CalendarView calendarView = findViewById(R.id.calendar_view);
+        calendarView.setDate(focusDay.getTimeInMillis(), true, true);
+        refreshEventListView(repo.getEvents(focusDay.get(Calendar.YEAR), focusDay.get(Calendar.MONTH), focusDay.get(Calendar.DAY_OF_MONTH)));
     }
 
-
-
-    private void initEventListView() {
-        Log.d(TAG, "initEventListView: init recyclerview");
+    private void refreshEventListView(ArrayList<Event> list) {
+        Log.d(TAG, "refreshEventListView: refreshing recyclerview");
         RecyclerView eventListView = findViewById(R.id.event_list_view);
-        adapter = new EventListAdapter(this, repo.getEvents());
+        adapter = new EventListAdapter(this, list);
         eventListView.setAdapter(adapter);
         eventListView.setLayoutManager(new LinearLayoutManager(this));
     }
