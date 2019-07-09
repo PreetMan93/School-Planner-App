@@ -37,7 +37,6 @@ public class Repository {
         }
     }
     public ArrayList<Event> getEvents(){return user.getPlanner().getEventsList();}
-    public ArrayList<Event> getEvents(int year, int month, int day){return user.getPlanner().getEventsList(year, month, day);}
     public void addEvent(Event e){user.addEvent(e);}
     public LoggedInUser getUser() { return user; }
 
