@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.exam.planner.Logic.Events.DateOutOfBoundsException;
 import com.exam.planner.Logic.Events.DateTime;
 import com.exam.planner.Logic.Events.DateTimeValidationException;
-import com.exam.planner.Logic.Events.Event;
 import com.exam.planner.Logic.Events.TimeOutOfBoundsException;
 import com.exam.planner.R;
 
@@ -235,7 +234,7 @@ public class EventEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    Event.validateEndAfterStart(startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute);
+                    DateTime.validateEndAfterStart(startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute);
                     
                     Intent returnIntent = getIntent();
 

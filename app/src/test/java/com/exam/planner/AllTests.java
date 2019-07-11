@@ -1,8 +1,9 @@
 package com.exam.planner;
 
-import com.exam.planner.Logic.Events.EventTest;
+import com.exam.planner.CalendarTesting.CalendarFormatterTest;
 import com.exam.planner.DSO.PlannerTest;
 import com.exam.planner.DSO.UserTest;
+import com.exam.planner.Logic.Events.EventTest;
 import com.exam.planner.LoginTesting.DataSourceUnitTest;
 import com.exam.planner.LoginTesting.FormStateManagerTest;
 import com.exam.planner.LoginTesting.FormStateTest;
@@ -27,7 +28,8 @@ import org.junit.runners.Suite;
         LoginViewModelTest.class,
         RepositoryTest.class,
         ResultTest.class,
-        FormStateManagerTest.class
+        FormStateManagerTest.class,
+        CalendarFormatterTest.class
 })
 public class AllTests
 {
