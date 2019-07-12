@@ -40,7 +40,7 @@ public class CalendarFormatter {
         }
     }
 
-    public static void validateDateFormat(String date) throws CalendarInvalidFormatException {
+    private static void validateDateFormat(String date) throws CalendarInvalidFormatException {
         String[] split = date.split("/");
         if (split.length != 3)
             throw(new CalendarInvalidFormatException("Date must follow the format YYYY/MM/DD"));
@@ -50,7 +50,7 @@ public class CalendarFormatter {
         }
     }
 
-    public static void validateTimeFormat(String time) throws CalendarInvalidFormatException {
+    private static void validateTimeFormat(String time) throws CalendarInvalidFormatException {
         String[] split = time.split(":");
         if (split.length != 2)
             throw(new CalendarInvalidFormatException("Time must follow the format HH:MM"));

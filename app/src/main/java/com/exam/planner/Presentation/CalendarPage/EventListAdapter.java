@@ -22,7 +22,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     private static final String TAG = "EventListAdapter";
 
     private Context mContext;
-    private ArrayList<Event> mEvents = new ArrayList<>();
+    private ArrayList<Event> mEvents;
 
     public EventListAdapter(Context context, ArrayList<Event> events){
         mContext = context;
@@ -38,7 +38,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called");
 
         //Get Event info and populate cells
@@ -52,12 +52,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.eventItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: clicked on " + mEvents.get(position));
+                Log.d(TAG, "onClick: clicked on " + mEvents.get(holder.getAdapterPosition()));
 
-                Event e = mEvents.get(position);
+                Event e = mEvents.get(holder.getAdapterPosition());
 
                 Intent editEventIntent = new Intent(mContext, EventEditActivity.class);
-                editEventIntent.putExtra("eventPos", position);
+                editEventIntent.putExtra("eventId", e.getId());
                 editEventIntent.putExtra("eventName", e.getName());
 
                 editEventIntent.putExtra("eventStartYear", e.getStartYear());
