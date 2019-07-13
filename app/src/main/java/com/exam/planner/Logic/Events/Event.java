@@ -5,6 +5,7 @@ public class Event {
     private String name;
     private DateTime startDate, endDate;
     private String id;
+    private String copyId;
     private String colour;
     private Boolean isPublic = false;
 
@@ -13,6 +14,7 @@ public class Event {
         this.startDate = new DateTime();
         this.endDate = new DateTime(startDate, 1, 0);
         this.id = null;
+        this.copyId = null;
         this.colour = "grey";
     }
 
@@ -20,6 +22,9 @@ public class Event {
         this.name = null;
         this.startDate = new DateTime(year, month, day, hour, minute);
         this.endDate = new DateTime(startDate, 1, 0);
+        this.id = null;
+        this.copyId = null;
+        this.colour = "grey";
     }
 
     public Event(String id){
@@ -27,6 +32,7 @@ public class Event {
         this.startDate = new DateTime();
         this.endDate = new DateTime(startDate, 1, 0);
         this.id = id;
+        this.copyId = null;
         this.colour = "grey";
     }
 

@@ -98,7 +98,7 @@ public class CalendarActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
 
                 if(tab.getText().equals("Settings")){
-                    startActivity(settingsIntent);
+                    startActivityForResult(settingsIntent, 1);
                 }
 
             }
