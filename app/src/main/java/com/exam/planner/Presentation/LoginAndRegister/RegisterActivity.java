@@ -48,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, CalendarActivity.class);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
-        formStateManager = new FormStateManager();
+        formStateManager = new FormStateManager("\"!@#$%^&*()-_~?<>,.\";\n");
 
         usernameEditText = findViewById(R.id.registerEmail);
         passwordEditText = findViewById(R.id.registerPassword);

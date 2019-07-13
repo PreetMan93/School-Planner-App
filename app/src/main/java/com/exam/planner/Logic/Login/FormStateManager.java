@@ -8,6 +8,11 @@ import com.exam.planner.R;
 public class FormStateManager {
 
     private MutableLiveData<FormState> FormState = new MutableLiveData<>();
+    private String badChars;
+
+    public FormStateManager(String badChars){
+        this.badChars = badChars;
+    }
 
     public LiveData<FormState> getFormState() {
         return FormState;
@@ -64,7 +69,6 @@ public class FormStateManager {
     }
 
     private boolean invalidCharacters(String string){
-        String badChars = "!@#$%^&*()-_~?<>,.";
         for(int i = 0; i < string.length(); i++){
             if(badChars.contains("" + string.charAt(i)))
                 return true;

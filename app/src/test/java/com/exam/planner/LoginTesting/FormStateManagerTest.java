@@ -1,12 +1,13 @@
 package com.exam.planner.LoginTesting;
 
+import com.exam.planner.Logic.Login.FormState;
 import com.exam.planner.Logic.Login.FormStateManager;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 public class FormStateManagerTest {
-    FormStateManager formStateManager = new FormStateManager();
+    FormStateManager formStateManager = new FormStateManager("\"!@#$%^&*()-_~?<>,.\";\n");
 
     @Test
     public void testUsernameVerify(){
