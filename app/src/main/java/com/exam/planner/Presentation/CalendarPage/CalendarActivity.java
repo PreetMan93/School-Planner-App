@@ -119,7 +119,7 @@ public class CalendarActivity extends AppCompatActivity {
 
                 Event editEvent;
                 if (eventPos >= 0)
-                    editEvent = mEvents.get(eventPos);
+                    editEvent = repo.getEvents().get(eventPos);
                 else {
                     editEvent = new Event();
                     repo.addEvent(editEvent);

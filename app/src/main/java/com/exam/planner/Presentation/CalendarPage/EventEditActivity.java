@@ -237,7 +237,7 @@ public class EventEditActivity extends AppCompatActivity {
                     Intent returnIntent = getIntent();
 
                     returnIntent.putExtra("eventPos", eventPos);
-                    returnIntent.putExtra("eventName", eventName);
+                    returnIntent.putExtra("eventName", eventNameField.getText().toString());
 
                     returnIntent.putExtra("eventStartYear", startYear);
                     returnIntent.putExtra("eventStartMonth", startMonth);
