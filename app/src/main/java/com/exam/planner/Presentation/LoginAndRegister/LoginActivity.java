@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
-        formStateManager = new FormStateManager();
+        formStateManager = new FormStateManager("\"!@#$%^&*()-_~?<>,.\";\n");
 
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
