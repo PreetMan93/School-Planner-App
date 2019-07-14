@@ -1,7 +1,7 @@
 package com.exam.planner.Logic.Events;
 
 public class Event {
-    private static final String TAG = "Event";
+    private String tag;
     private String name;
     private DateTime startDate, endDate;
     private String id;
@@ -10,6 +10,7 @@ public class Event {
     private Boolean isPublic = false;
 
     public Event(){
+        this.tag = "Event";
         this.name = null;
         this.startDate = new DateTime();
         this.endDate = new DateTime(startDate, 1, 0);
@@ -27,7 +28,8 @@ public class Event {
         this.colour = "grey";
     }
 
-    public Event(String id){
+    public Event(String id, String tag){
+        this.tag = tag;
         this.name = null;
         this.startDate = new DateTime();
         this.endDate = new DateTime(startDate, 1, 0);
@@ -36,7 +38,17 @@ public class Event {
         this.colour = "grey";
     }
 
+    public Event(String id){
+        this.tag = "Event";
+        this.name = null;
+        this.startDate = new DateTime();
+        this.endDate = new DateTime(startDate, 1, 0);
+        this.id = id;
+        this.colour = "grey";
+    }
 
+    public void setTag(String tag){this.tag = tag;}
+    public String getTag(){return this.tag;}
     public String getName() {return this.name;}
     public DateTime getStartDate() {return this.startDate;}
     public DateTime getEndDate() {return this.endDate;}
