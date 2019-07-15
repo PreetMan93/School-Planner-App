@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -21,6 +22,7 @@ import com.exam.planner.Logic.Events.TimeOutOfBoundsException;
 import com.exam.planner.R;
 
 public class EventEditActivity extends AppCompatActivity {
+    private static final String TAG = "EventEditActivity";
 
     private String eventName, eventId;
     private int startYear, startMonth, startDay, startHour, startMinute;
@@ -35,6 +37,8 @@ public class EventEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_edit);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Log.d(TAG, "onCreate: started");
 
         eventNameField = findViewById(R.id.event_edit_name_field);
         eventStartDateField = findViewById(R.id.event_edit_start_date_field);
@@ -257,6 +261,7 @@ public class EventEditActivity extends AppCompatActivity {
                     returnIntent.putExtra("eventRepeatList", repeatArray);
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
+                    Log.d(TAG, "onClick: Returning to CalendarActivity");
                 } catch (DateTimeValidationException e) {
                     Toast.makeText(EventEditActivity.this, "Events must start before they end", Toast.LENGTH_SHORT).show();
                 }
@@ -265,6 +270,7 @@ public class EventEditActivity extends AppCompatActivity {
     }
 
     private void updateStartDateField() {
+        Log.d(TAG, "updateStartDateField() called");
         try {
             int[] date = CalendarFormatter.dateToInt(eventStartDateField.getText().toString());
             DateTime.validateDate(date[0], date[1], date[2]);
@@ -282,6 +288,7 @@ public class EventEditActivity extends AppCompatActivity {
     }
 
     private void updateEndDateField() {
+        Log.d(TAG, "updateEndDateField() called");
         try {
             int[] date = CalendarFormatter.dateToInt(eventEndDateField.getText().toString());
             DateTime.validateDate(date[0], date[1], date[2]);
@@ -299,6 +306,7 @@ public class EventEditActivity extends AppCompatActivity {
     }
 
     private void updateStartTimeField() {
+        Log.d(TAG, "updateStartTimeField() called");
         try {
             int[] time = CalendarFormatter.timeToInt(eventStartTimeField.getText().toString());
             DateTime.validateTime(time[0], time[1]);
@@ -315,6 +323,7 @@ public class EventEditActivity extends AppCompatActivity {
     }
 
     private void updateEndTimeField() {
+        Log.d(TAG, "updateEndTimeField() called");
         try {
             int[] time = CalendarFormatter.timeToInt(eventEndTimeField.getText().toString());
             DateTime.validateTime(time[0], time[1]);
@@ -328,5 +337,11 @@ public class EventEditActivity extends AppCompatActivity {
             eventEndTimeField.setText(CalendarFormatter.timeToString(endHour, endMinute));
             Toast.makeText(EventEditActivity.this, "Please enter an hour from 0 and 23 and a minute from 0 to 59", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: EventEditActivity is gone!");
     }
 }

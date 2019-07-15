@@ -1,6 +1,8 @@
 package com.exam.planner.DSO;
 
 
+import android.util.Log;
+
 import com.exam.planner.Logic.Events.Event;
 import java.util.ArrayList;
 
@@ -21,11 +23,13 @@ public class Planner {
     }
 
     public boolean removeEvent(String id){
+        int i = 0;
         for(Event e: eventsList) {
             if(e.getId().equals(id)) {
-                eventsList.remove(e);
+                eventsList.remove(i);
                 return true;
             }
+            i++;
         }
         return false;
     }

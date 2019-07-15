@@ -12,6 +12,7 @@ import com.exam.planner.LoginTesting.LoginViewModelTest;
 import com.exam.planner.LoginTesting.RepositoryTest;
 import com.exam.planner.LoginTesting.ResultTest;
 import com.exam.planner.PersistenceTesting.UserPersistenceStubTest;
+import com.exam.planner.SyncTesting.SelectedEventsTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -29,7 +30,8 @@ import org.junit.runners.Suite;
         RepositoryTest.class,
         ResultTest.class,
         FormStateManagerTest.class,
-        CalendarFormatterTest.class
+        CalendarFormatterTest.class,
+        SelectedEventsTest.class
 })
 public class AllTests
 {

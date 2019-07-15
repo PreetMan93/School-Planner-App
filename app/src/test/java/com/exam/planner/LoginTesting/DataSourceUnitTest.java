@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class DataSourceUnitTest {
 
-    DataSource dataSource = new DataSource(new UserPersistenceStub());
+    DataSource dataSource = new DataSource(UserPersistenceStub.getInstance());
 
     @Test
     public void testAttemptLoginFailure(){

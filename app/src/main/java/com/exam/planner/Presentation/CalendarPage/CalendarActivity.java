@@ -17,6 +17,7 @@ import com.exam.planner.Logic.Events.Event;
 import com.exam.planner.Logic.Events.TimeOutOfBoundsException;
 import com.exam.planner.Logic.Login.data.Repository;
 import com.exam.planner.Persistence.Stubs.UserPersistenceStub;
+import com.exam.planner.Presentation.EventSyncPage.EventSyncActivity;
 import com.exam.planner.Presentation.Settings.SettingsActivity;
 import com.exam.planner.R;
 
@@ -39,7 +40,7 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
         Log.d(TAG, "onCreate: started");
 
-        repo = getInstance(new UserPersistenceStub());
+        repo = getInstance(UserPersistenceStub.getInstance());
 
         final TabLayout navigationBar = findViewById(R.id.NavBar);
 
@@ -47,6 +48,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         final CalendarView calendarView = findViewById(R.id.calendar_view);
         final Button addEventButton = findViewById(R.id.add_event_button);
+        final Button syncEventButton = findViewById(R.id.sync_event_button);
 
         Calendar today = Calendar.getInstance();
         sYear = today.get(Calendar.YEAR);
@@ -70,6 +72,7 @@ public class CalendarActivity extends AppCompatActivity {
         addEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: New Event button clicked");
                 Calendar now = Calendar.getInstance();
                 Event e = new Event(sYear, sMonth, sDay, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE));
 
@@ -93,14 +96,24 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
+        syncEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: Sync Event button clicked");
+                Intent syncEventIntent = new Intent(v.getContext(), EventSyncActivity.class);
+
+                ((Activity)v.getContext()).startActivityForResult(syncEventIntent, 1);
+            }
+        });
+
         navigationBar.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
                 if(tab.getText().equals("Settings")){
+                    Log.d(TAG, "onTabSelected: Settings button clicked");
                     startActivityForResult(settingsIntent, 1);
                 }
-
             }
 
             @Override
@@ -125,6 +138,7 @@ public class CalendarActivity extends AppCompatActivity {
         Calendar focusDay = Calendar.getInstance();
         if (requestCode == 1){
             if (resultCode == Activity.RESULT_OK){
+                Log.d(TAG, "onActivityResult: Event being saved");
                 String eventId = data.getStringExtra("eventId");
                 String eventName = data.getStringExtra("eventName");
 
@@ -166,6 +180,7 @@ public class CalendarActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }else if (resultCode == 2){
+                Log.d(TAG, "onActivityResult: Event being deleted");
                 String eventId = data.getStringExtra("eventId");
                 int startYear = data.getIntExtra("eventStartYear", 1900);
                 int startMonth = data.getIntExtra("eventStartMonth", 1);

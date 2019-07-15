@@ -37,6 +37,6 @@ public class LoginViewModelFactoryTest {
 
 class TestingViewModel extends LoginViewModel{
     public TestingViewModel(){
-        super(Repository.getInstance(new UserPersistenceStub()));
+        super(Repository.getInstance(UserPersistenceStub.getInstance()));
     }
 }

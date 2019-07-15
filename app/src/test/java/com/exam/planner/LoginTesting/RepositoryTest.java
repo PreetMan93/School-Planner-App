@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class RepositoryTest {
 
-    Repository test = Repository.getInstance(new UserPersistenceStub());
+    Repository test = Repository.getInstance(UserPersistenceStub.getInstance());
 
     @Test
     public void testAttemptLoginSuccess(){
