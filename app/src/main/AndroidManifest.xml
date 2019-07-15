@@ -10,15 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Presentation.EventSyncPage.EventSyncActivity"
+            android:label="@string/title_activity_event_sync"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".Presentation.CalendarPage.EventEditActivity"
             android:label="@string/title_activity_event_edit"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Presentation.CalendarPage.CalendarActivity"
             android:label="@string/title_activity_calendar"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Presentation.LoginAndRegister.LoginActivity"
             android:label="@string/app_name">
@@ -28,9 +31,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Presentation.Settings.SettingsActivity" ></activity>
-        <activity android:name=".Presentation.LoginAndRegister.RegisterActivity" ></activity>
-
+        <activity android:name=".Presentation.Settings.SettingsActivity" />
+        <activity android:name=".Presentation.LoginAndRegister.RegisterActivity" />
     </application>
 
 </manifest>

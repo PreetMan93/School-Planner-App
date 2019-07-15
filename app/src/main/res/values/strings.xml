@@ -28,5 +28,6 @@
     <string name="action_save_settings">Save settings</string>
     <string name="action_home">Home</string>
     <string name="user_settings_message">User Name / ID will go here</string>
+    <string name="title_activity_event_sync">EventSyncActivity</string>
 
 </resources>

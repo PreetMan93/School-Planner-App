@@ -1,5 +1,7 @@
 package com.exam.planner.Logic.Events;
 
+import android.util.Log;
+
 public class Event {
     private String tag;
     private String name;
@@ -115,5 +117,23 @@ public class Event {
             newEvent.makeEventPublic();
         }
         return newEvent;
+    }
+
+    public Event deepCopy() {
+        Event cpy = new Event();
+        cpy.editName(this.name);
+        cpy.editId(java.util.UUID.randomUUID().toString());
+        cpy.editColour(this.colour);
+        try {
+            cpy.editStartDate(this.getStartYear(), this.getStartMonth(), this.getStartDay(), this.getStartHour(), this.getStartMinute());
+            cpy.editEndDate(this.getEndYear(), this.getEndMonth(), this.getEndDay(), this.getEndHour(), this.getEndMinute());
+        } catch (DateOutOfBoundsException exp) {
+            Log.d("Exception", "deepCopy: DateOutOfBoundsException");
+        } catch (TimeOutOfBoundsException times){
+            Log.d("Exception", "deepCopy: TimeOutOfBoundsException");
+        } catch (Exception e){
+            Log.d("Exception", "deepCopy: Weird exception");
+        }
+        return cpy;
     }
 }

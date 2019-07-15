@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public class LoginViewModelTest {
 
-    private LoginViewModel loginViewModel = new LoginViewModel(Repository.getInstance(new UserPersistenceStub()));
+    private LoginViewModel loginViewModel = new LoginViewModel(Repository.getInstance(UserPersistenceStub.getInstance()));
 
 
     @Test
