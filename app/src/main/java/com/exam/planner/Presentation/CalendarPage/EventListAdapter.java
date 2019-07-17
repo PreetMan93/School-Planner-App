@@ -58,6 +58,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
                 Intent editEventIntent = new Intent(mContext, EventEditActivity.class);
                 editEventIntent.putExtra("eventId", e.getId());
+                editEventIntent.putExtra("eventCopyId", e.getCopyId());
                 editEventIntent.putExtra("eventName", e.getName());
 
                 editEventIntent.putExtra("eventStartYear", e.getStartYear());
