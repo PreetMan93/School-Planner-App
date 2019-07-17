@@ -183,7 +183,8 @@ public class CalendarActivity extends AppCompatActivity {
                 for (boolean b: repeatArray)
                     doRepeat = doRepeat || b;
                 if (doRepeat) {
-                    editEvent.editCopyId(java.util.UUID.randomUUID().toString());
+                    if (editEvent.getCopyId() == null)
+                        editEvent.editCopyId(java.util.UUID.randomUUID().toString());
 
                     Calendar repCal = Calendar.getInstance();
                     repCal.set(Calendar.YEAR, startYear);
@@ -212,12 +213,22 @@ public class CalendarActivity extends AppCompatActivity {
             }else if (resultCode == 2) {
                 Log.d(TAG, "onActivityResult: Event being deleted");
                 String eventId = data.getStringExtra("eventId");
+                repo.getUser().getPlanner().removeEvent(eventId);
+
                 int startYear = data.getIntExtra("eventStartYear", 1900);
                 int startMonth = data.getIntExtra("eventStartMonth", 1);
                 int startDay = data.getIntExtra("eventStartDay", 1);
-
                 focusDay.set(startYear, startMonth, startDay);
-                repo.getUser().getPlanner().removeEvent(eventId);
+            }else if (resultCode == 3) {
+                Log.d(TAG, "onActivityResult: Event Copies being deleted");
+                String eventId = data.getStringExtra("eventId");
+                String copyId = repo.getUser().getPlanner().getEvent(eventId).getCopyId();
+                repo.getUser().getPlanner().removeEventCopies(copyId);
+
+                int startYear = data.getIntExtra("eventStartYear", 1900);
+                int startMonth = data.getIntExtra("eventStartMonth", 1);
+                int startDay = data.getIntExtra("eventStartDay", 1);
+                focusDay.set(startYear, startMonth, startDay);
             }
         }
         sYear = focusDay.get(Calendar.YEAR);

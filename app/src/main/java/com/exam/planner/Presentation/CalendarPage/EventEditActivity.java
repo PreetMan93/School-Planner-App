@@ -1,6 +1,8 @@
 package com.exam.planner.Presentation.CalendarPage;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +28,7 @@ import java.util.Calendar;
 public class EventEditActivity extends AppCompatActivity {
     private static final String TAG = "EventEditActivity";
 
-    private String eventName, eventId;
+    private String eventName, eventId, eventCopyId;
     private int startYear, startMonth, startDay, startHour, startMinute;
     private int endYear, endMonth, endDay, endHour, endMinute;
     private int repeatYear, repeatMonth, repeatDay;
@@ -59,6 +61,11 @@ public class EventEditActivity extends AppCompatActivity {
         saturdayBox = findViewById(R.id.saturday_checkbox);
 
         eventId = getIntent().getStringExtra("eventId");
+
+        if (getIntent().hasExtra("eventCopyId")){
+            eventCopyId = getIntent().getStringExtra("eventCopyId");
+        }else
+            eventCopyId = null;
 
         if (getIntent().hasExtra("eventName")){
             eventName = getIntent().getStringExtra("eventName");
@@ -257,14 +264,46 @@ public class EventEditActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent deleteIntent = getIntent();
+                final Intent deleteIntent = getIntent();
                 deleteIntent.putExtra("eventId", eventId);
                 //packaged info includes start day so that the CalendarView can focus on the right day
                 deleteIntent.putExtra("eventStartYear", startYear);
                 deleteIntent.putExtra("eventStartMonth", startMonth);
                 deleteIntent.putExtra("eventStartDay", startDay);
-                setResult(2, deleteIntent);
-                finish();
+                if (eventCopyId != null){
+                    new AlertDialog.Builder(v.getContext())
+                            .setTitle("Delete Copied Events")
+                            .setMessage("Delete all copies of this event?")
+                            .setIcon(android.R.drawable.ic_delete)
+                            .setPositiveButton("Delete All", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    setResult(3, deleteIntent);
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("Delete Single", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    setResult(2, deleteIntent);
+                                    finish();
+                                }
+                            })
+                            .setNeutralButton("Cancel", null).show();
+                }else{
+                    new AlertDialog.Builder(v.getContext())
+                            .setTitle("Delete Event")
+                            .setMessage("Are you sure you would like to delete this event?")
+                            .setIcon(android.R.drawable.ic_delete)
+                            .setPositiveButton("Delete Event", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    setResult(3, deleteIntent);
+                                    finish();
+                                }
+                            })
+                            .setNeutralButton("Cancel", null).show();
+                }
             }
         });
 
@@ -272,8 +311,14 @@ public class EventEditActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean[] repeatArray = {sundayBox.isChecked(), mondayBox.isChecked(), tuesdayBox.isChecked(), wednesdayBox.isChecked(), thursdayBox.isChecked(), fridayBox.isChecked(), saturdayBox.isChecked()};
+                boolean doRepeat = false;
+                for (boolean b: repeatArray)
+                    doRepeat = doRepeat || b;
                 try {
                     DateTime.validateEndAfterStart(startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute);
+                    if (doRepeat)
+                        DateTime.validateEndAfterStart(startYear, startMonth, startDay, startHour, startMinute, repeatYear, repeatMonth, repeatDay, 0, 0);
                     
                     Intent returnIntent = getIntent();
 
@@ -292,7 +337,6 @@ public class EventEditActivity extends AppCompatActivity {
                     returnIntent.putExtra("eventEndHour", endHour);
                     returnIntent.putExtra("eventEndMinute", endMinute);
 
-                    boolean[] repeatArray = {sundayBox.isChecked(), mondayBox.isChecked(), tuesdayBox.isChecked(), wednesdayBox.isChecked(), thursdayBox.isChecked(), fridayBox.isChecked(), saturdayBox.isChecked()};
                     returnIntent.putExtra("eventRepeatList", repeatArray);
 
                     returnIntent.putExtra("eventRepeatYear", repeatYear);
@@ -303,7 +347,10 @@ public class EventEditActivity extends AppCompatActivity {
                     finish();
                     Log.d(TAG, "onClick: Returning to CalendarActivity");
                 } catch (DateTimeValidationException e) {
-                    Toast.makeText(EventEditActivity.this, "Events must start before they end", Toast.LENGTH_SHORT).show();
+                    if (doRepeat)
+                        Toast.makeText(EventEditActivity.this, "End and repeat dates must be later than the start date", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(EventEditActivity.this, "Events must start before they end", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -1,10 +1,10 @@
 package com.exam.planner.DSO;
 
 
-import android.util.Log;
-
 import com.exam.planner.Logic.Events.Event;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Planner {
 
@@ -23,15 +23,27 @@ public class Planner {
     }
 
     public boolean removeEvent(String id){
-        int i = 0;
-        for(Event e: eventsList) {
-            if(e.getId().equals(id)) {
-                eventsList.remove(i);
-                return true;
+        boolean ret = false;
+        for (Iterator<Event> iterator = eventsList.iterator(); iterator.hasNext();) {
+            Event next = iterator.next();
+            if (next.getId() != null && next.getId().equals(id)){
+                iterator.remove();
+                ret = true;
             }
-            i++;
         }
-        return false;
+        return ret;
+    }
+
+    public boolean removeEventCopies(String copyId){
+        boolean ret = false;
+        for (Iterator<Event> iterator = eventsList.iterator(); iterator.hasNext();) {
+            Event next = iterator.next();
+            if (next.getCopyId() != null && next.getCopyId().equals(copyId)){
+                iterator.remove();
+                ret = true;
+            }
+        }
+        return ret;
     }
 
     public boolean eventListContains(Event e){
