@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.exam.planner.Logic.Events.Event;
 import com.exam.planner.Logic.Sync.SelectedEvents;
-import com.exam.planner.Presentation.CalendarPage.CalendarFormatter;
+import com.exam.planner.Logic.Events.CalendarFormatter;
 import com.exam.planner.R;
 
 import java.util.ArrayList;

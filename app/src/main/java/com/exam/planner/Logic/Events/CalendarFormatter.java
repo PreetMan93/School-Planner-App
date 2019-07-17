@@ -1,8 +1,8 @@
-package com.exam.planner.Presentation.CalendarPage;
+package com.exam.planner.Logic.Events;
 
 public class CalendarFormatter {
     public static String dateToString(int year, int month, int day) {
-        return year + "/" + month + "/" + day;
+        return year + "/" + (month +1) + "/" + day;
     }
 
     public static String timeToString(int hour, int minute) {
@@ -19,7 +19,7 @@ public class CalendarFormatter {
             String[] split = date.split("/");
             int[] ret = new int[3];
             ret[0] = Integer.parseInt(split[0]);
-            ret[1] = Integer.parseInt(split[1]);
+            ret[1] = Integer.parseInt(split[1]) - 1;
             ret[2] = Integer.parseInt(split[2]);
             return ret;
         } catch (CalendarInvalidFormatException e) {
@@ -58,11 +58,5 @@ public class CalendarFormatter {
             if(split[i].length() == 0)
                 throw(new CalendarInvalidFormatException("Time must follow the format HH:MM"));
         }
-    }
-}
-
-class CalendarInvalidFormatException extends Exception {
-    CalendarInvalidFormatException(String message){
-        super(message);
     }
 }

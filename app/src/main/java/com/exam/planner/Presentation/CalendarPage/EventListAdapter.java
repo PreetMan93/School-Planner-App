@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.exam.planner.Logic.Events.CalendarFormatter;
 import com.exam.planner.Logic.Events.Event;
 import com.exam.planner.R;
 

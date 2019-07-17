@@ -1,6 +1,6 @@
-package com.exam.planner.CalendarTesting;
+package com.exam.planner.Logic;
 
-import com.exam.planner.Presentation.CalendarPage.CalendarFormatter;
+import com.exam.planner.Logic.Events.CalendarFormatter;
 
 import org.junit.Test;
 
@@ -11,8 +11,8 @@ public class CalendarFormatterTest {
 
     @Test
     public void toStringFormatting() {
-        assertEquals("1900/1/1", CalendarFormatter.dateToString(1900, 1, 1));
-        assertEquals("20000/2000/200", CalendarFormatter.dateToString(20000, 2000, 200));
+        assertEquals("1900/1/1", CalendarFormatter.dateToString(1900, 0, 1));
+        assertEquals("20000/2001/200", CalendarFormatter.dateToString(20000, 2000, 200));
 
         assertEquals("12:01", CalendarFormatter.timeToString(12, 1));
         assertEquals("9:10", CalendarFormatter.timeToString(9, 10));
@@ -25,7 +25,7 @@ public class CalendarFormatterTest {
         try {
             int[] a = CalendarFormatter.dateToInt("1900/1/1");
             assertEquals(a[0], 1900);
-            assertEquals(a[1], 1);
+            assertEquals(a[1], 0);
             assertEquals(a[2], 1);
         } catch (Exception e) {
             fail();
