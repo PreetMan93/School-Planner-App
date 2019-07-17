@@ -16,7 +16,7 @@ public class Event {
         this.name = null;
         this.startDate = new DateTime();
         this.endDate = new DateTime(startDate, 1, 0);
-        this.id = null;
+        this.id = java.util.UUID.randomUUID().toString();
         this.copyId = null;
         this.colour = "grey";
     }
@@ -25,7 +25,7 @@ public class Event {
         this.name = null;
         this.startDate = new DateTime(year, month, day, hour, minute);
         this.endDate = new DateTime(startDate, 1, 0);
-        this.id = null;
+        this.id = java.util.UUID.randomUUID().toString();
         this.copyId = null;
         this.colour = "grey";
     }
@@ -55,6 +55,7 @@ public class Event {
     public DateTime getStartDate() {return this.startDate;}
     public DateTime getEndDate() {return this.endDate;}
     public String getId() {return this.id;}
+    public String getCopyId() {return this.copyId;}
     public String getColour() {return this.colour;}
     public Boolean isPublic() {return this.isPublic;}
 
@@ -103,16 +104,17 @@ public class Event {
     }
 
     public void editId (String newId){this.id = newId;}
+    public void editCopyId (String newId){this.copyId = newId;}
     void editColour(String newColour){this.colour = newColour;}
-    public void makeEventPublic() {this.isPublic = true;}
-    public void makeEventPrivate() {this.isPublic = false;}
+    public void makeEventPublic(){this.isPublic = true;}
+    public void makeEventPrivate(){this.isPublic = false;}
 
-    public Event eventCopy(Event newEvent, int year, int month, int day)throws DateOutOfBoundsException, TimeOutOfBoundsException {
+    public Event eventCopy(Event newEvent, int year, int month, int day) throws DateOutOfBoundsException, TimeOutOfBoundsException {
         newEvent.editName(this.name);
         newEvent.editStartDate(year, month, day, this.startDate.getHour(), this.startDate.getMinute());
         newEvent.editEndDate(year, month, day, this.endDate.getHour(), this.endDate.getMinute());
-        newEvent.editId(this.id);
         newEvent.editColour(this.colour);
+        newEvent.editCopyId(this.copyId);
         if(this.isPublic){
             newEvent.makeEventPublic();
         }

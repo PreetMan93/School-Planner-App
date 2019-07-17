@@ -21,14 +21,17 @@ import com.exam.planner.Logic.Events.DateTimeValidationException;
 import com.exam.planner.Logic.Events.TimeOutOfBoundsException;
 import com.exam.planner.R;
 
+import java.util.Calendar;
+
 public class EventEditActivity extends AppCompatActivity {
     private static final String TAG = "EventEditActivity";
 
     private String eventName, eventId;
     private int startYear, startMonth, startDay, startHour, startMinute;
     private int endYear, endMonth, endDay, endHour, endMinute;
+    private int repeatYear, repeatMonth, repeatDay;
 
-    private EditText eventNameField, eventStartDateField, eventStartTimeField, eventEndDateField, eventEndTimeField;
+    private EditText eventNameField, eventStartDateField, eventStartTimeField, eventEndDateField, eventEndTimeField, eventRepeatField;
     private CheckBox sundayBox, mondayBox, tuesdayBox, wednesdayBox, thursdayBox, fridayBox, saturdayBox;
 
     @Override
@@ -45,6 +48,7 @@ public class EventEditActivity extends AppCompatActivity {
         eventStartTimeField = findViewById(R.id.event_edit_start_time_field);
         eventEndDateField = findViewById(R.id.event_edit_end_date_field);
         eventEndTimeField = findViewById(R.id.event_edit_end_time_field);
+        eventRepeatField = findViewById(R.id.event_edit_repeat_date_field);
 
         sundayBox = findViewById(R.id.sunday_checkbox);
         mondayBox = findViewById(R.id.monday_checkbox);
@@ -117,6 +121,18 @@ public class EventEditActivity extends AppCompatActivity {
         eventStartTimeField.setText(CalendarFormatter.timeToString(startHour, startMinute));
         eventEndDateField.setText(CalendarFormatter.dateToString(endYear, endMonth, endDay));
         eventEndTimeField.setText(CalendarFormatter.timeToString(endHour, endMinute));
+
+        Calendar week = Calendar.getInstance();
+        week.set(Calendar.YEAR, startYear);
+        week.set(Calendar.MONDAY, startMonth);
+        week.set(Calendar.DAY_OF_MONTH, startDay);
+        week.add(Calendar.DAY_OF_MONTH, 6);
+
+        repeatYear = week.get(Calendar.YEAR);
+        repeatMonth = week.get(Calendar.MONTH);
+        repeatDay = week.get(Calendar.DAY_OF_MONTH);
+
+        eventRepeatField.setText(CalendarFormatter.dateToString(repeatYear, repeatMonth, repeatDay));
 
 
         eventNameField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -218,6 +234,25 @@ public class EventEditActivity extends AppCompatActivity {
             }
         });
 
+        eventRepeatField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    updateRepeatField();
+                }
+            }
+        });
+
+        eventRepeatField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    updateRepeatField();
+                }
+                return false;
+            }
+        });
+
         Button deleteButton = findViewById(R.id.event_edit_delete_button);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,6 +294,11 @@ public class EventEditActivity extends AppCompatActivity {
 
                     boolean[] repeatArray = {sundayBox.isChecked(), mondayBox.isChecked(), tuesdayBox.isChecked(), wednesdayBox.isChecked(), thursdayBox.isChecked(), fridayBox.isChecked(), saturdayBox.isChecked()};
                     returnIntent.putExtra("eventRepeatList", repeatArray);
+
+                    returnIntent.putExtra("eventRepeatYear", repeatYear);
+                    returnIntent.putExtra("eventRepeatMonth", repeatMonth);
+                    returnIntent.putExtra("eventRepeatDay", repeatDay);
+
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                     Log.d(TAG, "onClick: Returning to CalendarActivity");
@@ -336,6 +376,28 @@ public class EventEditActivity extends AppCompatActivity {
         } catch (TimeOutOfBoundsException e){
             eventEndTimeField.setText(CalendarFormatter.timeToString(endHour, endMinute));
             Toast.makeText(EventEditActivity.this, "Please enter an hour from 0 and 23 and a minute from 0 to 59", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateRepeatField() {
+        Log.d(TAG, "updateRepeatField() called");
+        try {
+            int[] date = CalendarFormatter.dateToInt(eventRepeatField.getText().toString());
+            DateTime.validateDate(date[0], date[1], date[2]);
+            DateTime.validateEndAfterStart(startYear, startMonth, startDay, startMinute, startHour, date[0], date[1], date[2], 0, 0);
+            repeatYear = date[0];
+            repeatMonth = date[1];
+            repeatDay = date[2];
+            Toast.makeText(EventEditActivity.this, "Valid date", Toast.LENGTH_SHORT).show();
+        } catch (CalendarInvalidFormatException e) {
+            eventRepeatField.setText(CalendarFormatter.dateToString(repeatYear, repeatMonth, repeatDay));
+            Toast.makeText(EventEditActivity.this, "Date must be formatted YYYY/MM/DD", Toast.LENGTH_SHORT).show();
+        } catch (DateOutOfBoundsException e) {
+            eventRepeatField.setText(CalendarFormatter.dateToString(repeatYear, repeatMonth, repeatDay));
+            Toast.makeText(EventEditActivity.this, "Please enter a valid date after January 1, 1900", Toast.LENGTH_SHORT).show();
+        } catch (DateTimeValidationException e) {
+            eventRepeatField.setText(CalendarFormatter.dateToString(repeatYear, repeatMonth, repeatDay));
+            Toast.makeText(EventEditActivity.this, "Repetition date must be after Event date", Toast.LENGTH_SHORT).show();
         }
     }
 
