@@ -3,7 +3,10 @@ package com.exam.planner.Logic.Events;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.Calendar;
+
+import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class EventTest {
     Event testEvent;
@@ -42,20 +45,31 @@ public class EventTest {
     @Test
     public void editName() {
         testEvent.editName("Testing");
-        assertTrue(testEvent.getName().equals("Testing"));
+        assertEquals(testEvent.getName(), "Testing");
     }
+
+    @Test
+    public void editCopyId() {
+        testEvent.editCopyId("Test");
+        assertEquals(testEvent.getCopyId(), "Test");
+    }
+
     @Test
     public void editStartDate()throws DateOutOfBoundsException {
-        testEvent.editStartDate(2019,7,17);
+        Calendar tomorrow = Calendar.getInstance();
+        tomorrow.add(Calendar.DAY_OF_MONTH, 1);
+        testEvent.editStartDate(tomorrow.get(Calendar.YEAR),tomorrow.get(Calendar.MONTH), tomorrow.get(Calendar.DAY_OF_MONTH));
         assertTrue(rightNow.getStartDate().getDay()!=testEvent.getStartDate().getDay());
-        assertTrue(testEvent.getStartDate().getDay()==17 && testEvent.getStartDate().getMonth() == 7);
+        assertTrue(testEvent.getStartDate().getDay()==tomorrow.get(Calendar.DAY_OF_MONTH) && testEvent.getStartDate().getMonth() == tomorrow.get(Calendar.MONTH));
     }
 
     @Test
     public void editStartDate2()throws DateOutOfBoundsException, TimeOutOfBoundsException {
-        testEvent.editStartDate(2019,7,18,1,2);
+        Calendar future = Calendar.getInstance();
+        future.add(Calendar.DAY_OF_MONTH, 2);
+        testEvent.editStartDate(future.get(Calendar.YEAR),future.get(Calendar.MONTH),future.get(Calendar.DAY_OF_MONTH),1,2);
         assertTrue(rightNow.getStartDate().getDay()!=testEvent.getStartDate().getDay());
-        assertTrue(testEvent.getStartDate().getDay()==18 && testEvent.getStartDate().getMonth() == 7 && testEvent.getStartDate().getHour() == 1 && testEvent.getStartDate().getMinute() == 2);
+        assertTrue(testEvent.getStartDate().getDay()==future.get(Calendar.DAY_OF_MONTH) && testEvent.getStartDate().getMonth() == future.get(Calendar.MONTH) && testEvent.getStartDate().getHour() == 1 && testEvent.getStartDate().getMinute() == 2);
 
     }
 
@@ -104,7 +118,7 @@ public class EventTest {
         testEvent.getStartDate().editTime(1, 60);
     }
 
-        @Test
+    @Test
     public void editId() {
         testEvent.editId("Comp3350");
         assertTrue(testEvent.getId().equals("Comp3350"));

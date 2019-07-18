@@ -1,8 +1,8 @@
 package com.exam.planner.Logic.Events;
 
-import android.util.Log;
-
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class DateTime
 {
@@ -93,5 +93,25 @@ public class DateTime
             throw(new TimeOutOfBoundsException("Hour must be between 0 and 23"));
         if (minute < 0 || minute > 59)
             throw(new TimeOutOfBoundsException("Minute must be between 0 and 59"));
+    }
+
+    public static void validateEndAfterStart(int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute) throws DateTimeValidationException {
+        //Nested 'if' is because each successive time increment only needs to be checked if all previous time increments are equal
+        if (startYear > endYear)
+            throw(new DateTimeValidationException("Start date must be before end date (Year)"));
+        if (startYear == endYear) {
+            if (startMonth > endMonth)
+                throw(new DateTimeValidationException("Start date must be before end date (Month)"));
+            if (startMonth == endMonth) {
+                if (startDay > endDay)
+                    throw(new DateTimeValidationException("Start date must be before end date (Day)"));
+                if (startDay == endDay) {
+                    if (startHour > endHour)
+                        throw(new DateTimeValidationException("Start time must be before end time (Hour)"));
+                    if (startHour == endHour && startMinute >= endMinute)
+                        throw(new DateTimeValidationException("Start time must be before end time (Minute)"));
+                }
+            }
+        }
     }
 }

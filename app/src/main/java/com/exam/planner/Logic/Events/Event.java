@@ -1,22 +1,57 @@
 package com.exam.planner.Logic.Events;
 
+import android.util.Log;
+
 public class Event {
-    private static final String TAG = "Event";
+    private String tag;
     private String name;
     private DateTime startDate, endDate;
     private String id;
+    private String copyId;
     private String colour;
     private Boolean isPublic = false;
 
     public Event(){
+        this.tag = "Event";
         this.name = null;
         this.startDate = new DateTime();
         this.endDate = new DateTime(startDate, 1, 0);
-        this.id = null;
+        this.id = java.util.UUID.randomUUID().toString();
+        this.copyId = null;
         this.colour = "grey";
     }
-    
+
+    public Event(int year, int month, int day, int hour, int minute) {
+        this.name = null;
+        this.startDate = new DateTime(year, month, day, hour, minute);
+        this.endDate = new DateTime(startDate, 1, 0);
+        this.id = java.util.UUID.randomUUID().toString();
+        this.copyId = null;
+        this.colour = "grey";
+    }
+
+    public Event(String id, int year, int month, int day, int hour, int minute, String name) {
+        this.tag = "Event";
+        this.name = name;
+        this.startDate = new DateTime(year, month, day, hour, minute);
+        this.endDate = new DateTime(startDate, 1, 0);
+        this.id = id;
+        this.copyId = null;
+        this.colour = "grey";
+    }
+
+    public Event(String id, String tag){
+        this.tag = tag;
+        this.name = null;
+        this.startDate = new DateTime();
+        this.endDate = new DateTime(startDate, 1, 0);
+        this.id = id;
+        this.copyId = null;
+        this.colour = "grey";
+    }
+
     public Event(String id){
+        this.tag = "Event";
         this.name = null;
         this.startDate = new DateTime();
         this.endDate = new DateTime(startDate, 1, 0);
@@ -24,11 +59,11 @@ public class Event {
         this.colour = "grey";
     }
 
-
     public String getName() {return this.name;}
     public DateTime getStartDate() {return this.startDate;}
     public DateTime getEndDate() {return this.endDate;}
     public String getId() {return this.id;}
+    public String getCopyId() {return this.copyId;}
     public String getColour() {return this.colour;}
     public Boolean isPublic() {return this.isPublic;}
 
@@ -60,26 +95,6 @@ public class Event {
         System.out.println("isPublic? "+this.isPublic);
     }
 
-    public static void validateEndAfterStart(int startYear, int startMonth, int startDay, int startHour, int startMinute, int endYear, int endMonth, int endDay, int endHour, int endMinute) throws DateTimeValidationException {
-        //Nested 'if' is because each successive time increment only needs to be checked if all previous time increments are equal
-        if (startYear > endYear)
-            throw(new DateTimeValidationException("Start date must be before end date (Year)"));
-        if (startYear == endYear) {
-            if (startMonth > endMonth)
-                throw(new DateTimeValidationException("Start date must be before end date (Month)"));
-            if (startMonth == endMonth) {
-                if (startDay > endDay)
-                    throw(new DateTimeValidationException("Start date must be before end date (Day)"));
-                if (startDay == endDay) {
-                    if (startHour > endHour)
-                        throw(new DateTimeValidationException("Start time must be before end time (Hour)"));
-                    if (startHour == endHour && startMinute >= endMinute)
-                        throw(new DateTimeValidationException("Start time must be before end time (Minute)"));
-                }
-            }
-        }
-    }
-
     public void editName(String newName) {this.name = newName;}
 
     public void editStartDate(int year, int month, int day) throws DateOutOfBoundsException{
@@ -97,19 +112,38 @@ public class Event {
     }
 
     public void editId (String newId){this.id = newId;}
+    public void editCopyId (String newId){this.copyId = newId;}
     void editColour(String newColour){this.colour = newColour;}
-    public void makeEventPublic() {this.isPublic = true;}
-    public void makeEventPrivate() {this.isPublic = false;}
+    public void makeEventPublic(){this.isPublic = true;}
+    public void makeEventPrivate(){this.isPublic = false;}
 
-    public Event eventCopy(Event newEvent, int year, int month, int day)throws DateOutOfBoundsException, TimeOutOfBoundsException {
+    public Event eventCopy(Event newEvent, int year, int month, int day) throws DateOutOfBoundsException, TimeOutOfBoundsException {
         newEvent.editName(this.name);
         newEvent.editStartDate(year, month, day, this.startDate.getHour(), this.startDate.getMinute());
         newEvent.editEndDate(year, month, day, this.endDate.getHour(), this.endDate.getMinute());
-        newEvent.editId(this.id);
         newEvent.editColour(this.colour);
+        newEvent.editCopyId(this.copyId);
         if(this.isPublic){
             newEvent.makeEventPublic();
         }
         return newEvent;
+    }
+
+    public Event deepCopy() {
+        Event cpy = new Event();
+        cpy.editName(this.name);
+        cpy.editId(java.util.UUID.randomUUID().toString());
+        cpy.editColour(this.colour);
+        try {
+            cpy.editStartDate(this.getStartYear(), this.getStartMonth(), this.getStartDay(), this.getStartHour(), this.getStartMinute());
+            cpy.editEndDate(this.getEndYear(), this.getEndMonth(), this.getEndDay(), this.getEndHour(), this.getEndMinute());
+        } catch (DateOutOfBoundsException exp) {
+            Log.d("Exception", "deepCopy: DateOutOfBoundsException");
+        } catch (TimeOutOfBoundsException times){
+            Log.d("Exception", "deepCopy: TimeOutOfBoundsException");
+        } catch (Exception e){
+            Log.d("Exception", "deepCopy: Weird exception");
+        }
+        return cpy;
     }
 }
