@@ -7,6 +7,10 @@ import org.junit.Test;
 
 import java.util.Calendar;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 public class PlannerTest {
 
     @Test
@@ -25,6 +29,14 @@ public class PlannerTest {
         boolean[] repArray = {true, true, true, true, true, true, true};
         p.editEvent("-1", "Test", 2000, 1, 1, 0, 0, 2000, 1, 1, 1, 0, 2000, 1, 7, repArray);
         Assert.assertEquals(p.getEventsList().size(), 7);
+    }
+
+    @Test
+    public void mockRepeaterEvent(){
+        Planner p = mock(Planner.class);
+        boolean[] repArray = {true, true, true, true, true, true, true};
+        p.editEvent("-1", "Test", 2000, 1, 1, 0, 0, 2000, 1, 1, 1, 0, 2000, 1, 7, repArray);
+        verify(p, times(1)).editEvent("-1", "Test", 2000, 1, 1, 0, 0, 2000, 1, 1, 1, 0, 2000, 1, 7, repArray);
     }
 
     @Test
