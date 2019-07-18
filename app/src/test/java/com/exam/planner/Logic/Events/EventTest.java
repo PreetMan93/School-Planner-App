@@ -118,7 +118,7 @@ public class EventTest {
         testEvent.getStartDate().editTime(1, 60);
     }
 
-        @Test
+    @Test
     public void editId() {
         testEvent.editId("Comp3350");
         assertTrue(testEvent.getId().equals("Comp3350"));

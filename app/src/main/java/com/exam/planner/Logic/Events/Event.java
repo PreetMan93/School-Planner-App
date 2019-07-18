@@ -30,6 +30,16 @@ public class Event {
         this.colour = "grey";
     }
 
+    public Event(String id, int year, int month, int day, int hour, int minute, String name) {
+        this.tag = "Event";
+        this.name = name;
+        this.startDate = new DateTime(year, month, day, hour, minute);
+        this.endDate = new DateTime(startDate, 1, 0);
+        this.id = id;
+        this.copyId = null;
+        this.colour = "grey";
+    }
+
     public Event(String id, String tag){
         this.tag = tag;
         this.name = null;

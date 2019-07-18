@@ -1,4 +1,4 @@
-package com.exam.planner.PersistenceTesting;
+package com.exam.planner.Integration;
 
 import com.exam.planner.DSO.User;
 import com.exam.planner.Persistence.Stubs.UserPersistenceStub;

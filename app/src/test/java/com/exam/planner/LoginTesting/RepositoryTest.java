@@ -41,19 +41,4 @@ public class RepositoryTest {
         Assert.assertTrue(res instanceof Result.Success);
     }
 
-    @Test
-    public void testGetEventById(){
-        test.login("username", "password");
-        test.getUser().getPlanner().addEvent(new Event("ID"));
-        Assert.assertEquals(test.getEvent("ID").get(0).getId(), "ID");
-    }
-
-    @Test
-    public void testGetEventsByDayMonth(){
-        test.login("username", "password");
-        int numCurrEvents = test.getEvents(new DateTime()).size();
-        test.getUser().getPlanner().addEvent(new Event("ID"));
-        test.getUser().getPlanner().addEvent(new Event("ID"));
-        Assert.assertEquals(test.getEvents(new DateTime()).size(), 2 + numCurrEvents);
-    }
 }
