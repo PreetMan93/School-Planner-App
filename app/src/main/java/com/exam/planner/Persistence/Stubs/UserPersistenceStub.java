@@ -29,7 +29,6 @@ public class UserPersistenceStub implements IUserPersistence {
             users.get(1).addEvent(new Event(java.util.UUID.randomUUID().toString()));
         }
 
-        users.get(0).addEvent(new Event("1",2019,7,1,12,30,"Comp3350"));
         try {
             for(int i = 0; i < 3; i++) {
                 Event e = new Event(java.util.UUID.randomUUID().toString());
