@@ -8,10 +8,10 @@ import com.exam.planner.LoginTesting.DataSourceUnitTest;
 import com.exam.planner.LoginTesting.FormStateManagerTest;
 import com.exam.planner.LoginTesting.FormStateTest;
 import com.exam.planner.LoginTesting.LoginViewModelFactoryTest;
-import com.exam.planner.LoginTesting.LoginViewModelTest;
+import com.exam.planner.Integration.LoginViewModelTest;
 import com.exam.planner.LoginTesting.RepositoryTest;
 import com.exam.planner.LoginTesting.ResultTest;
-import com.exam.planner.PersistenceTesting.UserPersistenceStubTest;
+import com.exam.planner.Integration.UserPersistenceStubTest;
 import com.exam.planner.SyncTesting.SelectedEventsTest;
 
 import org.junit.runner.RunWith;

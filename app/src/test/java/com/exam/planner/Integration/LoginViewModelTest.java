@@ -1,4 +1,4 @@
-package com.exam.planner.LoginTesting;
+package com.exam.planner.Integration;
 
 import com.exam.planner.Logic.Login.LoginFailureException;
 import com.exam.planner.Logic.Login.LoginViewModel;
