@@ -1,5 +1,6 @@
 package com.exam.planner;
 
+import com.exam.planner.Integration.PlannerIntTest;
 import com.exam.planner.Logic.CalendarFormatterTest;
 import com.exam.planner.DSO.PlannerTest;
 import com.exam.planner.DSO.UserTest;
@@ -31,7 +32,8 @@ import org.junit.runners.Suite;
         ResultTest.class,
         FormStateManagerTest.class,
         CalendarFormatterTest.class,
-        SelectedEventsTest.class
+        SelectedEventsTest.class,
+        PlannerIntTest.class
 })
 public class AllTests
 {
