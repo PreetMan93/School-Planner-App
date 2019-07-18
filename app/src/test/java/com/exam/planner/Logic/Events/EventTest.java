@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.Calendar;
 
+import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class EventTest {
@@ -44,8 +45,15 @@ public class EventTest {
     @Test
     public void editName() {
         testEvent.editName("Testing");
-        assertTrue(testEvent.getName().equals("Testing"));
+        assertEquals(testEvent.getName(), "Testing");
     }
+
+    @Test
+    public void editCopyId() {
+        testEvent.editCopyId("Test");
+        assertEquals(testEvent.getCopyId(), "Test");
+    }
+
     @Test
     public void editStartDate()throws DateOutOfBoundsException {
         Calendar tomorrow = Calendar.getInstance();

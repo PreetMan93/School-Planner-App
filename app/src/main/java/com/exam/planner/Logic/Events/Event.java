@@ -49,8 +49,6 @@ public class Event {
         this.colour = "grey";
     }
 
-    public void setTag(String tag){this.tag = tag;}
-    public String getTag(){return this.tag;}
     public String getName() {return this.name;}
     public DateTime getStartDate() {return this.startDate;}
     public DateTime getEndDate() {return this.endDate;}
